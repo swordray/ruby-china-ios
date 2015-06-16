@@ -1,3 +1,17 @@
-platform :ios, '8.0'
+platform :ios, '8.3'
 
 use_frameworks!
+
+pod 'AFNetworking'
+pod 'CCBottomRefreshControl'
+pod 'DateTools'
+pod 'GoogleAnalytics-iOS-SDK'
+pod 'JTSImageViewController'
+pod 'MBProgressHUD'
+pod 'MGSwipeTableCell'
+pod 'RegExCategories'
+pod 'SDWebImage'
+pod 'SZTextView'
+pod 'SwiftyJSON'
+pod 'TPKeyboardAvoiding'
+pod 'UINavigationBar+Addition'

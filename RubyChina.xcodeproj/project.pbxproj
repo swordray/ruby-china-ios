@@ -7,10 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		51E8D4D540188AB43FA29482 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E821BF095D0516A4D57C0C35 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		96870A0E1AA8214ACCC5E450 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB9E1FE7F75A5D0D9174BB74 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		B22DE0DF1B1951B200888C0D /* ComposeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22DE0DE1B1951B200888C0D /* ComposeController.swift */; };
+		B24128AC1B2D3FDC0006AEF9 /* DateTools.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B24128AB1B2D3FDC0006AEF9 /* DateTools.bundle */; };
+		B263B52A1B1EA36C00C56CB0 /* TopicBodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B263B5291B1EA36C00C56CB0 /* TopicBodyCell.swift */; };
+		B263B52E1B205B0B00C56CB0 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B263B52D1B205B0A00C56CB0 /* SplitViewController.swift */; };
 		B2D221D01B0B63A100007E79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D221CF1B0B63A100007E79 /* AppDelegate.swift */; };
 		B2D221D71B0B63A100007E79 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2D221D61B0B63A100007E79 /* Images.xcassets */; };
 		B2D221E61B0B63A200007E79 /* RubyChinaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D221E51B0B63A200007E79 /* RubyChinaTests.swift */; };
+		B2D221F01B0B836E00007E79 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2D221EF1B0B836E00007E79 /* InfoPlist.strings */; };
+		B2F217FA1B18B53600150DDF /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217F81B18B53600150DDF /* Defaults.swift */; };
+		B2F217FB1B18B53600150DDF /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217F91B18B53600150DDF /* Helper.swift */; };
+		B2F218031B18B54000150DDF /* ReplyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217FC1B18B54000150DDF /* ReplyCell.swift */; };
+		B2F218041B18B54000150DDF /* TopicTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217FD1B18B54000150DDF /* TopicTitleCell.swift */; };
+		B2F218051B18B54000150DDF /* UserNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217FE1B18B54000150DDF /* UserNameCell.swift */; };
+		B2F218061B18B54000150DDF /* TopicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217FF1B18B54000150DDF /* TopicCell.swift */; };
+		B2F218071B18B54000150DDF /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F218001B18B54000150DDF /* LoadingView.swift */; };
+		B2F218081B18B54000150DDF /* FailureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F218011B18B54000150DDF /* FailureView.swift */; };
+		B2F218091B18B54000150DDF /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F218021B18B54000150DDF /* EmptyView.swift */; };
+		B2F218101B18B55600150DDF /* NodesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180A1B18B55600150DDF /* NodesController.swift */; };
+		B2F218111B18B55600150DDF /* SignInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180B1B18B55600150DDF /* SignInController.swift */; };
+		B2F218121B18B55600150DDF /* TopicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180C1B18B55600150DDF /* TopicController.swift */; };
+		B2F218131B18B55600150DDF /* TopicsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180D1B18B55600150DDF /* TopicsController.swift */; };
+		B2F218141B18B55600150DDF /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180E1B18B55600150DDF /* UserController.swift */; };
+		B2F218151B18B55600150DDF /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180F1B18B55600150DDF /* WebViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +46,10 @@
 /* Begin PBXFileReference section */
 		7924537D50FF44B794D3DDE7 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		AF97D6A9E23B4AF0DE54DFB5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		B22DE0DE1B1951B200888C0D /* ComposeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeController.swift; sourceTree = "<group>"; };
+		B24128AB1B2D3FDC0006AEF9 /* DateTools.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = DateTools.bundle; path = ../Pods/DateTools/DateTools/DateTools.bundle; sourceTree = "<group>"; };
+		B263B5291B1EA36C00C56CB0 /* TopicBodyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicBodyCell.swift; sourceTree = "<group>"; };
+		B263B52D1B205B0A00C56CB0 /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 		B2D221CA1B0B63A100007E79 /* RubyChina.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RubyChina.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2D221CE1B0B63A100007E79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2D221CF1B0B63A100007E79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -33,7 +57,24 @@
 		B2D221DF1B0B63A200007E79 /* RubyChinaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RubyChinaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2D221E41B0B63A200007E79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2D221E51B0B63A200007E79 /* RubyChinaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyChinaTests.swift; sourceTree = "<group>"; };
-		E821BF095D0516A4D57C0C35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2D221EF1B0B836E00007E79 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
+		B2D222051B0F83C000007E79 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		B2F217F81B18B53600150DDF /* Defaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		B2F217F91B18B53600150DDF /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		B2F217FC1B18B54000150DDF /* ReplyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyCell.swift; sourceTree = "<group>"; };
+		B2F217FD1B18B54000150DDF /* TopicTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicTitleCell.swift; sourceTree = "<group>"; };
+		B2F217FE1B18B54000150DDF /* UserNameCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNameCell.swift; sourceTree = "<group>"; };
+		B2F217FF1B18B54000150DDF /* TopicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCell.swift; sourceTree = "<group>"; };
+		B2F218001B18B54000150DDF /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		B2F218011B18B54000150DDF /* FailureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FailureView.swift; sourceTree = "<group>"; };
+		B2F218021B18B54000150DDF /* EmptyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		B2F2180A1B18B55600150DDF /* NodesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodesController.swift; sourceTree = "<group>"; };
+		B2F2180B1B18B55600150DDF /* SignInController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInController.swift; sourceTree = "<group>"; };
+		B2F2180C1B18B55600150DDF /* TopicController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicController.swift; sourceTree = "<group>"; };
+		B2F2180D1B18B55600150DDF /* TopicsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicsController.swift; sourceTree = "<group>"; };
+		B2F2180E1B18B55600150DDF /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
+		B2F2180F1B18B55600150DDF /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		DB9E1FE7F75A5D0D9174BB74 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51E8D4D540188AB43FA29482 /* Pods.framework in Frameworks */,
+				96870A0E1AA8214ACCC5E450 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,8 +120,12 @@
 			isa = PBXGroup;
 			children = (
 				B2D221CF1B0B63A100007E79 /* AppDelegate.swift */,
+				B2D222051B0F83C000007E79 /* Bridging-Header.h */,
+				B2D221F11B0F3EC200007E79 /* Controllers */,
 				B2D221D61B0B63A100007E79 /* Images.xcassets */,
+				B2D221F51B0F53A200007E79 /* Libraries */,
 				B2D221CD1B0B63A100007E79 /* Supporting Files */,
+				B2D221F61B0F53A200007E79 /* Views */,
 			);
 			path = RubyChina;
 			sourceTree = "<group>";
@@ -88,7 +133,9 @@
 		B2D221CD1B0B63A100007E79 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B24128AB1B2D3FDC0006AEF9 /* DateTools.bundle */,
 				B2D221CE1B0B63A100007E79 /* Info.plist */,
+				B2D221EF1B0B836E00007E79 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -110,10 +157,49 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		B2D221F11B0F3EC200007E79 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B22DE0DE1B1951B200888C0D /* ComposeController.swift */,
+				B2F2180A1B18B55600150DDF /* NodesController.swift */,
+				B2F2180B1B18B55600150DDF /* SignInController.swift */,
+				B263B52D1B205B0A00C56CB0 /* SplitViewController.swift */,
+				B2F2180C1B18B55600150DDF /* TopicController.swift */,
+				B2F2180D1B18B55600150DDF /* TopicsController.swift */,
+				B2F2180E1B18B55600150DDF /* UserController.swift */,
+				B2F2180F1B18B55600150DDF /* WebViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		B2D221F51B0F53A200007E79 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				B2F217F81B18B53600150DDF /* Defaults.swift */,
+				B2F217F91B18B53600150DDF /* Helper.swift */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		B2D221F61B0F53A200007E79 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B2F218021B18B54000150DDF /* EmptyView.swift */,
+				B2F218011B18B54000150DDF /* FailureView.swift */,
+				B2F218001B18B54000150DDF /* LoadingView.swift */,
+				B2F217FC1B18B54000150DDF /* ReplyCell.swift */,
+				B263B5291B1EA36C00C56CB0 /* TopicBodyCell.swift */,
+				B2F217FF1B18B54000150DDF /* TopicCell.swift */,
+				B2F217FD1B18B54000150DDF /* TopicTitleCell.swift */,
+				B2F217FE1B18B54000150DDF /* UserNameCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C0D154EE6622CC1F87332BFA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E821BF095D0516A4D57C0C35 /* Pods.framework */,
+				DB9E1FE7F75A5D0D9174BB74 /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -138,8 +224,8 @@
 				B2D221C61B0B63A100007E79 /* Sources */,
 				B2D221C71B0B63A100007E79 /* Frameworks */,
 				B2D221C81B0B63A100007E79 /* Resources */,
-				420E7585D9CA8421A68E0141 /* Embed Pods Frameworks */,
 				A90198A070619DD49BBD2FE5 /* Copy Pods Resources */,
+				694D8C25363EBC0088DBAB18 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -179,6 +265,7 @@
 				TargetAttributes = {
 					B2D221C91B0B63A100007E79 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = 4ZT4M533K7;
 					};
 					B2D221DE1B0B63A200007E79 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -211,6 +298,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2D221D71B0B63A100007E79 /* Images.xcassets in Resources */,
+				B2D221F01B0B836E00007E79 /* InfoPlist.strings in Resources */,
+				B24128AC1B2D3FDC0006AEF9 /* DateTools.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,21 +313,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		420E7585D9CA8421A68E0141 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		4318D767E7CA507A6CE533E0 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -252,6 +326,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		694D8C25363EBC0088DBAB18 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A90198A070619DD49BBD2FE5 /* Copy Pods Resources */ = {
@@ -276,7 +365,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2F217FA1B18B53600150DDF /* Defaults.swift in Sources */,
+				B2F218081B18B54000150DDF /* FailureView.swift in Sources */,
+				B2F218141B18B55600150DDF /* UserController.swift in Sources */,
+				B2F218091B18B54000150DDF /* EmptyView.swift in Sources */,
+				B2F218111B18B55600150DDF /* SignInController.swift in Sources */,
+				B2F218061B18B54000150DDF /* TopicCell.swift in Sources */,
+				B2F218121B18B55600150DDF /* TopicController.swift in Sources */,
+				B263B52A1B1EA36C00C56CB0 /* TopicBodyCell.swift in Sources */,
 				B2D221D01B0B63A100007E79 /* AppDelegate.swift in Sources */,
+				B2F218101B18B55600150DDF /* NodesController.swift in Sources */,
+				B2F218131B18B55600150DDF /* TopicsController.swift in Sources */,
+				B2F218031B18B54000150DDF /* ReplyCell.swift in Sources */,
+				B2F218151B18B55600150DDF /* WebViewController.swift in Sources */,
+				B2F218041B18B54000150DDF /* TopicTitleCell.swift in Sources */,
+				B263B52E1B205B0B00C56CB0 /* SplitViewController.swift in Sources */,
+				B22DE0DF1B1951B200888C0D /* ComposeController.swift in Sources */,
+				B2F217FB1B18B53600150DDF /* Helper.swift in Sources */,
+				B2F218051B18B54000150DDF /* UserNameCell.swift in Sources */,
+				B2F218071B18B54000150DDF /* LoadingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,9 +495,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = RubyChina/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RubyChina/Bridging-Header.h";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Pods/**";
 			};
 			name = Debug;
 		};
@@ -400,9 +510,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = RubyChina/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RubyChina/Bridging-Header.h";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Pods/**";
 			};
 			name = Release;
 		};

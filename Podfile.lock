@@ -1,1 +1,73 @@
-COCOAPODS: 0.37.1
+PODS:
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking/NSURLConnection (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
+  - AFNetworking/UIKit (2.5.4):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - CCBottomRefreshControl (0.5):
+    - Masonry
+  - DateTools (1.5.0)
+  - GoogleAnalytics-iOS-SDK (3.12):
+    - GoogleAnalytics-iOS-SDK/Core (= 3.12)
+  - GoogleAnalytics-iOS-SDK/Core (3.12)
+  - JTSImageViewController (1.4)
+  - Masonry (0.6.1)
+  - MBProgressHUD (0.9.1)
+  - MGSwipeTableCell (1.4.3)
+  - RegExCategories (1.0)
+  - SDWebImage (3.7.2):
+    - SDWebImage/Core (= 3.7.2)
+  - SDWebImage/Core (3.7.2)
+  - SwiftyJSON (2.2.0)
+  - SZTextView (1.2.1)
+  - TPKeyboardAvoiding (1.2.6)
+  - UINavigationBar+Addition (1.0.0)
+
+DEPENDENCIES:
+  - AFNetworking
+  - CCBottomRefreshControl
+  - DateTools
+  - GoogleAnalytics-iOS-SDK
+  - JTSImageViewController
+  - MBProgressHUD
+  - MGSwipeTableCell
+  - RegExCategories
+  - SDWebImage
+  - SwiftyJSON
+  - SZTextView
+  - TPKeyboardAvoiding
+  - UINavigationBar+Addition
+
+SPEC CHECKSUMS:
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  CCBottomRefreshControl: 2cfdbd6f5be5181f5f070637605981d5557e8e32
+  DateTools: b93a2c2017747329c6077c7d7e8a75106e23d0d7
+  GoogleAnalytics-iOS-SDK: 0a3327a993b8ed2b8fe1c6c4a8dcf5b76d2237a8
+  JTSImageViewController: 6a367b144e257db02cdfacdba78d684377d3777b
+  Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  MGSwipeTableCell: cb9805df3cc5cad75ad43a5c1eb424be0316f0bf
+  RegExCategories: e68befacacd5bda853c88f70ec745cb2d0cfb89c
+  SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
+  SwiftyJSON: 0b3e6c07af17ff745e77e8e9984097b55c956e5c
+  SZTextView: 906df45afd3c1b24fc5252088d5ef8061513c238
+  TPKeyboardAvoiding: ee4dd35e3bb7bb64bfbda47e7cc9ba872ff10f77
+  UINavigationBar+Addition: c633d66af2245dfdc97a917c3b20a6db02089f2b
+
+COCOAPODS: 0.37.2

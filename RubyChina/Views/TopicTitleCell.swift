@@ -18,7 +18,7 @@ class TopicTitleCell: MGSwipeTableCell {
     var deleteButton = MGSwipeButton()
     var editButton = MGSwipeButton()
     var topic: JSON = [:]
-    var topicController: TopicController?
+    weak var topicController: TopicController?
 
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {

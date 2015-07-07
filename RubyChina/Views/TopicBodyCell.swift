@@ -11,7 +11,7 @@ import UIKit
 
 class TopicBodyCell: UITableViewCell, UIWebViewDelegate {
 
-    var topicController: TopicController?
+    weak var topicController: TopicController?
     var webView = UIWebView()
     var webViewHeight = CGFloat.min
 

@@ -202,6 +202,9 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
 
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+        
+        if parameters["query"].string == nil && searchBar.text == "" { return }
+        
         parameters["query"].string = searchBar.text != "" ? searchBar.text : nil
         topics = []
         tableView.reloadData()

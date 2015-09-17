@@ -61,6 +61,10 @@ class SignInController: UIViewController, UITableViewDataSource, UITableViewDele
         usernameField.becomeFirstResponder()
     }
 
+    override func viewWillDisappear(animated: Bool) {
+        view.endEditing(true)
+    }
+
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }

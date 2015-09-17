@@ -12,19 +12,19 @@ import UIKit
 
 class Helper {
     class var backgroundColor: UIColor {
-        get { return UIColor(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1) }
+        return UIColor(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1)
     }
 
     class var baseURL: NSURL {
-        get { return NSURL(string: "http://ruby-china.secipin.com")! }
+        return NSURL(string: "http://ruby-china.secipin.com")!
     }
 
     class var googleAnalyticsId: String {
-        get { return "UA-8885744-9" }
+        return "UA-8885744-9"
     }
 
     class var tintColor: UIColor {
-        get { return UIColor(red: 155/255.0, green: 17/255.0, blue: 30/255.0, alpha: 1) }
+        return UIColor(red: 155/255.0, green: 17/255.0, blue: 30/255.0, alpha: 1)
     }
 
     class func blankImage(size: CGSize) -> UIImage {

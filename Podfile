@@ -5,7 +5,7 @@ use_frameworks!
 pod 'AFNetworking'
 pod 'CCBottomRefreshControl'
 pod 'DateTools'
-pod 'GoogleAnalytics-iOS-SDK'
+pod 'GoogleAnalytics'
 pod 'JTSImageViewController'
 pod 'MBProgressHUD'
 pod 'MGSwipeTableCell'

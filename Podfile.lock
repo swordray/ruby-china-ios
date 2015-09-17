@@ -23,9 +23,7 @@ PODS:
   - CCBottomRefreshControl (0.5):
     - Masonry
   - DateTools (1.5.0)
-  - GoogleAnalytics-iOS-SDK (3.12):
-    - GoogleAnalytics-iOS-SDK/Core (= 3.12)
-  - GoogleAnalytics-iOS-SDK/Core (3.12)
+  - GoogleAnalytics (3.12.0)
   - JTSImageViewController (1.4)
   - Masonry (0.6.1)
   - MBProgressHUD (0.9.1)
@@ -43,7 +41,7 @@ DEPENDENCIES:
   - AFNetworking
   - CCBottomRefreshControl
   - DateTools
-  - GoogleAnalytics-iOS-SDK
+  - GoogleAnalytics
   - JTSImageViewController
   - MBProgressHUD
   - MGSwipeTableCell
@@ -58,7 +56,7 @@ SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   CCBottomRefreshControl: 2cfdbd6f5be5181f5f070637605981d5557e8e32
   DateTools: b93a2c2017747329c6077c7d7e8a75106e23d0d7
-  GoogleAnalytics-iOS-SDK: 0a3327a993b8ed2b8fe1c6c4a8dcf5b76d2237a8
+  GoogleAnalytics: ef2e0b800ef3c1e62688cdfc959e0d3132bc246c
   JTSImageViewController: 6a367b144e257db02cdfacdba78d684377d3777b
   Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad

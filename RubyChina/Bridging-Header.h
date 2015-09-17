@@ -9,7 +9,7 @@
 #ifndef RubyChina_Bridging_Header_h
 #define RubyChina_Bridging_Header_h
 
-#import "GoogleAnalytics-iOS-SDK/GAI.h"
-#import "GoogleAnalytics-iOS-SDK/GAIFields.h"
+#import "GoogleAnalytics/GAI.h"
+#import "GoogleAnalytics/GAIFields.h"
 
 #endif

@@ -44,7 +44,7 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
         contentView.addSubview(webView)
 
         replyButton.backgroundColor = Helper.tintColor
-        replyButton.buttonWidth = 72
+        replyButton.buttonWidth = 66
         replyButton.callback = { (_) in
             let composeController = ComposeController()
             composeController.reply["body"].object = "#\(self.indexPath.row + 1)楼 @" + self.reply["user"]["login"].stringValue + " "
@@ -55,7 +55,7 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
         replyButton.setTitle("回复", forState: .Normal)
 
         editButton.backgroundColor = UIColor(red: 199/255.0, green: 199/255.0, blue: 204/255.0, alpha: 1)
-        editButton.buttonWidth = 72
+        editButton.buttonWidth = 66
         editButton.callback = { (_) in
             let composeController = ComposeController()
             composeController.reply = self.reply
@@ -65,7 +65,7 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
         editButton.setTitle("编辑", forState: .Normal)
 
         deleteButton.backgroundColor = UIColor(red: 255/255.0, green: 59/255.0, blue: 48/255.0, alpha: 1)
-        deleteButton.buttonWidth = 72
+        deleteButton.buttonWidth = 66
         deleteButton.callback = { (_) in
             let alertController = UIAlertController(title: "确定删除吗？", message: nil, preferredStyle: .Alert)
             alertController.addAction(UIAlertAction(title: "取消", style: .Cancel, handler: nil))

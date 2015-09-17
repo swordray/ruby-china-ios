@@ -37,7 +37,7 @@ class TopicTitleCell: MGSwipeTableCell {
         detailTextLabel?.textColor = .lightGrayColor()
 
         editButton.backgroundColor = UIColor(red: 199/255.0, green: 199/255.0, blue: 204/255.0, alpha: 1)
-        editButton.buttonWidth = 72
+        editButton.buttonWidth = 66
         editButton.callback = { (_) in
             let composeController = ComposeController()
             composeController.topic = self.topic
@@ -47,7 +47,7 @@ class TopicTitleCell: MGSwipeTableCell {
         editButton.setTitle("编辑", forState: .Normal)
 
         deleteButton.backgroundColor = UIColor(red: 255/255.0, green: 59/255.0, blue: 48/255.0, alpha: 1)
-        deleteButton.buttonWidth = 72
+        deleteButton.buttonWidth = 66
         deleteButton.callback = { (_) in
             let alertController = UIAlertController(title: "确定删除吗？", message: nil, preferredStyle: .Alert)
             alertController.addAction(UIAlertAction(title: "取消", style: .Cancel, handler: nil))

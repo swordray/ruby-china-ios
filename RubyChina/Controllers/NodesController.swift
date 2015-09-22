@@ -51,6 +51,12 @@ class NodesController: UIViewController, UITableViewDataSource, UITableViewDeleg
             self.nodes = self.topicsController() != nil ? [["title": "全部", "nodes": [["name": JSON(NSBundle.mainBundle().localizedInfoDictionary!)["CFBundleDisplayName"].stringValue]]]] : []
             self.nodes = JSON(self.nodes.arrayValue + JSON(responseObject).arrayValue)
             self.tableView.reloadData()
+            for var i = 0; i < self.nodes.count; i++ {
+                for var j = 0; j < self.nodes[i]["nodes"].count; j++ {
+                    let nodeId = self.nodes[i]["nodes"][j]["id"].intValue
+                    if nodeId == self.topicsController()?.parameters["node_id"].intValue || nodeId == self.composeController()?.topic["node_id"].intValue { self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: j, inSection: i), atScrollPosition: .Top, animated: false) }
+                }
+            }
         }) { (operation, error) in
             self.loadingView.hide()
             self.failureView.show()

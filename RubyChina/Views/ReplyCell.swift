@@ -100,10 +100,10 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
         imageView?.frame = CGRect(x: separatorInset.left, y: 10, width: 44, height: 44)
         imageView?.sd_setImageWithURL(NSURL(string: reply["user"]["avatar_url"].stringValue)!, placeholderImage: Helper.blankImage(imageView!.frame.size))
 
-        textLabel?.frame = CGRect(x: separatorInset.left * 2 + 44, y: 10, width: frame.width - separatorInset.left * 3 - 44, height: 17)
+        textLabel?.frame = CGRect(x: separatorInset.left + 44 + 15, y: 10, width: frame.width - separatorInset.left * 2 - 44 - 15, height: 17)
         textLabel?.text = reply["user"]["login"].stringValue + " · #\(indexPath.row + 1) · " + Helper.timeAgoSinceNow(reply["created_at"].string)
 
-        webView.frame = CGRect(x: separatorInset.left * 2 + 44, y: 10 + textLabel!.frame.height + 6, width: frame.width - separatorInset.left * 3 - 44, height: webViewHeight)
+        webView.frame = CGRect(x: separatorInset.left + 44 + 15, y: 10 + textLabel!.frame.height + 6, width: frame.width - separatorInset.left * 2 - 44 - 15, height: webViewHeight)
         webView.request == nil ? webView.loadHTMLString(html(reply["body_html"].stringValue), baseURL: Helper.baseURL) : webViewDidFinishLoad(webView)
 
         rightButtons = Array(([replyButton] + (reply["abilities"]["update"].boolValue ? [editButton] : [MGSwipeButton]()) + (reply["abilities"]["destroy"].boolValue ? [deleteButton] : [MGSwipeButton]())).reverse())

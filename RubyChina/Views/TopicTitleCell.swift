@@ -87,11 +87,11 @@ class TopicTitleCell: MGSwipeTableCell {
         imageView?.frame = CGRect(x: separatorInset.left, y: 10, width: 44, height: 44)
         imageView?.sd_setImageWithURL(NSURL(string: topic["user"]["avatar_url"].stringValue)!, placeholderImage: Helper.blankImage(imageView!.frame.size))
 
-        textLabel?.frame = CGRect(x: separatorInset.left * 2 + 44, y: 10, width: frame.width - separatorInset.left * 3 - 44, height: 100)
+        textLabel?.frame = CGRect(x: separatorInset.left + 44 + 15, y: 10, width: frame.width - separatorInset.left * 2 - 44 - 15, height: 100)
         textLabel?.text = topic["title"].string
         textLabel?.frame.size.height = textLabel!.textRectForBounds(textLabel!.frame, limitedToNumberOfLines: textLabel!.numberOfLines).height
 
-        detailTextLabel?.frame = CGRect(x: separatorInset.left * 2 + 44, y: 10 + textLabel!.frame.height + 6, width: bounds.width - separatorInset.left * 3 - 44, height: detailTextLabel!.frame.height)
+        detailTextLabel?.frame = CGRect(x: separatorInset.left + 44 + 15, y: 10 + textLabel!.frame.height + 6, width: bounds.width - separatorInset.left * 2 - 44 - 15, height: detailTextLabel!.frame.height)
         detailTextLabel?.text = "[" + topic["node_name"].stringValue + "] · " + topic["user"]["login"].stringValue + " · " + Helper.timeAgoSinceNow(topic["created_at"].stringValue) + " · " + (topic["hits"].int != nil ? topic["hits"].stringValue + " 次阅读" : "")
 
         rightButtons = Array(((topic["abilities"]["update"].boolValue ? [editButton] : [MGSwipeButton]()) + (topic["abilities"]["destroy"].boolValue ? [deleteButton] : [MGSwipeButton]())).reverse())

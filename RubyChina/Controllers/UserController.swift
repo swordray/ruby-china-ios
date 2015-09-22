@@ -25,7 +25,7 @@ class UserController: UIViewController, UITableViewDataSource, UITableViewDelega
         view.backgroundColor = Helper.backgroundColor
 
         tableView.allowsMultipleSelection = false
-        tableView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        tableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         tableView.backgroundColor = .clearColor()
         tableView.dataSource = self
         tableView.delegate = self
@@ -40,7 +40,7 @@ class UserController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
 
     override func viewWillAppear(animated: Bool) {
-        if tableView.indexPathForSelectedRow() != nil { tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: true) }
+        if tableView.indexPathForSelectedRow != nil { tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true) }
         loadData()
         Helper.trackView(self)
     }
@@ -133,7 +133,7 @@ class UserController: UIViewController, UITableViewDataSource, UITableViewDelega
         case 0:
             if Defaults.userId == nil { Helper.signIn(self); tableView.deselectRowAtIndexPath(indexPath, animated: true); return }
             let webViewController = WebViewController()
-            webViewController.path = Helper.baseURL.absoluteString! + "/" + user["login"].stringValue
+            webViewController.path = Helper.baseURL.absoluteString + "/" + user["login"].stringValue
             webViewController.title = user["login"].string
             splitViewController?.showDetailViewController(UINavigationController(rootViewController: webViewController), sender: self)
         case 1:
@@ -144,7 +144,7 @@ class UserController: UIViewController, UITableViewDataSource, UITableViewDelega
                 splitViewController?.showDetailViewController(UINavigationController(rootViewController: ComposeController()), sender: self)
             case 2:
                 let webViewController = WebViewController()
-                webViewController.path = Helper.baseURL.absoluteString! + "/feedback"
+                webViewController.path = Helper.baseURL.absoluteString + "/feedback"
                 webViewController.title = "反馈"
                 splitViewController?.showDetailViewController(UINavigationController(rootViewController: webViewController), sender: self)
             case 3:

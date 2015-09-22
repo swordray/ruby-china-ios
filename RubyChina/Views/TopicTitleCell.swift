@@ -63,7 +63,7 @@ class TopicTitleCell: MGSwipeTableCell {
                         self.topicController?.splitViewController?.showDetailViewController(UIViewController(), sender: self)
                     }
                 }) { (operation, error) in
-                    if operation.response != nil && operation.response.statusCode == 401 { progressHUD.hide(false); Helper.signIn(self.topicController); return }
+                    if operation.response?.statusCode == 401 { progressHUD.hide(false); Helper.signIn(self.topicController); return }
                     progressHUD.labelText = "网络错误"
                     progressHUD.mode = .Text
                     progressHUD.hide(true, afterDelay: 2)
@@ -75,7 +75,7 @@ class TopicTitleCell: MGSwipeTableCell {
         deleteButton.setTitle("删除", forState: .Normal)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -103,7 +103,7 @@ class TopicTitleCell: MGSwipeTableCell {
 
     func user() {
         let webViewController = WebViewController()
-        webViewController.path = Helper.baseURL.absoluteString! + "/" + topic["user"]["login"].stringValue
+        webViewController.path = Helper.baseURL.absoluteString + "/" + topic["user"]["login"].stringValue
         webViewController.title = topic["user"]["login"].string
         topicController?.navigationController?.pushViewController(webViewController, animated: true)
     }

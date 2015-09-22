@@ -19,7 +19,7 @@ class LoadingView: UIActivityIndicatorView {
         if superview == nil { return }
 
         activityIndicatorViewStyle = .Gray
-        autoresizingMask = .FlexibleLeftMargin | .FlexibleRightMargin | .FlexibleTopMargin | .FlexibleBottomMargin
+        autoresizingMask = [.FlexibleLeftMargin, .FlexibleRightMargin, .FlexibleTopMargin, .FlexibleBottomMargin]
         center = superview!.center
         hidesWhenStopped = true
     }

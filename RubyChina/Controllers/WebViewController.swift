@@ -23,7 +23,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: Selector("action"))
         view.backgroundColor = Helper.backgroundColor
 
-        webView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        webView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         webView.backgroundColor = .clearColor()
         webView.delegate = self
         webView.frame = view.bounds
@@ -59,16 +59,16 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         title = title ?? webView.stringByEvaluatingJavaScriptFromString("document.title")
     }
 
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
         refreshControl.endRefreshing()
         loadingView.hide()
         failureView.show()
     }
 
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if navigationType == .LinkClicked && contains(["http", "https"], request.URL!.scheme!) {
+        if navigationType == .LinkClicked && ["http", "https"].contains((request.URL!.scheme)) {
             let webViewController = WebViewController()
-            webViewController.path = request.URL!.absoluteString!
+            webViewController.path = request.URL!.absoluteString
             navigationController?.pushViewController(webViewController, animated: true)
             return false
         }

@@ -34,7 +34,7 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
         view.backgroundColor = Helper.backgroundColor
 
         tableView.allowsMultipleSelection = false
-        tableView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        tableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         tableView.backgroundColor = .clearColor()
         tableView.dataSource = self
         tableView.delegate = self
@@ -64,7 +64,7 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
         view.addSubview(toolbar)
 
         segmentedControl.addTarget(self, action: Selector("segmentedControlValueChanged:"), forControlEvents: .ValueChanged)
-        segmentedControl.autoresizingMask = .FlexibleLeftMargin | .FlexibleRightMargin | .FlexibleTopMargin | .FlexibleBottomMargin
+        segmentedControl.autoresizingMask = [.FlexibleLeftMargin, .FlexibleRightMargin, .FlexibleTopMargin, .FlexibleBottomMargin]
         segmentedControl.frame.size.height = 28
         segmentedControl.selectedSegmentIndex = max(0, segmentedControl.selectedSegmentIndex)
         toolbar.addSubview(segmentedControl)
@@ -80,7 +80,7 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
 
     override func viewWillAppear(animated: Bool) {
         navigationController?.navigationBar.hideBottomHairline()
-        if tableView.indexPathForSelectedRow() != nil { tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: true) }
+        if tableView.indexPathForSelectedRow != nil { tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true) }
         traitCollectionDidChange(nil)
         if topics.count == 0 { autoRefresh() }
         Helper.trackView(self)
@@ -121,9 +121,9 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
         failureView.hide()
         emptyView.hide()
         let selectedSegmentIndex = segmentedControl.selectedSegmentIndex
-        parameters["limit"].object = 30
+        parameters["limit"] = 30
         parameters["offset"].object = topics.count
-        parameters["type"].object = ["last_actived", "recent", "popular", "excellent"][selectedSegmentIndex]
+        parameters["type"] = ["last_actived", "recent", "popular", "excellent"][selectedSegmentIndex]
         AFHTTPRequestOperationManager(baseURL: Helper.baseURL).GET("/topics.json", parameters: parameters.object, success: { (operation, responseObject) in
             self.stopRefresh()
             if JSON(responseObject)["topics"].count == 0 { if self.topics.count == 0 { self.emptyView.show() } else { return } }
@@ -220,7 +220,7 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
     }
 
     func selectNode(node: JSON) {
-        parameters["node_id"].object = node["id"].object
+        parameters["node_id"] = node["id"]
         title = node["name"].string
         topics = []
         tableView.reloadData()

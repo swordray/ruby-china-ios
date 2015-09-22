@@ -28,7 +28,7 @@ class TopicBodyCell: UITableViewCell, UIWebViewDelegate {
         contentView.addSubview(webView)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -53,6 +53,6 @@ class TopicBodyCell: UITableViewCell, UIWebViewDelegate {
 
     func html(body: String) -> String {
         let version = JSON(NSBundle.mainBundle().infoDictionary!)["CFBundleShortVersionString"].stringValue
-        return "<!DOCTYPE html><html><head><link rel='stylesheet' media='screen' href='\(Helper.baseURL.absoluteString!)/application.css?version=\(version)' /><script src='\(Helper.baseURL.absoluteString!)/application.js?version=\(version)'></script></head><body><div id='page'>\(body)</div></body></html>";
+        return "<!DOCTYPE html><html><head><link rel='stylesheet' media='screen' href='\(Helper.baseURL.absoluteString)/application.css?version=\(version)' /><script src='\(Helper.baseURL.absoluteString)/application.js?version=\(version)'></script></head><body><div id='page'>\(body)</div></body></html>";
     }
 }

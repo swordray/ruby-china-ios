@@ -13,7 +13,7 @@ class EmptyView: UILabel {
     override func didMoveToSuperview() {
         if superview == nil { return }
 
-        autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         font = .systemFontOfSize(28)
         frame = superview!.frame
         hidden = true

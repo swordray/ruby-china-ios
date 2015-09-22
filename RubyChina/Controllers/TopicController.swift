@@ -38,7 +38,7 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
         title = topic["title"].string
         view.backgroundColor = Helper.backgroundColor
 
-        tableView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        tableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         tableView.backgroundColor = .clearColor()
         tableView.dataSource = self
         tableView.delegate = self
@@ -72,7 +72,7 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
 
     func topRefresh() {
         if refreshing { topRefreshControl.endRefreshing(); return }
-        topic["body_html"].string = nil
+        topic["body_html"] = nil
         topicBodyCell = TopicBodyCell()
         replies = []
         replyCells = []
@@ -121,7 +121,7 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
             let replies = JSON(responseObject)["replies"]
             if replies.count == 0 { return }
             self.replies = JSON(self.replies.arrayValue + replies.arrayValue)
-            self.replyCells.extend((0...replies.count - 1).map({ (_) in ReplyCell() }))
+            self.replyCells.appendContentsOf((0...replies.count - 1).map({ (_) in ReplyCell() }))
             self.tableView.insertRowsAtIndexPaths((self.replies.count - replies.count...self.replies.count - 1).map({ NSIndexPath(forRow: $0, inSection: 2) }), withRowAnimation: .None)
         }) { (operation, error) in
             self.stopRefresh()
@@ -181,7 +181,7 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
             let cell = replyCells[indexPath.row]
             cell.indexPath = indexPath
             cell.reply = replies[indexPath.row]
-            cell.reply["topic_id"].object = topic["id"].object
+            cell.reply["topic_id"] = topic["id"]
             cell.topicController = self
             return cell
         default: 0
@@ -203,10 +203,10 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
 
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if navigationType == .LinkClicked && contains(["http", "https"], request.URL!.scheme!) {
-            let path = request.URL!.absoluteString!
+        if navigationType == .LinkClicked && ["http", "https"].contains((request.URL!.scheme)) {
+            let path = request.URL!.absoluteString
             if path.isMatch("#reply\\d+$".toRx()) {
-                let row = path.firstMatch("\\d+$".toRx()).toInt()! - 1
+                let row = Int(path.firstMatch("\\d+$".toRx()))! - 1
                 if row >= replies.count { return false }
                 tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: row, inSection: 2), atScrollPosition: .Top, animated: true)
                 return false
@@ -215,7 +215,7 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
                 let imageInfo = JTSImageInfo()
                 imageInfo.imageURL = request.URL
                 let imageViewController = JTSImageViewController(imageInfo: imageInfo, mode: .Image, backgroundStyle: .None)
-                imageViewController.showFromViewController(self, transition: ._FromOffscreen)
+                imageViewController.showFromViewController(self, transition: .FromOffscreen)
                 return false
             }
             if path.isMatch("^https?://ruby-china.org/topics/\\d+$".toRx()) {
@@ -233,14 +233,14 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
 
     func action() {
-        let activityViewController = UIActivityViewController(activityItems: [NSURL(string: Helper.baseURL.absoluteString! + "/topics/" + topic["id"].stringValue)!], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: [NSURL(string: Helper.baseURL.absoluteString + "/topics/" + topic["id"].stringValue)!], applicationActivities: nil)
         activityViewController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         presentViewController(activityViewController, animated: true, completion: nil)
     }
 
     func reply() {
         let composeController = ComposeController()
-        composeController.reply["topic_id"].object = topic["id"].object
+        composeController.reply["topic_id"] = topic["id"]
         navigationController?.pushViewController(composeController, animated: true)
     }
 
@@ -254,7 +254,7 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
 
     func updateReply(reply: JSON) {
-        let row = filter(0...replies.count - 1) { self.replies[$0]["id"].intValue == reply["id"].intValue }.first ?? 0
+        let row = (0...replies.count - 1).filter { self.replies.arrayValue[$0]["id"].intValue == reply["id"].intValue }.first ?? 0
         replies[row] = reply
         replyCells[row] = ReplyCell()
         let indexPath = NSIndexPath(forRow: row, inSection: 2)

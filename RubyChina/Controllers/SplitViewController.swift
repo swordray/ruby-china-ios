@@ -22,11 +22,11 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate 
         view.backgroundColor = Helper.backgroundColor
     }
 
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
         return (secondaryViewController as? UINavigationController) == nil
     }
 
-    func splitViewController(splitViewController: UISplitViewController, separateSecondaryViewControllerFromPrimaryViewController primaryViewController: UIViewController!) -> UIViewController? {
+    func splitViewController(splitViewController: UISplitViewController, separateSecondaryViewControllerFromPrimaryViewController primaryViewController: UIViewController) -> UIViewController? {
         if (primaryViewController as? UINavigationController)?.viewControllers.last as? UINavigationController == nil { return UIViewController() }
         return nil
     }

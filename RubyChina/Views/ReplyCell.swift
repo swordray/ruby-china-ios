@@ -48,7 +48,7 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
         replyButton.callback = { (_) in
             let composeController = ComposeController()
             composeController.reply["body"].object = "#\(self.indexPath.row + 1)楼 @" + self.reply["user"]["login"].stringValue + " "
-            composeController.reply["topic_id"].object = self.reply["topic_id"].object
+            composeController.reply["topic_id"] = self.reply["topic_id"]
             self.topicController?.navigationController?.pushViewController(composeController, animated: true)
             return true
         }
@@ -76,7 +76,7 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
                     self.topicController?.replies[self.indexPath.row]["deleted"].bool = true
                     self.topicController?.tableView.reloadRowsAtIndexPaths([self.indexPath], withRowAnimation: .None)
                 }) { (operation, error) in
-                    if operation.response != nil && operation.response.statusCode == 401 { progressHUD.hide(false); Helper.signIn(self.topicController); return }
+                    if operation.response?.statusCode == 401 { progressHUD.hide(false); Helper.signIn(self.topicController); return }
                     progressHUD.labelText = "网络错误"
                     progressHUD.mode = .Text
                     progressHUD.hide(true, afterDelay: 2)
@@ -88,7 +88,7 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
         deleteButton.setTitle("删除", forState: .Normal)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -123,12 +123,12 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
 
     func html(body: String) -> String {
         let version = JSON(NSBundle.mainBundle().infoDictionary!)["CFBundleShortVersionString"].stringValue
-        return "<!DOCTYPE html><html><head><link rel='stylesheet' media='screen' href='\(Helper.baseURL.absoluteString!)/application.css?version=\(version)' /><script src='\(Helper.baseURL.absoluteString!)/application.js?version=\(version)'></script></head><body><div id='page'>\(body)</div></body></html>";
+        return "<!DOCTYPE html><html><head><link rel='stylesheet' media='screen' href='\(Helper.baseURL.absoluteString)/application.css?version=\(version)' /><script src='\(Helper.baseURL.absoluteString)/application.js?version=\(version)'></script></head><body><div id='page'>\(body)</div></body></html>";
     }
 
     func user() {
         let webViewController = WebViewController()
-        webViewController.path = Helper.baseURL.absoluteString! + "/" + reply["user"]["login"].stringValue
+        webViewController.path = Helper.baseURL.absoluteString + "/" + reply["user"]["login"].stringValue
         webViewController.title = reply["user"]["login"].string
         topicController?.navigationController?.pushViewController(webViewController, animated: true)
     }

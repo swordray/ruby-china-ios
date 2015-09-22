@@ -31,7 +31,7 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
         title = reply["topic_id"].int == nil ? (topic["id"].int == nil ? "发帖" : "编辑") : (reply["id"] == nil ? "回复" : "编辑")
         view.backgroundColor = Helper.backgroundColor
 
-        tableView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        tableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         tableView.backgroundColor = .clearColor()
         tableView.dataSource = self
         tableView.delegate = self
@@ -150,7 +150,7 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        keyboardVisibleHeight(notification.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue().height)
+        keyboardVisibleHeight(notification.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue.height)
     }
 
     func keyboardWillHide(notification: NSNotification) {
@@ -176,7 +176,6 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
         } else {
             promot()
         }
-
     }
 
     func promot() {
@@ -215,10 +214,9 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
                 self.reply["id"] == nil ? topicController?.addReply(reply) : topicController?.updateReply(reply)
                 self.navigationController?.popViewControllerAnimated(true)
             }
-
         }
         let failure = { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
-            if operation.response != nil && operation.response.statusCode == 401 { progressHUD.hide(false); Helper.signIn(self); return }
+            if operation.response?.statusCode == 401 { progressHUD.hide(false); Helper.signIn(self); return }
             progressHUD.labelText = "网络错误"
             progressHUD.mode = .Text
             progressHUD.hide(true, afterDelay: 2)
@@ -239,8 +237,8 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
     }
 
     func selectNode(node: JSON) {
-        topic["node_id"].object = node["id"].object
-        topic["node_name"].object = node["name"].object
+        topic["node_id"] = node["id"]
+        topic["node_name"] = node["name"]
         cells[0].textLabel?.text = "[" + node["name"].stringValue + "]"
         cells[0].textLabel?.textColor = .blackColor()
         navigationController?.popToViewController(self, animated: true)

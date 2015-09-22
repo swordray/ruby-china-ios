@@ -22,7 +22,7 @@ class NodesController: UIViewController, UITableViewDataSource, UITableViewDeleg
         navigationItem.title = "节点"
         view.backgroundColor = Helper.backgroundColor
 
-        tableView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        tableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         tableView.backgroundColor = .clearColor()
         tableView.dataSource = self
         tableView.delegate = self
@@ -76,7 +76,7 @@ class NodesController: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         let node = nodes[indexPath.section]["nodes"][indexPath.row]
         cell.accessoryType = topicsController()?.parameters["node_id"].intValue == node["id"].intValue || composeController()?.topic["node_id"].intValue == node["id"].intValue ? .Checkmark : .None
         cell.textLabel?.text = node["name"].string

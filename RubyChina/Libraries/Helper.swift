@@ -68,6 +68,6 @@ class Helper {
         GAI.sharedInstance().logger.logLevel = .Error
         GAI.sharedInstance().trackUncaughtExceptions = true
         GAI.sharedInstance().trackerWithTrackingId(Helper.googleAnalyticsId)
-        GAI.sharedInstance().defaultTracker.send([kGAIHitType: "appview", kGAIScreenName: split(NSStringFromClass(object.classForCoder)) { $0 == "." }.last!])
+        GAI.sharedInstance().defaultTracker.send([kGAIHitType: "appview", kGAIScreenName: String(NSStringFromClass(object.classForCoder).characters.split(".").last!)])
     }
 }

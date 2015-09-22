@@ -13,12 +13,12 @@ class FailureView: UIView {
     override func didMoveToSuperview() {
         if superview == nil { return }
 
-        autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         frame = superview!.frame
         hidden = true
 
         let iconLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
-        iconLabel.autoresizingMask = .FlexibleLeftMargin | .FlexibleRightMargin | .FlexibleTopMargin | .FlexibleBottomMargin
+        iconLabel.autoresizingMask = [.FlexibleLeftMargin, .FlexibleRightMargin, .FlexibleTopMargin, .FlexibleBottomMargin]
         iconLabel.center = center
         iconLabel.font = .systemFontOfSize(16)
         iconLabel.layer.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5).CGColor

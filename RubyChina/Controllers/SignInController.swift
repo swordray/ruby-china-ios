@@ -29,7 +29,7 @@ class SignInController: UIViewController, UITableViewDataSource, UITableViewDele
         title = "登录"
         view.backgroundColor = Helper.backgroundColor
 
-        tableView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        tableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         tableView.backgroundColor = .clearColor()
         tableView.dataSource = self
         tableView.delegate = self
@@ -132,7 +132,7 @@ class SignInController: UIViewController, UITableViewDataSource, UITableViewDele
             Defaults.userId = JSON(responseObject)["user"]["id"].int
             self.dismiss()
         }) { (operation, error) in
-            if operation.response != nil && operation.response.statusCode == 401 {
+            if operation.response?.statusCode == 401 {
                 progressHUD.labelText = "账号或密码错误"
                 progressHUD.mode = .Text
                 progressHUD.hide(true, afterDelay: 2)
@@ -146,14 +146,14 @@ class SignInController: UIViewController, UITableViewDataSource, UITableViewDele
 
     func signUp() {
         let webViewController = WebViewController()
-        webViewController.path = Helper.baseURL.absoluteString! + "/account/sign_up"
+        webViewController.path = Helper.baseURL.absoluteString + "/account/sign_up"
         webViewController.title = "注册"
         navigationController?.pushViewController(webViewController, animated: true)
     }
 
     func forgot() {
         let webViewController = WebViewController()
-        webViewController.path = Helper.baseURL.absoluteString! + "/account/password/new"
+        webViewController.path = Helper.baseURL.absoluteString + "/account/password/new"
         webViewController.title = "忘记密码"
         navigationController?.pushViewController(webViewController, animated: true)
     }

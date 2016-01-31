@@ -76,6 +76,12 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
 
         emptyView.text = "没有帖子"
         view.addSubview(emptyView)
+
+        if #available(iOS 9.0, *) {
+            if traitCollection.forceTouchCapability == .Available {
+                registerForPreviewingWithDelegate(self, sourceView: view)
+            }
+        }
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -225,5 +231,24 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
         topics = []
         tableView.reloadData()
         navigationController?.popToViewController(self, animated: true)
+    }
+}
+
+
+extension TopicsController: UIViewControllerPreviewingDelegate {
+
+    @available(iOS 9.0, *)
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRowAtPoint(view.convertPoint(location, toView: tableView)) else { return nil }
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else { return nil }
+        previewingContext.sourceRect = tableView.convertRect(cell.frame, toView: view)
+        let topicController = TopicController()
+        topicController.topic = topics[indexPath.row]
+        return topicController
+    }
+
+    @available(iOS 9.0, *)
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        splitViewController?.showDetailViewController(UINavigationController(rootViewController: viewControllerToCommit), sender: self)
     }
 }

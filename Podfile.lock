@@ -23,7 +23,7 @@ PODS:
   - CCBottomRefreshControl (0.5.1):
     - Masonry (~> 0.6.2)
   - DateTools (1.7.0)
-  - GoogleAnalytics (3.13.0)
+  - GoogleAnalytics (3.14.0)
   - JTSImageViewController (1.5.1)
   - Masonry (0.6.2)
   - MBProgressHUD (0.9.1)
@@ -56,7 +56,7 @@ SPEC CHECKSUMS:
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   CCBottomRefreshControl: 57a596348855260f627ffc2b311328ed15b94877
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
-  GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
+  GoogleAnalytics: 9be1afdb8deeac4bb5f13ca7f7d3b9db2a1f43dc
   JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
   Masonry: 362e8a1cc0beada4a4c4832d5e863da2a51533be
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
@@ -68,4 +68,4 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: ff1ee4e5a5a0c119b965552af8f183868ea20207
   UINavigationBar+Addition: c633d66af2245dfdc97a917c3b20a6db02089f2b
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0

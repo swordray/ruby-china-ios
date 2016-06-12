@@ -76,7 +76,7 @@ class UserController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 0 && Defaults.userId != nil { return 64 }
+        if indexPath.section == 0 && Defaults.userId != nil { return 11.5 + 44 + 11.5 }
         return tableView.rowHeight
     }
 

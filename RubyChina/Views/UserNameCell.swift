@@ -34,14 +34,14 @@ class UserNameCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        imageView?.frame = CGRect(x: separatorInset.left, y: 10, width: 44, height: 44)
+        imageView?.frame = CGRect(x: separatorInset.left, y: 11.5, width: 44, height: 44)
         imageView?.sd_setImageWithURL(NSURL(string: user["avatar_url"].stringValue)!, placeholderImage: Helper.blankImage(imageView!.frame.size))
 
-        textLabel?.frame = CGRect(x: separatorInset.left * 2 + 44, y: 10, width: frame.width - separatorInset.left * 3 - 44, height: textLabel!.frame.height)
+        textLabel?.frame = CGRect(x: separatorInset.left * 2 + 44, y: 11.5, width: frame.width - separatorInset.left * 3 - 44, height: textLabel!.frame.height)
         textLabel?.text = user["login"].string
 
-        detailTextLabel?.frame = CGRect(x: separatorInset.left * 2 + 44, y: 10
-            + textLabel!.frame.height + 6, width: bounds.width - separatorInset.left * 3 - 44, height: detailTextLabel!.frame.height)
+        detailTextLabel?.frame = CGRect(x: separatorInset.left * 2 + 44, y: 11.5
+            + textLabel!.frame.height + 6.5, width: bounds.width - separatorInset.left * 3 - 44, height: detailTextLabel!.frame.height)
         detailTextLabel?.text = user["name"].stringValue != "" ? user["name"].string : user["login"].string
     }
 }

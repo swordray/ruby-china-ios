@@ -149,9 +149,9 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch indexPath.section {
-        case 0: return 10 + max(44, topicTitleCell.textLabel!.frame.height + 6 + topicTitleCell.detailTextLabel!.frame.height) + 10
-        case 1: return 10 + max(44, topicBodyCell.webViewHeight) + 10
-        case 2: return replies[indexPath.row]["deleted"].boolValue ? 44 : 10 + max(44, replyCells[indexPath.row].textLabel!.frame.height + 6 + replyCells[indexPath.row].webViewHeight) + 10
+        case 0: return 11.5 + max(44, topicTitleCell.textLabel!.frame.height + 6.5 + topicTitleCell.detailTextLabel!.frame.height) + 11.5
+        case 1: return 11.5 + max(44, topicBodyCell.webViewHeight) + 11.5
+        case 2: return replies[indexPath.row]["deleted"].boolValue ? 44 : 11.5 + max(44, replyCells[indexPath.row].textLabel!.frame.height + 6.5 + replyCells[indexPath.row].webViewHeight) + 11.5
         default: 0
         }
         return tableView.rowHeight

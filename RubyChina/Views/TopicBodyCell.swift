@@ -35,7 +35,7 @@ class TopicBodyCell: UITableViewCell, UIWebViewDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        webView.frame = CGRect(x: separatorInset.left, y: 10, width: frame.width - separatorInset.left * 2, height: webViewHeight)
+        webView.frame = CGRect(x: separatorInset.left, y: 11.5, width: frame.width - separatorInset.left * 2, height: webViewHeight)
         webView.request == nil ? webView.loadHTMLString(html(topicController!.topic["body_html"].stringValue), baseURL: Helper.baseURL) : webViewDidFinishLoad(webView)
     }
 
@@ -44,7 +44,7 @@ class TopicBodyCell: UITableViewCell, UIWebViewDelegate {
         if height == webViewHeight { return }
         webViewHeight = height
         topicController?.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: .None)
-        frame.size.height = 10 + max(44, height) + 10
+        frame.size.height = 11.5 + max(44, height) + 11.5
     }
 
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {

@@ -97,13 +97,13 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
 
         separatorInset.left = topicController!.tableView.separatorInset.left
 
-        imageView?.frame = CGRect(x: separatorInset.left, y: 10, width: 44, height: 44)
+        imageView?.frame = CGRect(x: separatorInset.left, y: 11.5, width: 44, height: 44)
         imageView?.sd_setImageWithURL(NSURL(string: reply["user"]["avatar_url"].stringValue)!, placeholderImage: Helper.blankImage(imageView!.frame.size))
 
-        textLabel?.frame = CGRect(x: separatorInset.left + 44 + 15, y: 10, width: frame.width - separatorInset.left * 2 - 44 - 15, height: 17)
+        textLabel?.frame = CGRect(x: separatorInset.left + 44 + 15, y: 11.5, width: frame.width - separatorInset.left * 2 - 44 - 15, height: 17)
         textLabel?.text = reply["user"]["login"].stringValue + " · #\(indexPath.row + 1) · " + Helper.timeAgoSinceNow(reply["created_at"].string)
 
-        webView.frame = CGRect(x: separatorInset.left + 44 + 15, y: 10 + textLabel!.frame.height + 6, width: frame.width - separatorInset.left * 2 - 44 - 15, height: webViewHeight)
+        webView.frame = CGRect(x: separatorInset.left + 44 + 15, y: 11.5 + textLabel!.frame.height + 6.5, width: frame.width - separatorInset.left * 2 - 44 - 15, height: webViewHeight)
         webView.request == nil ? webView.loadHTMLString(html(reply["body_html"].stringValue), baseURL: Helper.baseURL) : webViewDidFinishLoad(webView)
 
         rightButtons = Array(([replyButton] + (reply["abilities"]["update"].boolValue ? [editButton] : [MGSwipeButton]()) + (reply["abilities"]["destroy"].boolValue ? [deleteButton] : [MGSwipeButton]())).reverse())
@@ -114,7 +114,7 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
         if height == webViewHeight { return }
         webViewHeight = height
         topicController?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-        frame.size.height = 10 + max(44, textLabel!.frame.height + 6 + height) + 10
+        frame.size.height = 11.5 + max(44, textLabel!.frame.height + 6.5 + height) + 11.5
     }
 
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {

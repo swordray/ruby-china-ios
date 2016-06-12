@@ -48,7 +48,7 @@ class NodesController: UIViewController, UITableViewDataSource, UITableViewDeleg
         loadingView.show()
         AFHTTPRequestOperationManager(baseURL: Helper.baseURL).GET("/nodes/grouped.json", parameters: nil, success: { (operation, responseObject) in
             self.loadingView.hide()
-            self.nodes = self.topicsController() != nil ? [["title": "全部", "nodes": [["name": JSON(NSBundle.mainBundle().localizedInfoDictionary!)["CFBundleDisplayName"].stringValue]]]] : []
+            self.nodes = self.topicsController() != nil ? [["title": "全部", "nodes": [["name": "社区"]]]] : []
             self.nodes = JSON(self.nodes.arrayValue + JSON(responseObject).arrayValue)
             self.tableView.reloadData()
             for var i = 0; i < self.nodes.count; i++ {

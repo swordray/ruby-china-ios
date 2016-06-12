@@ -30,7 +30,7 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
     override func viewDidLoad() {
         automaticallyAdjustsScrollViewInsets = false
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "账号", style: .Plain, target: self, action: Selector("user"))
-        navigationItem.title = JSON(NSBundle.mainBundle().localizedInfoDictionary!)["CFBundleDisplayName"].string
+        navigationItem.title = "社区"
         view.backgroundColor = Helper.backgroundColor
 
         tableView.allowsMultipleSelection = false

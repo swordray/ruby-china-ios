@@ -27,7 +27,7 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
     override func viewDidLoad() {
         navigationItem.leftBarButtonItem = navigationController?.viewControllers.count == 1 ? splitViewController?.displayModeButtonItem() : nil
         navigationItem.leftItemsSupplementBackButton = true
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: Selector("done"))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(done))
         title = reply["topic_id"].int == nil ? (topic["id"].int == nil ? "发帖" : "编辑") : (reply["id"] == nil ? "回复" : "编辑")
         view.backgroundColor = Helper.backgroundColor
 
@@ -40,7 +40,7 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
         tableView.tableFooterView = UIView()
         view.addSubview(tableView)
 
-        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("loadData")))
+        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loadData)))
         view.addSubview(failureView)
 
         view.addSubview(loadingView)
@@ -61,8 +61,8 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
         bodyTextView.placeholder = "正文"
         bodyTextView.text = topic["body"].string ?? reply["body"].string
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {

@@ -29,7 +29,7 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
 
     override func viewDidLoad() {
         automaticallyAdjustsScrollViewInsets = false
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "账号", style: .Plain, target: self, action: Selector("user"))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "账号", style: .Plain, target: self, action: #selector(user))
         navigationItem.title = "社区"
         view.backgroundColor = Helper.backgroundColor
 
@@ -51,11 +51,11 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
         searchBar.sizeToFit()
         tableView.tableHeaderView = searchBar
 
-        topRefreshControl.addTarget(self, action: Selector("topRefresh"), forControlEvents: .ValueChanged)
+        topRefreshControl.addTarget(self, action: #selector(topRefresh), forControlEvents: .ValueChanged)
         tableView.addSubview(topRefreshControl)
 
         let bottomRefreshControl = UIRefreshControl()
-        bottomRefreshControl.addTarget(self, action: Selector("bottomRefresh"), forControlEvents: .ValueChanged)
+        bottomRefreshControl.addTarget(self, action: #selector(bottomRefresh), forControlEvents: .ValueChanged)
         tableView.bottomRefreshControl = bottomRefreshControl
 
         toolbar.autoresizingMask = .FlexibleWidth
@@ -63,13 +63,13 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
         toolbar.frame.size.width = view.bounds.width
         view.addSubview(toolbar)
 
-        segmentedControl.addTarget(self, action: Selector("segmentedControlValueChanged:"), forControlEvents: .ValueChanged)
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), forControlEvents: .ValueChanged)
         segmentedControl.autoresizingMask = [.FlexibleLeftMargin, .FlexibleRightMargin, .FlexibleTopMargin, .FlexibleBottomMargin]
         segmentedControl.frame.size.height = 28
         segmentedControl.selectedSegmentIndex = max(0, segmentedControl.selectedSegmentIndex)
         toolbar.addSubview(segmentedControl)
 
-        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("autoRefresh")))
+        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(autoRefresh)))
         view.addSubview(failureView)
 
         view.addSubview(loadingView)

@@ -32,8 +32,8 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
         navigationItem.leftBarButtonItem = navigationController?.viewControllers.count == 1 ? splitViewController?.displayModeButtonItem() : nil
         navigationItem.leftItemsSupplementBackButton = true
         navigationItem.rightBarButtonItems = Array([
-            UIBarButtonItem(barButtonSystemItem: .Reply, target: self, action: Selector("reply")),
-            UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: Selector("action")),
+            UIBarButtonItem(barButtonSystemItem: .Reply, target: self, action: #selector(reply)),
+            UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(action)),
         ].reverse())
         title = topic["title"].string
         view.backgroundColor = Helper.backgroundColor
@@ -46,14 +46,14 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
         tableView.tableFooterView = UIView()
         view.addSubview(tableView)
 
-        topRefreshControl.addTarget(self, action: Selector("topRefresh"), forControlEvents: .ValueChanged)
+        topRefreshControl.addTarget(self, action: #selector(topRefresh), forControlEvents: .ValueChanged)
         tableView.addSubview(topRefreshControl)
 
         let bottomRefreshControl = UIRefreshControl()
-        bottomRefreshControl.addTarget(self, action: Selector("bottomRefresh"), forControlEvents: .ValueChanged)
+        bottomRefreshControl.addTarget(self, action: #selector(bottomRefresh), forControlEvents: .ValueChanged)
         tableView.bottomRefreshControl = bottomRefreshControl
 
-        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("loadData")))
+        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loadData)))
         view.addSubview(failureView)
 
         view.addSubview(loadingView)

@@ -21,10 +21,10 @@ class SignInController: UIViewController, UITableViewDataSource, UITableViewDele
 
 
     override func viewDidLoad() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: Selector("dismiss"))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(dismiss))
         navigationItem.rightBarButtonItems = Array([
-            UIBarButtonItem(title: "注册", style: .Plain, target: self, action: Selector("signUp")),
-            UIBarButtonItem(title: "忘记密码", style: .Plain, target: self, action: Selector("forgot")),
+            UIBarButtonItem(title: "注册", style: .Plain, target: self, action: #selector(signUp)),
+            UIBarButtonItem(title: "忘记密码", style: .Plain, target: self, action: #selector(forgot)),
         ].reverse())
         title = "登录"
         view.backgroundColor = Helper.backgroundColor

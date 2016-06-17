@@ -26,7 +26,7 @@ class TopicTitleCell: MGSwipeTableCell {
 
         selectionStyle = .None
 
-        imageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("user")))
+        imageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(user)))
         imageView?.layer.cornerRadius = 3
         imageView?.layer.masksToBounds = true
         imageView?.userInteractionEnabled = true

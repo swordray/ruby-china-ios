@@ -20,7 +20,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
     override func viewDidLoad() {
         navigationItem.leftBarButtonItem = navigationController?.viewControllers.count == 1 ? splitViewController?.displayModeButtonItem() : nil
         navigationItem.leftItemsSupplementBackButton = true
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: Selector("action"))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(action))
         view.backgroundColor = Helper.backgroundColor
 
         webView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
@@ -30,10 +30,10 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         webView.opaque = false
         view.addSubview(webView)
 
-        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh), forControlEvents: .ValueChanged)
         webView.scrollView.addSubview(refreshControl)
 
-        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("loadData")))
+        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loadData)))
         view.addSubview(failureView)
 
         view.addSubview(loadingView)

@@ -33,7 +33,7 @@ class UserController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView.tableFooterView = UIView()
         view.addSubview(tableView)
 
-        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("loadData")))
+        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loadData)))
         view.addSubview(failureView)
 
         view.addSubview(loadingView)

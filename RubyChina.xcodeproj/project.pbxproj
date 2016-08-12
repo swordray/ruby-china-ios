@@ -31,6 +31,7 @@
 		B2F218131B18B55600150DDF /* TopicsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180D1B18B55600150DDF /* TopicsController.swift */; };
 		B2F218141B18B55600150DDF /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180E1B18B55600150DDF /* UserController.swift */; };
 		B2F218151B18B55600150DDF /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180F1B18B55600150DDF /* WebViewController.swift */; };
+		B2FBE70E1D5D8C5700E5DDE8 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FBE70D1D5D8C5700E5DDE8 /* UIViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		B2F2180D1B18B55600150DDF /* TopicsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicsController.swift; sourceTree = "<group>"; };
 		B2F2180E1B18B55600150DDF /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
 		B2F2180F1B18B55600150DDF /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		B2FBE70D1D5D8C5700E5DDE8 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		DB9E1FE7F75A5D0D9174BB74 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -166,6 +168,7 @@
 				B263B52D1B205B0A00C56CB0 /* SplitViewController.swift */,
 				B2F2180C1B18B55600150DDF /* TopicController.swift */,
 				B2F2180D1B18B55600150DDF /* TopicsController.swift */,
+				B2FBE70D1D5D8C5700E5DDE8 /* UIViewController.swift */,
 				B2F2180E1B18B55600150DDF /* UserController.swift */,
 				B2F2180F1B18B55600150DDF /* WebViewController.swift */,
 			);
@@ -381,6 +384,7 @@
 				B2F218031B18B54000150DDF /* ReplyCell.swift in Sources */,
 				B2F218151B18B55600150DDF /* WebViewController.swift in Sources */,
 				B2F218041B18B54000150DDF /* TopicTitleCell.swift in Sources */,
+				B2FBE70E1D5D8C5700E5DDE8 /* UIViewController.swift in Sources */,
 				B263B52E1B205B0B00C56CB0 /* SplitViewController.swift in Sources */,
 				B22DE0DF1B1951B200888C0D /* ComposeController.swift in Sources */,
 				B2F217FB1B18B53600150DDF /* Helper.swift in Sources */,

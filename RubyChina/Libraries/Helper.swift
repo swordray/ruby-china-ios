@@ -50,14 +50,6 @@ class Helper {
         NSLog("\(object)", "")
     }
 
-    class func signIn(viewController: UIViewController?) {
-        let signInController = SignInController()
-        signInController.viewController = viewController
-        let navigationController = UINavigationController(rootViewController: signInController)
-        navigationController.modalPresentationStyle = .FormSheet
-        viewController?.presentViewController(navigationController, animated: true, completion: nil)
-    }
-
     class func timeAgoSinceNow(original: String?) -> String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"

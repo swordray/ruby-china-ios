@@ -131,7 +131,7 @@ class UserController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section {
         case 0:
-            if Defaults.userId == nil { Helper.signIn(self); tableView.deselectRowAtIndexPath(indexPath, animated: true); return }
+            if Defaults.userId == nil { signIn(); tableView.deselectRowAtIndexPath(indexPath, animated: true); return }
             let webViewController = WebViewController()
             webViewController.path = Helper.baseURL.absoluteString + "/" + user["login"].stringValue
             webViewController.title = user["login"].string
@@ -155,28 +155,24 @@ class UserController: UIViewController, UITableViewDataSource, UITableViewDelega
                     SDImageCache.sharedImageCache().clearMemory()
                     dispatch_async(dispatch_get_main_queue()) {
                         tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-                        progressHUD.labelText = "已清理"
-                        progressHUD.mode = .Text
-                        progressHUD.hide(true, afterDelay: 2)
+                        progressHUD.hide(false)
+                        self.alert("已清理")
                     }
                 }
             default: 0
             }
         case 2:
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            let alertController = UIAlertController(title: "确定注销吗？", message: nil, preferredStyle: .Alert)
+            let alertController = UIAlertController(title: "确定注销吗？", message: "注销后可以重新登录。", preferredStyle: .Alert)
             alertController.addAction(UIAlertAction(title: "取消", style: .Cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: "注销", style: .Default, handler: { (_) in
                 let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                 AFHTTPRequestOperationManager(baseURL: Helper.baseURL).DELETE("/sessions/0.json", parameters: nil, success: { (operation, responseObject) in
-                    progressHUD.labelText = "已注销"
-                    progressHUD.mode = .Text
-                    progressHUD.hide(true, afterDelay: 2)
+                    progressHUD.hide(false)
                     self.signedOut()
                 }) { (operation, error) in
-                    progressHUD.labelText = "网络错误"
-                    progressHUD.mode = .Text
-                    progressHUD.hide(true, afterDelay: 2)
+                    progressHUD.hide(false)
+                    self.alert("网络错误")
                 }
             }))
             presentViewController(alertController, animated: true, completion: nil)

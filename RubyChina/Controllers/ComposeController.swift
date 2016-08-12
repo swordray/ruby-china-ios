@@ -172,7 +172,7 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
         } else if bodyTextView.text == "" {
             bodyTextView.becomeFirstResponder()
         } else if Defaults.userId == nil {
-            Helper.signIn(self)
+            signIn()
         } else {
             promot()
         }
@@ -194,7 +194,7 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
             "body": bodyTextView.text!,
         ]
         let success = { (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
-            progressHUD.hide(true)
+            progressHUD.hide(false)
             let topicController = self.navigationController?.viewControllers.filter({ ($0 as? TopicController) != nil }).last as? TopicController
             if self.reply["topic_id"].int == nil {
                 let topic = JSON(responseObject)["topic"]
@@ -216,10 +216,9 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
             }
         }
         let failure = { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
-            if operation.response?.statusCode == 401 { progressHUD.hide(false); Helper.signIn(self); return }
-            progressHUD.labelText = "网络错误"
-            progressHUD.mode = .Text
-            progressHUD.hide(true, afterDelay: 2)
+            progressHUD.hide(false)
+            if operation.response?.statusCode == 401 { self.signIn(); return }
+            self.alert("网络错误")
         }
         if reply["topic_id"].int == nil {
             if topic["id"].int == nil {

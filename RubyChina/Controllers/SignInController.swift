@@ -121,26 +121,19 @@ class SignInController: UIViewController, UITableViewDataSource, UITableViewDele
         return true
     }
 
-    func signIn() {
+    override func signIn() {
         let progressHUD = MBProgressHUD.showHUDAddedTo(view, animated: false)
         let parameters = [
             "username": usernameField.text!,
             "password": passwordField.text!,
         ]
         AFHTTPRequestOperationManager(baseURL: Helper.baseURL).POST("/sessions.json", parameters: parameters, success: { (operation, responseObject) in
-            progressHUD.hide(true)
+            progressHUD.hide(false)
             Defaults.userId = JSON(responseObject)["user"]["id"].int
             self.dismiss()
         }) { (operation, error) in
-            if operation.response?.statusCode == 401 {
-                progressHUD.labelText = "账号或密码错误"
-                progressHUD.mode = .Text
-                progressHUD.hide(true, afterDelay: 2)
-                return
-            }
-            progressHUD.labelText = "网络错误"
-            progressHUD.mode = .Text
-            progressHUD.hide(true, afterDelay: 2)
+            progressHUD.hide(false)
+            self.alert(operation.response?.statusCode == 401 ? "账号或密码错误" : "网络错误")
         }
     }
 

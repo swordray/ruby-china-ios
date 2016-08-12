@@ -63,10 +63,9 @@ class TopicTitleCell: MGSwipeTableCell {
                         self.topicController?.splitViewController?.showDetailViewController(UIViewController(), sender: self)
                     }
                 }) { (operation, error) in
-                    if operation.response?.statusCode == 401 { progressHUD.hide(false); Helper.signIn(self.topicController); return }
-                    progressHUD.labelText = "网络错误"
-                    progressHUD.mode = .Text
-                    progressHUD.hide(true, afterDelay: 2)
+                    progressHUD.hide(false)
+                    if operation.response?.statusCode == 401 { self.topicController?.signIn(); return }
+                    self.topicController?.alert("网络错误")
                 }
             }))
             self.topicController?.navigationController?.presentViewController(alertController, animated: true, completion: nil)

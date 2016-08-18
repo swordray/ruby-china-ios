@@ -20,7 +20,8 @@ class UserNameCell: UITableViewCell {
 
         accessoryType = .DisclosureIndicator
 
-        imageView?.layer.cornerRadius = 3
+        imageView?.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.05)
+        imageView?.layer.cornerRadius = 22
         imageView?.layer.masksToBounds = true
 
         detailTextLabel?.font = .systemFontOfSize(14)

@@ -30,7 +30,8 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
         selectionStyle = .None
 
         imageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(user)))
-        imageView?.layer.cornerRadius = 3
+        imageView?.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.05)
+        imageView?.layer.cornerRadius = 22
         imageView?.layer.masksToBounds = true
         imageView?.userInteractionEnabled = true
 

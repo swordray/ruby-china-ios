@@ -10,7 +10,6 @@ import AFNetworking
 import CCBottomRefreshControl
 import JTSImageViewController
 import RegExCategories
-import SDWebImage
 import SwiftyJSON
 import UIKit
 
@@ -29,28 +28,28 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
 
 
     override func viewDidLoad() {
-        navigationItem.leftBarButtonItem = navigationController?.viewControllers.count == 1 ? splitViewController?.displayModeButtonItem() : nil
+        navigationItem.leftBarButtonItem = navigationController?.viewControllers.count == 1 ? splitViewController?.displayModeButtonItem : nil
         navigationItem.leftItemsSupplementBackButton = true
-        navigationItem.rightBarButtonItems = Array([
-            UIBarButtonItem(barButtonSystemItem: .Reply, target: self, action: #selector(reply)),
-            UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(action)),
-        ].reverse())
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(reply)),
+            UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(action)),
+        ].reversed()
         title = topic["title"].string
         view.backgroundColor = Helper.backgroundColor
 
-        tableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        tableView.backgroundColor = .clearColor()
+        tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        tableView.backgroundColor = .clear
         tableView.dataSource = self
         tableView.delegate = self
         tableView.frame = view.bounds
         tableView.tableFooterView = UIView()
         view.addSubview(tableView)
 
-        topRefreshControl.addTarget(self, action: #selector(topRefresh), forControlEvents: .ValueChanged)
+        topRefreshControl.addTarget(self, action: #selector(topRefresh), for: .valueChanged)
         tableView.addSubview(topRefreshControl)
 
         let bottomRefreshControl = UIRefreshControl()
-        bottomRefreshControl.addTarget(self, action: #selector(bottomRefresh), forControlEvents: .ValueChanged)
+        bottomRefreshControl.addTarget(self, action: #selector(bottomRefresh), for: .valueChanged)
         tableView.bottomRefreshControl = bottomRefreshControl
 
         failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loadData)))
@@ -59,7 +58,7 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
         view.addSubview(loadingView)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         if topic["body_html"].string == nil { autoRefresh() }
         Helper.trackView(self)
     }
@@ -76,11 +75,12 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
         topicBodyCell = TopicBodyCell()
         replies = []
         replyCells = []
+        tableView.reloadData()
         loadData()
     }
 
     func bottomRefresh() {
-        if refreshing { tableView.bottomRefreshControl.endRefreshing(); tableView.bottomRefreshControl.hidden = true; return }
+        if refreshing { tableView.bottomRefreshControl.endRefreshing(); tableView.bottomRefreshControl.isHidden = true; return }
         loadData()
     }
 
@@ -89,7 +89,7 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
         loadingView.hide()
         topRefreshControl.endRefreshing()
         tableView.bottomRefreshControl.endRefreshing()
-        tableView.bottomRefreshControl.hidden = true
+        tableView.bottomRefreshControl.isHidden = true
     }
 
     func loadData() {
@@ -97,14 +97,14 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
         if refreshing { return }
         refreshing = true
         failureView.hide()
-        let path = "/topics/" + topic["id"].stringValue + ".json"
-        AFHTTPRequestOperationManager(baseURL: Helper.baseURL).GET(path, parameters: nil, success: { (operation, responseObject) in
+        let path = "/topics/\(topic["id"]).json"
+        AFHTTPSessionManager(baseURL: Helper.baseURL).get(path, parameters: nil, progress: nil, success: { task, responseObject in
             self.stopRefresh()
             self.topic = JSON(responseObject)["topic"]
             self.title = self.topic["title"].string
             self.tableView.reloadData()
             self.autoRefresh()
-        }) { (operation, error) in
+        }) { task, error in
             self.stopRefresh()
             self.failureView.show()
         }
@@ -114,31 +114,31 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
         if refreshing { return }
         refreshing = true
         failureView.hide()
-        let path = "/topics/" + topic["id"].stringValue + "/replies.json"
+        let path = "/topics/\(topic["id"])/replies.json"
         let parameters = ["offset": replies.count, "limit": 30]
-        AFHTTPRequestOperationManager(baseURL: Helper.baseURL).GET(path, parameters: parameters, success: { (operation, responseObject) in
+        AFHTTPSessionManager(baseURL: Helper.baseURL).get(path, parameters: parameters, progress: nil, success: { task, responseObject in
             self.stopRefresh()
             let replies = JSON(responseObject)["replies"]
             if replies.count == 0 { return }
             self.replies = JSON(self.replies.arrayValue + replies.arrayValue)
-            self.replyCells.appendContentsOf((0...replies.count - 1).map({ (_) in ReplyCell() }))
-            self.tableView.insertRowsAtIndexPaths((self.replies.count - replies.count...self.replies.count - 1).map({ NSIndexPath(forRow: $0, inSection: 2) }), withRowAnimation: .None)
-        }) { (operation, error) in
+            self.replyCells.append(contentsOf: (0...replies.count - 1).map { _ in ReplyCell() })
+            self.tableView.insertRows(at: (self.replies.count - replies.count...self.replies.count - 1).map { IndexPath(row: $0, section: 2) }, with: .none)
+        }) { task, error in
             self.stopRefresh()
             self.failureView.show()
         }
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
 
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 2 { return String(max(replies.arrayValue.filter({ !$0["deleted"].boolValue }).count, topic["replies_count"].intValue)) + " 个回复" }
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 2 { return "回复（\(max(replies.arrayValue.filter { !$0["deleted"].boolValue }.count, topic["replies_count"].intValue))）" }
         return nil
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0: return 1
         case 1: return 1
@@ -147,34 +147,37 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
         }
     }
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0: return 11.5 + max(44, topicTitleCell.textLabel!.frame.height + 6.5 + topicTitleCell.detailTextLabel!.frame.height) + 11.5
         case 1: return 11.5 + max(44, topicBodyCell.webViewHeight) + 11.5
-        case 2: return replies[indexPath.row]["deleted"].boolValue ? 44 : 11.5 + max(44, replyCells[indexPath.row].textLabel!.frame.height + 6.5 + replyCells[indexPath.row].webViewHeight) + 11.5
-        default: 0
+        case 2: return indexPath.row > replies.count - 1 ? 11.5 + 44 + 11.5 : replies[indexPath.row]["deleted"].boolValue ? 44 : 11.5 + max(44, replyCells[indexPath.row].textLabel!.frame.height + 6.5 + replyCells[indexPath.row].webViewHeight) + 11.5
+        default: Void()
         }
         return tableView.rowHeight
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
+            topicTitleCell.separatorInset.left = tableView.separatorInset.left
             topicTitleCell.topic = topic
             topicTitleCell.topicController = self
             return topicTitleCell
         case 1:
             if topic["body_html"].string == nil { break }
+            topicBodyCell.separatorInset.left = tableView.separatorInset.left
             topicBodyCell.topicController = self
             return topicBodyCell
         case 2:
             if replies[indexPath.row]["deleted"].boolValue {
                 let cell = UITableViewCell()
-                cell.selectionStyle = .None
-                cell.textLabel?.attributedText = NSAttributedString(string: "已删除", attributes: [NSStrikethroughStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue])
-                cell.textLabel?.font = .systemFontOfSize(14)
-                cell.textLabel?.textAlignment = .Center
-                cell.textLabel?.textColor = .lightGrayColor()
+                cell.selectionStyle = .none
+                cell.separatorInset.left = tableView.separatorInset.left
+                cell.textLabel?.attributedText = NSAttributedString(string: "已删除", attributes: [NSStrikethroughStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue])
+                cell.textLabel?.font = .systemFont(ofSize: 14)
+                cell.textLabel?.textAlignment = .center
+                cell.textLabel?.textColor = .lightGray
                 return cell
             }
             if indexPath.row >= replyCells.count { break }
@@ -182,40 +185,42 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
             cell.indexPath = indexPath
             cell.reply = replies[indexPath.row]
             cell.reply["topic_id"] = topic["id"]
+            cell.separatorInset.left = tableView.separatorInset.left
             cell.topicController = self
             return cell
-        default: 0
+        default: Void()
         }
         let cell = UITableViewCell()
-        cell.selectionStyle = .None
+        cell.selectionStyle = .none
         return cell
     }
 
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.section == 2 && indexPath.row + 1 == replies.count && indexPath.row + 1 < topic["replies_count"].intValue { autoRefresh() }
     }
 
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        topicTitleCell = TopicTitleCell()
         topicBodyCell = TopicBodyCell()
-        replyCells = replyCells.map({ (_) in ReplyCell() })
+        replyCells = replyCells.map { _ in ReplyCell() }
         tableView.reloadData()
     }
 
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if navigationType == .LinkClicked && ["http", "https"].contains((request.URL!.scheme)) {
-            let path = request.URL!.absoluteString
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        if navigationType == .linkClicked && ["http", "https"].contains(request.url?.scheme ?? "") {
+            let path = request.url?.absoluteString ?? ""
             if path.isMatch("#reply\\d+$".toRx()) {
                 let row = Int(path.firstMatch("\\d+$".toRx()))! - 1
                 if row >= replies.count { return false }
-                tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: row, inSection: 2), atScrollPosition: .Top, animated: true)
+                tableView.scrollToRow(at: IndexPath(row: row, section: 2), at: .top, animated: true)
                 return false
             }
             if path.isMatch("#imageview$".toRx()) {
                 let imageInfo = JTSImageInfo()
-                imageInfo.imageURL = request.URL
-                let imageViewController = JTSImageViewController(imageInfo: imageInfo, mode: .Image, backgroundStyle: .None)
-                imageViewController.showFromViewController(self, transition: .FromOffscreen)
+                imageInfo.imageURL = request.url
+                let imageViewController = JTSImageViewController(imageInfo: imageInfo, mode: .image, backgroundStyle: JTSImageViewControllerBackgroundOptions())
+                imageViewController?.show(from: self, transition: .fromOffscreen)
                 return false
             }
             if path.isMatch("^https?://ruby-china.org/topics/\\d+$".toRx()) {
@@ -233,9 +238,10 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
 
     func action() {
-        let activityViewController = UIActivityViewController(activityItems: [NSURL(string: Helper.baseURL.absoluteString + "/topics/" + topic["id"].stringValue)!], applicationActivities: nil)
+        guard let url = URL(string: "\(Helper.baseURL.absoluteString)/topics/\(topic["id"])") else { return }
+        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         activityViewController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        presentViewController(activityViewController, animated: true, completion: nil)
+        present(activityViewController, animated: true, completion: nil)
     }
 
     func reply() {
@@ -244,22 +250,22 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
         navigationController?.pushViewController(composeController, animated: true)
     }
 
-    func addReply(reply: JSON) {
+    func addReply(_ reply: JSON) {
         replies = JSON(replies.arrayValue + [reply])
         replyCells.append(ReplyCell())
-        let indexPath = NSIndexPath(forRow: replies.count - 1, inSection: 2)
-        tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-        tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
-        tableView.bottomRefreshControl.hidden = true
+        let indexPath = IndexPath(row: replies.count - 1, section: 2)
+        tableView.insertRows(at: [indexPath], with: .none)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        tableView.bottomRefreshControl.isHidden = true
     }
 
-    func updateReply(reply: JSON) {
+    func updateReply(_ reply: JSON) {
         let row = (0...replies.count - 1).filter { self.replies.arrayValue[$0]["id"].intValue == reply["id"].intValue }.first ?? 0
         replies[row] = reply
         replyCells[row] = ReplyCell()
-        let indexPath = NSIndexPath(forRow: row, inSection: 2)
-        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-        tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
-        tableView.bottomRefreshControl.hidden = true
+        let indexPath = IndexPath(row: row, section: 2)
+        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        tableView.bottomRefreshControl.isHidden = true
     }
 }

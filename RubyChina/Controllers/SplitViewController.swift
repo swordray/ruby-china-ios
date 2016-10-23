@@ -18,20 +18,20 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate 
 
     override func viewDidLoad() {
         delegate = self
-        preferredDisplayMode = .AllVisible
+        preferredDisplayMode = .allVisible
         view.backgroundColor = Helper.backgroundColor
     }
 
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return (secondaryViewController as? UINavigationController) == nil
     }
 
-    func splitViewController(splitViewController: UISplitViewController, separateSecondaryViewControllerFromPrimaryViewController primaryViewController: UIViewController) -> UIViewController? {
+    func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         if (primaryViewController as? UINavigationController)?.viewControllers.last as? UINavigationController == nil { return UIViewController() }
         return nil
     }
 
-    func splitViewController(svc: UISplitViewController, willChangeToDisplayMode displayMode: UISplitViewControllerDisplayMode) {
+    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
         (svc.viewControllers.last as? UINavigationController)?.viewControllers.last?.traitCollectionDidChange(nil)
     }
 }

@@ -11,15 +11,15 @@ import UIKit
 class LoadingView: UIActivityIndicatorView {
 
     var refreshing: Bool {
-        get { return !hidden }
+        get { return !isHidden }
     }
 
 
     override func didMoveToSuperview() {
         if superview == nil { return }
 
-        activityIndicatorViewStyle = .Gray
-        autoresizingMask = [.FlexibleLeftMargin, .FlexibleRightMargin, .FlexibleTopMargin, .FlexibleBottomMargin]
+        activityIndicatorViewStyle = .gray
+        autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
         center = superview!.center
         hidesWhenStopped = true
     }

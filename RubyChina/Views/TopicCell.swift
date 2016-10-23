@@ -15,14 +15,14 @@ class TopicCell: UITableViewCell {
 
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 
-        accessoryType = .DisclosureIndicator
+        accessoryType = .disclosureIndicator
 
         textLabel?.numberOfLines = 4
 
-        detailTextLabel?.font = .systemFontOfSize(14)
-        detailTextLabel?.textColor = .lightGrayColor()
+        detailTextLabel?.font = .systemFont(ofSize: 14)
+        detailTextLabel?.textColor = .lightGray
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -34,9 +34,9 @@ class TopicCell: UITableViewCell {
 
         textLabel?.frame.origin.y = 11.5
         textLabel?.text = topic["title"].string
-        textLabel?.frame.size.height = textLabel!.textRectForBounds(textLabel!.frame, limitedToNumberOfLines: 3).height
+        textLabel?.frame.size.height = textLabel!.textRect(forBounds: textLabel!.frame, limitedToNumberOfLines: 3).height
 
         detailTextLabel?.frame.origin.y = 11.5 + textLabel!.frame.height + 6.5
-        detailTextLabel?.text = "[" + topic["node_name"].stringValue + "] · " + topic["user"]["login"].stringValue + " · " + Helper.timeAgoSinceNow(topic["replied_at"].string ?? topic["created_at"].string) + (topic["replies_count"].intValue > 0 ? " · " + topic["replies_count"].stringValue + " ↵" : "")
+        detailTextLabel?.text = "[\(topic["node_name"])] · \(topic["user"]["login"]) · \(Helper.timeAgoSinceNow(topic["replied_at"].string ?? topic["created_at"].string))\(topic["replies_count"].intValue > 0 ? " · \(topic["replies_count"]) ↵" : "")"
     }
 }

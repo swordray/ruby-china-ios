@@ -18,19 +18,19 @@ class WebViewController: UIViewController, UIWebViewDelegate {
 
 
     override func viewDidLoad() {
-        navigationItem.leftBarButtonItem = navigationController?.viewControllers.count == 1 ? splitViewController?.displayModeButtonItem() : nil
+        navigationItem.leftBarButtonItem = navigationController?.viewControllers.count == 1 ? splitViewController?.displayModeButtonItem : nil
         navigationItem.leftItemsSupplementBackButton = true
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(action))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(action))
         view.backgroundColor = Helper.backgroundColor
 
-        webView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        webView.backgroundColor = .clearColor()
+        webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        webView.backgroundColor = .clear
         webView.delegate = self
         webView.frame = view.bounds
-        webView.opaque = false
+        webView.isOpaque = false
         view.addSubview(webView)
 
-        refreshControl.addTarget(self, action: #selector(refresh), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         webView.scrollView.addSubview(refreshControl)
 
         failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loadData)))
@@ -39,36 +39,37 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         view.addSubview(loadingView)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         if webView.request == nil { loadData() }
         Helper.trackView(self)
     }
 
     func loadData() {
-        webView.loadRequest(NSURLRequest(URL: NSURL(string: path)!))
+        guard let url = URL(string: path) else { return }
+        webView.loadRequest(URLRequest(url: url))
     }
 
-    func webViewDidStartLoad(webView: UIWebView) {
+    func webViewDidStartLoad(_ webView: UIWebView) {
         failureView.hide()
-        if !refreshControl.refreshing { loadingView.show() }
+        if !refreshControl.isRefreshing { loadingView.show() }
     }
 
-    func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         refreshControl.endRefreshing()
         loadingView.hide()
-        title = title ?? webView.stringByEvaluatingJavaScriptFromString("document.title")
+        title = title ?? webView.stringByEvaluatingJavaScript(from: "document.title")
     }
 
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         refreshControl.endRefreshing()
         loadingView.hide()
         failureView.show()
     }
 
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if navigationType == .LinkClicked && ["http", "https"].contains((request.URL!.scheme)) {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        if navigationType == .linkClicked && ["http", "https"].contains(request.url?.scheme ?? "") {
             let webViewController = WebViewController()
-            webViewController.path = request.URL!.absoluteString
+            webViewController.path = request.url?.absoluteString ?? ""
             navigationController?.pushViewController(webViewController, animated: true)
             return false
         }
@@ -81,8 +82,8 @@ class WebViewController: UIViewController, UIWebViewDelegate {
     }
 
     func action() {
-        let activityViewController = UIActivityViewController(activityItems: [NSURL(string: path)!], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: [URL(string: path)!], applicationActivities: nil)
         activityViewController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        presentViewController(activityViewController, animated: true, completion: nil)
+        present(activityViewController, animated: true, completion: nil)
     }
 }

@@ -13,18 +13,18 @@ class TopicBodyCell: UITableViewCell, UIWebViewDelegate {
 
     weak var topicController: TopicController?
     var webView = UIWebView()
-    var webViewHeight = CGFloat.min
+    var webViewHeight = CGFloat.leastNormalMagnitude
 
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        selectionStyle = .None
+        selectionStyle = .none
 
-        webView.backgroundColor = .clearColor()
+        webView.backgroundColor = .clear
         webView.delegate = self
-        webView.opaque = false
-        webView.scrollView.scrollEnabled = false
+        webView.isOpaque = false
+        webView.scrollView.isScrollEnabled = false
         contentView.addSubview(webView)
     }
 
@@ -39,20 +39,20 @@ class TopicBodyCell: UITableViewCell, UIWebViewDelegate {
         webView.request == nil ? webView.loadHTMLString(html(topicController!.topic["body_html"].stringValue), baseURL: Helper.baseURL) : webViewDidFinishLoad(webView)
     }
 
-    func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         let height = webView.scrollView.contentSize.height
         if height == webViewHeight { return }
         webViewHeight = height
-        topicController?.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: .None)
+        topicController?.tableView.reloadRows(at: [IndexPath(row: 0, section: 1)], with: .none)
         frame.size.height = 11.5 + max(44, height) + 11.5
     }
 
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        return topicController!.webView(webView, shouldStartLoadWithRequest: request, navigationType: navigationType)
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        return topicController!.webView(webView, shouldStartLoadWith: request, navigationType: navigationType)
     }
 
-    func html(body: String) -> String {
-        let version = JSON(NSBundle.mainBundle().infoDictionary!)["CFBundleShortVersionString"].stringValue
+    func html(_ body: String) -> String {
+        let version = JSON(Bundle.main.infoDictionary ?? [:])["CFBundleShortVersionString"]
         return "<!DOCTYPE html><html><head><link rel='stylesheet' media='screen' href='\(Helper.baseURL.absoluteString)/application.css?version=\(version)' /><script src='\(Helper.baseURL.absoluteString)/application.js?version=\(version)'></script></head><body><div id='page'>\(body)</div></body></html>";
     }
 }

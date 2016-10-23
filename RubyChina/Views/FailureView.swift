@@ -13,28 +13,28 @@ class FailureView: UIView {
     override func didMoveToSuperview() {
         if superview == nil { return }
 
-        autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        autoresizingMask = [.flexibleWidth, .flexibleHeight]
         frame = superview!.frame
-        hidden = true
+        isHidden = true
 
-        let iconLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
-        iconLabel.autoresizingMask = [.FlexibleLeftMargin, .FlexibleRightMargin, .FlexibleTopMargin, .FlexibleBottomMargin]
+        let iconLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        iconLabel.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
         iconLabel.center = center
-        iconLabel.font = .systemFontOfSize(16)
-        iconLabel.layer.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5).CGColor
-        iconLabel.layer.cornerRadius = 12
+        iconLabel.font = .systemFont(ofSize: 14)
+        iconLabel.layer.backgroundColor = UIColor.gray.withAlphaComponent(0.5).cgColor
+        iconLabel.layer.cornerRadius = 10
         iconLabel.layer.masksToBounds = true
         iconLabel.text = "!"
-        iconLabel.textAlignment = .Center
-        iconLabel.textColor = .whiteColor()
+        iconLabel.textAlignment = .center
+        iconLabel.textColor = .white
         addSubview(iconLabel)
     }
 
     func show() {
-        hidden = false
+        isHidden = false
     }
 
     func hide() {
-        hidden = true
+        isHidden = true
     }
 }

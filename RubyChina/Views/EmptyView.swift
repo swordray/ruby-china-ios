@@ -13,19 +13,19 @@ class EmptyView: UILabel {
     override func didMoveToSuperview() {
         if superview == nil { return }
 
-        autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        font = .systemFontOfSize(28)
+        autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        font = .systemFont(ofSize: 28)
         frame = superview!.frame
-        hidden = true
-        textAlignment = .Center
-        textColor = .grayColor()
+        isHidden = true
+        textAlignment = .center
+        textColor = .gray
     }
 
     func show() {
-        hidden = false
+        isHidden = false
     }
 
     func hide() {
-        hidden = true
+        isHidden = true
     }
 }

@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Jianqiu Xiao. All rights reserved.
 //
 
-import SDWebImage
 import SwiftyJSON
 import UIKit
 
@@ -16,16 +15,16 @@ class UserNameCell: UITableViewCell {
 
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 
-        accessoryType = .DisclosureIndicator
+        accessoryType = .disclosureIndicator
 
-        imageView?.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.05)
+        imageView?.backgroundColor = UIColor.black.withAlphaComponent(0.05)
         imageView?.layer.cornerRadius = 22
         imageView?.layer.masksToBounds = true
 
-        detailTextLabel?.font = .systemFontOfSize(14)
-        detailTextLabel?.textColor = .lightGrayColor()
+        detailTextLabel?.font = .systemFont(ofSize: 14)
+        detailTextLabel?.textColor = .lightGray
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -36,7 +35,7 @@ class UserNameCell: UITableViewCell {
         super.layoutSubviews()
 
         imageView?.frame = CGRect(x: separatorInset.left, y: 11.5, width: 44, height: 44)
-        imageView?.sd_setImageWithURL(NSURL(string: user["avatar_url"].stringValue)!, placeholderImage: Helper.blankImage(imageView!.frame.size))
+        if let url = URL(string: user["avatar_url"].stringValue) { imageView?.setImageWith(url, placeholderImage: Helper.blankImage(imageView!.frame.size)) }
 
         textLabel?.frame = CGRect(x: separatorInset.left * 2 + 44, y: 11.5, width: frame.width - separatorInset.left * 3 - 44, height: textLabel!.frame.height)
         textLabel?.text = user["login"].string

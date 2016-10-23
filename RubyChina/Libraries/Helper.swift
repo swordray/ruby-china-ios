@@ -15,8 +15,8 @@ class Helper {
         return UIColor(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1)
     }
 
-    class var baseURL: NSURL {
-        return NSURL(string: "http://ruby-china.secipin.com")!
+    class var baseURL: URL {
+        return URL(string: "http://ruby-china.secipin.com")!
     }
 
     class var googleAnalyticsId: String {
@@ -27,39 +27,39 @@ class Helper {
         return UIColor(red: 155/255.0, green: 17/255.0, blue: 30/255.0, alpha: 1)
     }
 
-    class func blankImage(size: CGSize) -> UIImage {
+    class func blankImage(_ size: CGSize) -> UIImage {
         UIGraphicsBeginImageContext(size)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return image
+        return image ?? UIImage()
     }
 
-    class func log(object: AnyObject?) {
+    class func log(_ object: AnyObject?) {
         NSLog("\(object)", "")
     }
 
-    class func log(object: CGRect?) {
+    class func log(_ object: CGRect?) {
         NSLog("\(object)", "")
     }
 
-    class func log(object: JSON?) {
+    class func log(_ object: JSON?) {
         NSLog("\(object)", "")
     }
 
-    class func log(object: NSObject?) {
+    class func log(_ object: NSObject?) {
         NSLog("\(object)", "")
     }
 
-    class func timeAgoSinceNow(original: String?) -> String {
-        let dateFormatter = NSDateFormatter()
+    class func timeAgoSinceNow(_ original: String?) -> String {
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
-        return dateFormatter.dateFromString(original ?? "")?.timeAgoSinceNow() ?? ""
+        return (dateFormatter.date(from: original ?? "") as NSDate?)?.timeAgoSinceNow() ?? ""
     }
 
-    class func trackView(object: AnyObject) {
-        GAI.sharedInstance().logger.logLevel = .Error
+    class func trackView(_ object: AnyObject) {
+        GAI.sharedInstance().logger.logLevel = .error
         GAI.sharedInstance().trackUncaughtExceptions = true
-        GAI.sharedInstance().trackerWithTrackingId(Helper.googleAnalyticsId)
-        GAI.sharedInstance().defaultTracker.send([kGAIHitType: "appview", kGAIScreenName: String(NSStringFromClass(object.classForCoder).characters.split(".").last!)])
+        GAI.sharedInstance().tracker(withTrackingId: Helper.googleAnalyticsId)
+        GAI.sharedInstance().defaultTracker.send([kGAIHitType: "appview", kGAIScreenName: String(NSStringFromClass(object.classForCoder).characters.split(separator: ".").last!)])
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 
 class Defaults {
     class var userId: Int? {
-        get { return NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int }
-        set (value) { NSUserDefaults.standardUserDefaults().setValue(value, forKey: "userId") }
+        get { return UserDefaults.standard.value(forKey: "userId") as? Int }
+        set (value) { UserDefaults.standard.setValue(value, forKey: "userId") }
     }
 }

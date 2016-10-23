@@ -15,17 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if #available(iOS 9.1, *) {
             application.shortcutItems = [
-                UIApplicationShortcutItem(type: "topics", localizedTitle: "社区", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .Home), userInfo: nil),
-                UIApplicationShortcutItem(type: "compose", localizedTitle: "发帖", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .Compose), userInfo: nil),
+                UIApplicationShortcutItem(type: "topics", localizedTitle: "社区", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .home), userInfo: nil),
+                UIApplicationShortcutItem(type: "compose", localizedTitle: "发帖", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .compose), userInfo: nil),
             ]
         }
 
-        AFNetworkActivityIndicatorManager.sharedManager().enabled = true
+        AFNetworkActivityIndicatorManager.shared().isEnabled = true
 
-        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = SplitViewController()
         window?.tintColor = Helper.tintColor
         window?.makeKeyAndVisible()
@@ -34,15 +34,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     @available(iOS 9.0, *)
-    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         guard let splitViewController = window?.rootViewController as? SplitViewController else { return }
         switch shortcutItem.type {
         case "topics":
             guard let navigationController = splitViewController.viewControllers.first as? UINavigationController else { return }
-            navigationController.popToRootViewControllerAnimated(true)
+            navigationController.popToRootViewController(animated: true)
         case "compose":
             splitViewController.showDetailViewController(UINavigationController(rootViewController: ComposeController()), sender: nil)
-        default: 0
+        default: Void()
         }
     }
 }

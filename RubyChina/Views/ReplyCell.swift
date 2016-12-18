@@ -124,7 +124,7 @@ class ReplyCell: MGSwipeTableCell, UIWebViewDelegate {
     }
 
     func html(_ body: String) -> String {
-        let version = JSON(Bundle.main.infoDictionary ?? [:])["CFBundleShortVersionString"]
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? ""
         return "<!DOCTYPE html><html><head><link rel='stylesheet' media='screen' href='\(Helper.baseURL.absoluteString)/application.css?version=\(version)' /><script src='\(Helper.baseURL.absoluteString)/application.js?version=\(version)'></script></head><body><div id='page'>\(body)</div></body></html>";
     }
 

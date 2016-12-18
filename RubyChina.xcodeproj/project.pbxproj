@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B21B37C41E0443AA00DD4FF3 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21B37C31E0443AA00DD4FF3 /* JSON.swift */; };
 		B22DE0DF1B1951B200888C0D /* ComposeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22DE0DE1B1951B200888C0D /* ComposeController.swift */; };
 		B24128AC1B2D3FDC0006AEF9 /* DateTools.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B24128AB1B2D3FDC0006AEF9 /* DateTools.bundle */; };
 		B263B52A1B1EA36C00C56CB0 /* TopicBodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B263B5291B1EA36C00C56CB0 /* TopicBodyCell.swift */; };
@@ -46,6 +47,7 @@
 /* Begin PBXFileReference section */
 		66F00C90339BFEFF2988116C /* Pods-RubyChina.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RubyChina.release.xcconfig"; path = "Pods/Target Support Files/Pods-RubyChina/Pods-RubyChina.release.xcconfig"; sourceTree = "<group>"; };
 		9D16BBFE6D5CF11FD5D5AEFA /* Pods-RubyChina.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RubyChina.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RubyChina/Pods-RubyChina.debug.xcconfig"; sourceTree = "<group>"; };
+		B21B37C31E0443AA00DD4FF3 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		B22DE0DE1B1951B200888C0D /* ComposeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeController.swift; sourceTree = "<group>"; };
 		B24128AB1B2D3FDC0006AEF9 /* DateTools.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = DateTools.bundle; path = ../Pods/DateTools/DateTools/DateTools.bundle; sourceTree = "<group>"; };
 		B263B5291B1EA36C00C56CB0 /* TopicBodyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicBodyCell.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 			children = (
 				B2F217F81B18B53600150DDF /* Defaults.swift */,
 				B2F217F91B18B53600150DDF /* Helper.swift */,
+				B21B37C31E0443AA00DD4FF3 /* JSON.swift */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -264,17 +267,17 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Jianqiu Xiao";
 				TargetAttributes = {
 					B2D221C91B0B63A100007E79 = {
 						CreatedOnToolsVersion = 6.3.2;
 						DevelopmentTeam = 4ZT4M533K7;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0820;
 					};
 					B2D221DE1B0B63A200007E79 = {
 						CreatedOnToolsVersion = 6.3.2;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0820;
 						TestTargetID = B2D221C91B0B63A100007E79;
 					};
 				};
@@ -385,6 +388,7 @@
 				B2F218151B18B55600150DDF /* WebViewController.swift in Sources */,
 				B2F218041B18B54000150DDF /* TopicTitleCell.swift in Sources */,
 				B2FBE70E1D5D8C5700E5DDE8 /* UIViewController.swift in Sources */,
+				B21B37C41E0443AA00DD4FF3 /* JSON.swift in Sources */,
 				B263B52E1B205B0B00C56CB0 /* SplitViewController.swift in Sources */,
 				B22DE0DF1B1951B200888C0D /* ComposeController.swift in Sources */,
 				B2F217FB1B18B53600150DDF /* Helper.swift in Sources */,
@@ -505,6 +509,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9D16BBFE6D5CF11FD5D5AEFA /* Pods-RubyChina.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -522,6 +527,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 66F00C90339BFEFF2988116C /* Pods-RubyChina.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

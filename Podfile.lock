@@ -23,7 +23,7 @@ PODS:
   - MBProgressHUD (1.0.0)
   - MGSwipeTableCell (1.5.6)
   - RegExCategories (1.0)
-  - SwiftyJSON (3.1.1)
+  - SwiftyJSON (3.1.3)
   - SZTextView (1.2.2)
   - TPKeyboardAvoiding (1.3)
   - UINavigationBar+Addition (1.3.0)
@@ -52,7 +52,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   RegExCategories: e68befacacd5bda853c88f70ec745cb2d0cfb89c
-  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
+  SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
   SZTextView: 3a81174dce0710a9ab069bc73a813e6df53b9c82
   TPKeyboardAvoiding: a5138f318c06fb3e151f886e18ce4a72695d9cbe
   UINavigationBar+Addition: 433c16a992cfb73c3141b1f7fcaa93169c15cfa0

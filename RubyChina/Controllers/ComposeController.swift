@@ -28,7 +28,7 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
         navigationItem.leftBarButtonItem = navigationController?.viewControllers.count == 1 ? splitViewController?.displayModeButtonItem : nil
         navigationItem.leftItemsSupplementBackButton = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
-        title = reply["topic_id"].int == nil ? (topic["id"].int == nil ? "发帖" : "编辑") : (reply["id"] == nil ? "回复" : "编辑")
+        title = reply["topic_id"].int == nil ? (topic["id"].int == nil ? "发帖" : "编辑") : (reply["id"].int == nil ? "回复" : "编辑")
         view.backgroundColor = Helper.backgroundColor
 
         tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -211,7 +211,7 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
                 }
             } else {
                 let reply = JSON(responseObject)["reply"]
-                self.reply["id"] == nil ? topicController?.addReply(reply) : topicController?.updateReply(reply)
+                self.reply["id"].int == nil ? topicController?.addReply(reply) : topicController?.updateReply(reply)
                 _ = self.navigationController?.popViewController(animated: true)
             }
         }

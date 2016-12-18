@@ -71,7 +71,7 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
 
     func topRefresh() {
         if refreshing { topRefreshControl.endRefreshing(); return }
-        topic["body_html"] = nil
+        topic["body_html"].string = nil
         topicBodyCell = TopicBodyCell()
         replies = []
         replyCells = []

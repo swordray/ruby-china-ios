@@ -151,7 +151,7 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
         switch indexPath.section {
         case 0: return 11.5 + max(44, topicTitleCell.textLabel!.frame.height + 5 + topicTitleCell.detailTextLabel!.frame.height) + 11.5
         case 1: return 11.5 + max(44, topicBodyCell.webViewHeight) + 11.5
-        case 2: return indexPath.row > replies.count - 1 ? 11.5 + 44 + 11.5 : replies[indexPath.row]["deleted"].boolValue ? 44 : 11.5 + max(44, replyCells[indexPath.row].textLabel!.frame.height + 5 + replyCells[indexPath.row].webViewHeight) + 11.5
+        case 2: return indexPath.row > replies.count - 1 ? 11.5 + 44 + 11.5 : replies[indexPath.row]["body_html"].string == nil ? 0 : replies[indexPath.row]["deleted"].boolValue ? 44 : 11.5 + max(44, replyCells[indexPath.row].textLabel!.frame.height + 5 + replyCells[indexPath.row].webViewHeight) + 11.5
         default: Void()
         }
         return tableView.rowHeight
@@ -170,6 +170,9 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
             topicBodyCell.topicController = self
             return topicBodyCell
         case 2:
+            if replies[indexPath.row]["body_html"].string == nil {
+                return UITableViewCell()
+            }
             if replies[indexPath.row]["deleted"].boolValue {
                 let cell = UITableViewCell()
                 cell.selectionStyle = .none

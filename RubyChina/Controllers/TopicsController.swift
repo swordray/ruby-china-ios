@@ -159,7 +159,7 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
         cell.textLabel?.text = topics[indexPath.row]["title"].string
         cell.topic = topics[indexPath.row]
         cell.layoutSubviews()
-        return 11.5 + cell.textLabel!.frame.height + 6.5 + cell.detailTextLabel!.frame.height + 11.5
+        return 11.5 + cell.textLabel!.frame.height + 5 + cell.detailTextLabel!.frame.height + 11.5
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

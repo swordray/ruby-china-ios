@@ -33,7 +33,7 @@ class TopicTitleCell: MGSwipeTableCell {
 
         textLabel?.numberOfLines = 4
 
-        detailTextLabel?.font = .systemFont(ofSize: 14)
+        detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
         detailTextLabel?.textColor = .lightGray
 
         editButton.backgroundColor = UIColor(red: 199/255.0, green: 199/255.0, blue: 204/255.0, alpha: 1)
@@ -90,12 +90,12 @@ class TopicTitleCell: MGSwipeTableCell {
         textLabel?.text = topic["title"].string
         textLabel?.frame.size.height = ceil(textLabel!.textRect(forBounds: textLabel!.frame, limitedToNumberOfLines: textLabel!.numberOfLines).height)
 
-        detailTextLabel?.frame = CGRect(x: separatorInset.left + 44 + 15, y: 11.5 + textLabel!.frame.height + 6.5, width: bounds.width - separatorInset.left * 2 - 44 - 15, height: detailTextLabel!.frame.height)
+        detailTextLabel?.frame = CGRect(x: separatorInset.left + 44 + 15, y: 11.5 + textLabel!.frame.height + 5, width: bounds.width - separatorInset.left * 2 - 44 - 15, height: detailTextLabel!.frame.height)
         detailTextLabel?.text = "[\(topic["node_name"])] · \(topic["user"]["login"]) · \(Helper.timeAgoSinceNow(topic["created_at"].string))\(topic["hits"].int != nil ? " · \(topic["hits"]) 次阅读" : "")"
 
         rightButtons = ((topic["abilities"]["update"].boolValue ? [editButton] : [MGSwipeButton]()) + (topic["abilities"]["destroy"].boolValue ? [deleteButton] : [MGSwipeButton]())).reversed()
 
-        frame.size.height = 11.5 + max(44, textLabel!.frame.height + 6.5 + detailTextLabel!.frame.height) + 11.5
+        frame.size.height = 11.5 + max(44, textLabel!.frame.height + 5 + detailTextLabel!.frame.height) + 11.5
     }
 
     func user() {

@@ -41,12 +41,14 @@ class SignInController: UIViewController, UITableViewDataSource, UITableViewDele
         usernameField.autocorrectionType = .no
         usernameField.clearButtonMode = .whileEditing
         usernameField.delegate = self
+        usernameField.font = .preferredFont(forTextStyle: .body)
         usernameField.frame.size.height = 44
         usernameField.placeholder = "账号"
         usernameField.returnKeyType = .next
 
         passwordField.clearButtonMode = .whileEditing
         passwordField.delegate = self
+        passwordField.font = .preferredFont(forTextStyle: .body)
         passwordField.frame.size.height = 44
         passwordField.placeholder = "密码"
         passwordField.returnKeyType = .join

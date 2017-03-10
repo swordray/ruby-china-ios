@@ -21,7 +21,7 @@ class TopicCell: UITableViewCell {
 
         textLabel?.numberOfLines = 4
 
-        detailTextLabel?.font = .systemFont(ofSize: 14)
+        detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
         detailTextLabel?.textColor = .lightGray
     }
 
@@ -36,7 +36,7 @@ class TopicCell: UITableViewCell {
         textLabel?.text = topic["title"].string
         textLabel?.frame.size.height = textLabel!.textRect(forBounds: textLabel!.frame, limitedToNumberOfLines: 3).height
 
-        detailTextLabel?.frame.origin.y = 11.5 + textLabel!.frame.height + 6.5
+        detailTextLabel?.frame.origin.y = 11.5 + textLabel!.frame.height + 5
         detailTextLabel?.text = "[\(topic["node_name"])] · \(topic["user"]["login"]) · \(Helper.timeAgoSinceNow(topic["replied_at"].string ?? topic["created_at"].string))\(topic["replies_count"].intValue > 0 ? " · \(topic["replies_count"]) ↵" : "")"
     }
 }

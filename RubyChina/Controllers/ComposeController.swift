@@ -49,6 +49,7 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
         titleField.autocorrectionType = .no
         titleField.clearButtonMode = .whileEditing
         titleField.delegate = self
+        titleField.font = .preferredFont(forTextStyle: .body)
         titleField.frame.size.height = 44
         titleField.placeholder = "标题"
         titleField.returnKeyType = .next
@@ -57,7 +58,7 @@ class ComposeController: UIViewController, UITableViewDataSource, UITableViewDel
         bodyTextView.autocapitalizationType = .none
         bodyTextView.autocorrectionType = .no
         bodyTextView.contentInset = UIEdgeInsets(top: -8, left: -4, bottom: -8, right: -4)
-        bodyTextView.font = .systemFont(ofSize: 17)
+        bodyTextView.font = .preferredFont(forTextStyle: .body)
         bodyTextView.placeholder = "正文"
         bodyTextView.text = topic["body"].string ?? reply["body"].string
 

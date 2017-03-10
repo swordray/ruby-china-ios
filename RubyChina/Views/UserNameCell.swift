@@ -23,7 +23,7 @@ class UserNameCell: UITableViewCell {
         imageView?.layer.cornerRadius = 22
         imageView?.layer.masksToBounds = true
 
-        detailTextLabel?.font = .systemFont(ofSize: 14)
+        detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
         detailTextLabel?.textColor = .lightGray
     }
 
@@ -41,7 +41,7 @@ class UserNameCell: UITableViewCell {
         textLabel?.text = user["login"].string
 
         detailTextLabel?.frame = CGRect(x: separatorInset.left * 2 + 44, y: 11.5
-            + textLabel!.frame.height + 6.5, width: bounds.width - separatorInset.left * 3 - 44, height: detailTextLabel!.frame.height)
+            + textLabel!.frame.height + 5, width: bounds.width - separatorInset.left * 3 - 44, height: detailTextLabel!.frame.height)
         detailTextLabel?.text = user["name"].stringValue != "" ? user["name"].string : user["login"].string
     }
 }

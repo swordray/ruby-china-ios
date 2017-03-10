@@ -149,9 +149,9 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
-        case 0: return 11.5 + max(44, topicTitleCell.textLabel!.frame.height + 6.5 + topicTitleCell.detailTextLabel!.frame.height) + 11.5
+        case 0: return 11.5 + max(44, topicTitleCell.textLabel!.frame.height + 5 + topicTitleCell.detailTextLabel!.frame.height) + 11.5
         case 1: return 11.5 + max(44, topicBodyCell.webViewHeight) + 11.5
-        case 2: return indexPath.row > replies.count - 1 ? 11.5 + 44 + 11.5 : replies[indexPath.row]["deleted"].boolValue ? 44 : 11.5 + max(44, replyCells[indexPath.row].textLabel!.frame.height + 6.5 + replyCells[indexPath.row].webViewHeight) + 11.5
+        case 2: return indexPath.row > replies.count - 1 ? 11.5 + 44 + 11.5 : replies[indexPath.row]["deleted"].boolValue ? 44 : 11.5 + max(44, replyCells[indexPath.row].textLabel!.frame.height + 5 + replyCells[indexPath.row].webViewHeight) + 11.5
         default: Void()
         }
         return tableView.rowHeight
@@ -175,7 +175,7 @@ class TopicController: UIViewController, UITableViewDataSource, UITableViewDeleg
                 cell.selectionStyle = .none
                 cell.separatorInset.left = tableView.separatorInset.left
                 cell.textLabel?.attributedText = NSAttributedString(string: "已删除", attributes: [NSStrikethroughStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue])
-                cell.textLabel?.font = .systemFont(ofSize: 14)
+                cell.textLabel?.font = .preferredFont(forTextStyle: .subheadline)
                 cell.textLabel?.textAlignment = .center
                 cell.textLabel?.textColor = .lightGray
                 return cell

@@ -29,7 +29,7 @@ class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSo
 
     override func viewDidLoad() {
         automaticallyAdjustsScrollViewInsets = false
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "UserIcon"), style: .plain, target: self, action: #selector(user))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "UIBarButtonItemUser"), style: .plain, target: self, action: #selector(user))
         navigationItem.title = "社区"
         view.backgroundColor = Helper.backgroundColor
 

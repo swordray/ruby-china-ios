@@ -26,7 +26,7 @@ PODS:
   - SwiftyJSON (3.1.3)
   - SZTextView (1.2.2)
   - TPKeyboardAvoiding (1.3)
-  - UINavigationBar+Addition (1.3.0)
+  - "UINavigationBar+Addition (1.3.0)"
 
 DEPENDENCIES:
   - AFNetworking
@@ -40,7 +40,23 @@ DEPENDENCIES:
   - SwiftyJSON
   - SZTextView
   - TPKeyboardAvoiding
-  - UINavigationBar+Addition
+  - "UINavigationBar+Addition"
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - CCBottomRefreshControl
+    - DateTools
+    - GoogleAnalytics
+    - JTSImageViewController
+    - Masonry
+    - MBProgressHUD
+    - MGSwipeTableCell
+    - RegExCategories
+    - SwiftyJSON
+    - SZTextView
+    - TPKeyboardAvoiding
+    - "UINavigationBar+Addition"
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -55,8 +71,8 @@ SPEC CHECKSUMS:
   SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
   SZTextView: 3a81174dce0710a9ab069bc73a813e6df53b9c82
   TPKeyboardAvoiding: a5138f318c06fb3e151f886e18ce4a72695d9cbe
-  UINavigationBar+Addition: 433c16a992cfb73c3141b1f7fcaa93169c15cfa0
+  "UINavigationBar+Addition": 433c16a992cfb73c3141b1f7fcaa93169c15cfa0
 
 PODFILE CHECKSUM: 1b3636095120bc5a5872c507cbc0251d1cc63fc5
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.5.3

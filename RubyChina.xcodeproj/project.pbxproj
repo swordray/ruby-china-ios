@@ -13,24 +13,24 @@
 		B263B52A1B1EA36C00C56CB0 /* TopicBodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B263B5291B1EA36C00C56CB0 /* TopicBodyCell.swift */; };
 		B263B52E1B205B0B00C56CB0 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B263B52D1B205B0A00C56CB0 /* SplitViewController.swift */; };
 		B2D221D01B0B63A100007E79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D221CF1B0B63A100007E79 /* AppDelegate.swift */; };
-		B2D221D71B0B63A100007E79 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2D221D61B0B63A100007E79 /* Images.xcassets */; };
+		B2D221D71B0B63A100007E79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2D221D61B0B63A100007E79 /* Assets.xcassets */; };
 		B2D221E61B0B63A200007E79 /* RubyChinaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D221E51B0B63A200007E79 /* RubyChinaTests.swift */; };
 		B2F217FA1B18B53600150DDF /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217F81B18B53600150DDF /* Defaults.swift */; };
 		B2F217FB1B18B53600150DDF /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217F91B18B53600150DDF /* Helper.swift */; };
-		B2F218031B18B54000150DDF /* ReplyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217FC1B18B54000150DDF /* ReplyCell.swift */; };
+		B2F218031B18B54000150DDF /* TopicReplyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217FC1B18B54000150DDF /* TopicReplyCell.swift */; };
 		B2F218041B18B54000150DDF /* TopicTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217FD1B18B54000150DDF /* TopicTitleCell.swift */; };
 		B2F218051B18B54000150DDF /* UserNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217FE1B18B54000150DDF /* UserNameCell.swift */; };
-		B2F218061B18B54000150DDF /* TopicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217FF1B18B54000150DDF /* TopicCell.swift */; };
+		B2F218061B18B54000150DDF /* TopicsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F217FF1B18B54000150DDF /* TopicsCell.swift */; };
 		B2F218071B18B54000150DDF /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F218001B18B54000150DDF /* LoadingView.swift */; };
-		B2F218081B18B54000150DDF /* FailureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F218011B18B54000150DDF /* FailureView.swift */; };
-		B2F218091B18B54000150DDF /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F218021B18B54000150DDF /* EmptyView.swift */; };
+		B2F218081B18B54000150DDF /* NetworkErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F218011B18B54000150DDF /* NetworkErrorView.swift */; };
+		B2F218091B18B54000150DDF /* NotFoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F218021B18B54000150DDF /* NotFoundView.swift */; };
 		B2F218101B18B55600150DDF /* NodesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180A1B18B55600150DDF /* NodesController.swift */; };
 		B2F218111B18B55600150DDF /* SignInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180B1B18B55600150DDF /* SignInController.swift */; };
 		B2F218121B18B55600150DDF /* TopicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180C1B18B55600150DDF /* TopicController.swift */; };
 		B2F218131B18B55600150DDF /* TopicsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180D1B18B55600150DDF /* TopicsController.swift */; };
 		B2F218141B18B55600150DDF /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180E1B18B55600150DDF /* UserController.swift */; };
 		B2F218151B18B55600150DDF /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F2180F1B18B55600150DDF /* WebViewController.swift */; };
-		B2FBE70E1D5D8C5700E5DDE8 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FBE70D1D5D8C5700E5DDE8 /* UIViewController.swift */; };
+		B2FBE70E1D5D8C5700E5DDE8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FBE70D1D5D8C5700E5DDE8 /* ViewController.swift */; };
 		CEEE12158CFCB4991BF2C346 /* Pods_RubyChina.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D275C604818F1099340FBE6E /* Pods_RubyChina.framework */; };
 /* End PBXBuildFile section */
 
@@ -55,27 +55,27 @@
 		B2D221CA1B0B63A100007E79 /* RubyChina.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RubyChina.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2D221CE1B0B63A100007E79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2D221CF1B0B63A100007E79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B2D221D61B0B63A100007E79 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B2D221D61B0B63A100007E79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2D221DF1B0B63A200007E79 /* RubyChinaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RubyChinaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2D221E41B0B63A200007E79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2D221E51B0B63A200007E79 /* RubyChinaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyChinaTests.swift; sourceTree = "<group>"; };
-		B2D222051B0F83C000007E79 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		B2D222051B0F83C000007E79 /* RubyChina-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RubyChina-Bridging-Header.h"; sourceTree = "<group>"; };
 		B2F217F81B18B53600150DDF /* Defaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		B2F217F91B18B53600150DDF /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		B2F217FC1B18B54000150DDF /* ReplyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyCell.swift; sourceTree = "<group>"; };
+		B2F217FC1B18B54000150DDF /* TopicReplyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicReplyCell.swift; sourceTree = "<group>"; };
 		B2F217FD1B18B54000150DDF /* TopicTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicTitleCell.swift; sourceTree = "<group>"; };
 		B2F217FE1B18B54000150DDF /* UserNameCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNameCell.swift; sourceTree = "<group>"; };
-		B2F217FF1B18B54000150DDF /* TopicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCell.swift; sourceTree = "<group>"; };
+		B2F217FF1B18B54000150DDF /* TopicsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicsCell.swift; sourceTree = "<group>"; };
 		B2F218001B18B54000150DDF /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		B2F218011B18B54000150DDF /* FailureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FailureView.swift; sourceTree = "<group>"; };
-		B2F218021B18B54000150DDF /* EmptyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		B2F218011B18B54000150DDF /* NetworkErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkErrorView.swift; sourceTree = "<group>"; };
+		B2F218021B18B54000150DDF /* NotFoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotFoundView.swift; sourceTree = "<group>"; };
 		B2F2180A1B18B55600150DDF /* NodesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodesController.swift; sourceTree = "<group>"; };
 		B2F2180B1B18B55600150DDF /* SignInController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInController.swift; sourceTree = "<group>"; };
 		B2F2180C1B18B55600150DDF /* TopicController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicController.swift; sourceTree = "<group>"; };
 		B2F2180D1B18B55600150DDF /* TopicsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicsController.swift; sourceTree = "<group>"; };
 		B2F2180E1B18B55600150DDF /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
 		B2F2180F1B18B55600150DDF /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		B2FBE70D1D5D8C5700E5DDE8 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		B2FBE70D1D5D8C5700E5DDE8 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D275C604818F1099340FBE6E /* Pods_RubyChina.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RubyChina.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E1FE7F75A5D0D9174BB74 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -132,12 +132,11 @@
 			isa = PBXGroup;
 			children = (
 				B2D221CF1B0B63A100007E79 /* AppDelegate.swift */,
-				B2D222051B0F83C000007E79 /* Bridging-Header.h */,
-				B2D221F11B0F3EC200007E79 /* Controllers */,
-				B2D221D61B0B63A100007E79 /* Images.xcassets */,
+				B2D221D61B0B63A100007E79 /* Assets.xcassets */,
+				B2DA4D21214AFC6800189C11 /* Classes */,
 				B2D221F51B0F53A200007E79 /* Libraries */,
+				B2D222051B0F83C000007E79 /* RubyChina-Bridging-Header.h */,
 				B2D221CD1B0B63A100007E79 /* Supporting Files */,
-				B2D221F61B0F53A200007E79 /* Views */,
 			);
 			path = RubyChina;
 			sourceTree = "<group>";
@@ -177,8 +176,8 @@
 				B263B52D1B205B0A00C56CB0 /* SplitViewController.swift */,
 				B2F2180C1B18B55600150DDF /* TopicController.swift */,
 				B2F2180D1B18B55600150DDF /* TopicsController.swift */,
-				B2FBE70D1D5D8C5700E5DDE8 /* UIViewController.swift */,
 				B2F2180E1B18B55600150DDF /* UserController.swift */,
+				B2FBE70D1D5D8C5700E5DDE8 /* ViewController.swift */,
 				B2F2180F1B18B55600150DDF /* WebViewController.swift */,
 			);
 			path = Controllers;
@@ -197,16 +196,49 @@
 		B2D221F61B0F53A200007E79 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B2F218021B18B54000150DDF /* EmptyView.swift */,
-				B2F218011B18B54000150DDF /* FailureView.swift */,
 				B2F218001B18B54000150DDF /* LoadingView.swift */,
-				B2F217FC1B18B54000150DDF /* ReplyCell.swift */,
-				B263B5291B1EA36C00C56CB0 /* TopicBodyCell.swift */,
-				B2F217FF1B18B54000150DDF /* TopicCell.swift */,
-				B2F217FD1B18B54000150DDF /* TopicTitleCell.swift */,
-				B2F217FE1B18B54000150DDF /* UserNameCell.swift */,
+				B2F218011B18B54000150DDF /* NetworkErrorView.swift */,
+				B2F218021B18B54000150DDF /* NotFoundView.swift */,
+				B2DA4D25214AFDD000189C11 /* Topic */,
+				B2DA4D24214AFDD000189C11 /* Topics */,
+				B2DA4D23214AFDD000189C11 /* User */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B2DA4D21214AFC6800189C11 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				B2D221F11B0F3EC200007E79 /* Controllers */,
+				B2D221F61B0F53A200007E79 /* Views */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		B2DA4D23214AFDD000189C11 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				B2F217FE1B18B54000150DDF /* UserNameCell.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		B2DA4D24214AFDD000189C11 /* Topics */ = {
+			isa = PBXGroup;
+			children = (
+				B2F217FF1B18B54000150DDF /* TopicsCell.swift */,
+			);
+			path = Topics;
+			sourceTree = "<group>";
+		};
+		B2DA4D25214AFDD000189C11 /* Topic */ = {
+			isa = PBXGroup;
+			children = (
+				B263B5291B1EA36C00C56CB0 /* TopicBodyCell.swift */,
+				B2F217FC1B18B54000150DDF /* TopicReplyCell.swift */,
+				B2F217FD1B18B54000150DDF /* TopicTitleCell.swift */,
+			);
+			path = Topic;
 			sourceTree = "<group>";
 		};
 		C0D154EE6622CC1F87332BFA /* Frameworks */ = {
@@ -230,7 +262,6 @@
 				B2D221C71B0B63A100007E79 /* Frameworks */,
 				B2D221C81B0B63A100007E79 /* Resources */,
 				B281D6B51AAEDB8CEE3F4960 /* [CP] Embed Pods Frameworks */,
-				EE78CB1A99C412C0E6F28F4A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -306,7 +337,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2D221D71B0B63A100007E79 /* Images.xcassets in Resources */,
+				B2D221D71B0B63A100007E79 /* Assets.xcassets in Resources */,
 				B24128AC1B2D3FDC0006AEF9 /* DateTools.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,13 +358,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RubyChina-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B281D6B51AAEDB8CEE3F4960 /* [CP] Embed Pods Frameworks */ = {
@@ -342,28 +376,38 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-RubyChina/Pods-RubyChina-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/CCBottomRefreshControl/CCBottomRefreshControl.framework",
+				"${BUILT_PRODUCTS_DIR}/DateTools/DateTools.framework",
+				"${BUILT_PRODUCTS_DIR}/JTSImageViewController/JTSImageViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MGSwipeTableCell/MGSwipeTableCell.framework",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/RegExCategories/RegExCategories.framework",
+				"${BUILT_PRODUCTS_DIR}/SZTextView/SZTextView.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework",
+				"${BUILT_PRODUCTS_DIR}/UINavigationBar+Addition/UINavigationBar_Addition.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CCBottomRefreshControl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DateTools.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JTSImageViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MGSwipeTableCell.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RegExCategories.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SZTextView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPKeyboardAvoiding.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UINavigationBar_Addition.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RubyChina/Pods-RubyChina-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EE78CB1A99C412C0E6F28F4A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RubyChina/Pods-RubyChina-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -374,20 +418,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2F217FA1B18B53600150DDF /* Defaults.swift in Sources */,
-				B2F218081B18B54000150DDF /* FailureView.swift in Sources */,
+				B2F218081B18B54000150DDF /* NetworkErrorView.swift in Sources */,
 				B2F218141B18B55600150DDF /* UserController.swift in Sources */,
-				B2F218091B18B54000150DDF /* EmptyView.swift in Sources */,
+				B2F218091B18B54000150DDF /* NotFoundView.swift in Sources */,
 				B2F218111B18B55600150DDF /* SignInController.swift in Sources */,
-				B2F218061B18B54000150DDF /* TopicCell.swift in Sources */,
+				B2F218061B18B54000150DDF /* TopicsCell.swift in Sources */,
 				B2F218121B18B55600150DDF /* TopicController.swift in Sources */,
 				B263B52A1B1EA36C00C56CB0 /* TopicBodyCell.swift in Sources */,
 				B2D221D01B0B63A100007E79 /* AppDelegate.swift in Sources */,
 				B2F218101B18B55600150DDF /* NodesController.swift in Sources */,
 				B2F218131B18B55600150DDF /* TopicsController.swift in Sources */,
-				B2F218031B18B54000150DDF /* ReplyCell.swift in Sources */,
+				B2F218031B18B54000150DDF /* TopicReplyCell.swift in Sources */,
 				B2F218151B18B55600150DDF /* WebViewController.swift in Sources */,
 				B2F218041B18B54000150DDF /* TopicTitleCell.swift in Sources */,
-				B2FBE70E1D5D8C5700E5DDE8 /* UIViewController.swift in Sources */,
+				B2FBE70E1D5D8C5700E5DDE8 /* ViewController.swift in Sources */,
 				B21B37C41E0443AA00DD4FF3 /* JSON.swift in Sources */,
 				B263B52E1B205B0B00C56CB0 /* SplitViewController.swift in Sources */,
 				B22DE0DF1B1951B200888C0D /* ComposeController.swift in Sources */,
@@ -517,7 +561,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.secipin.ruby-china";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RubyChina/Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "RubyChina/RubyChina-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Pods/**";
 			};
@@ -535,7 +579,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.secipin.ruby-china";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RubyChina/Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "RubyChina/RubyChina-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Pods/**";
 			};

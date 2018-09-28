@@ -2,47 +2,61 @@
 //  AppDelegate.swift
 //  RubyChina
 //
-//  Created by Jianqiu Xiao on 5/19/15.
-//  Copyright (c) 2015 Jianqiu Xiao. All rights reserved.
+//  Created by Jianqiu Xiao on 2018/3/23.
+//  Copyright © 2018 Jianqiu Xiao. All rights reserved.
 //
 
-import AFNetworking
-import UIKit
+import AlamofireImage
+import Regex
+import SnapKit
+import SwiftDate
+import UITextView_Placeholder
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        application.shortcutItems = [
+            UIApplicationShortcutItem(type: "compose", localizedTitle: "发帖", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .compose), userInfo: nil),
+        ]
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        if #available(iOS 9.1, *) {
-            application.shortcutItems = [
-                UIApplicationShortcutItem(type: "topics", localizedTitle: "社区", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .home), userInfo: nil),
-                UIApplicationShortcutItem(type: "compose", localizedTitle: "发帖", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .compose), userInfo: nil),
-            ]
-        }
+        GAI.sharedInstance().logger.logLevel = .error
+        GAI.sharedInstance().trackUncaughtExceptions = true
+        GAI.sharedInstance().tracker(withTrackingId: Bundle.main.infoDictionary?["GoogleAnalyticsTrackingId"] as? String ?? "")
 
-        AFNetworkActivityIndicatorManager.shared().isEnabled = true
+        SwiftDate.defaultRegion = Region(calendar: Calendars.gregorian, zone: Zones.asiaShanghai, locale: Locales.chinese)
 
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = SplitViewController()
-        window?.tintColor = Helper.tintColor
+        window?.tintColor = UIColor(named: "TintColor")
         window?.makeKeyAndVisible()
 
         return true
     }
 
-    @available(iOS 9.0, *)
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
+            if let url = userActivity.webpageURL, let id = "^/topics/(\\d+)$".r?.findFirst(in: url.path)?.group(at: 1) {
+                let topicController = TopicController()
+                topicController.topic = try? Topic(json: [:])
+                topicController.topic?.id = Int(id)
+                window?.rootViewController?.showDetailViewController(UINavigationController(rootViewController: topicController), sender: nil)
+                return true
+            }
+        }
+        return false
+    }
+
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        guard let splitViewController = window?.rootViewController as? SplitViewController else { return }
         switch shortcutItem.type {
-        case "topics":
-            guard let navigationController = splitViewController.viewControllers.first as? UINavigationController else { return }
-            navigationController.popToRootViewController(animated: true)
         case "compose":
-            splitViewController.showDetailViewController(UINavigationController(rootViewController: ComposeController()), sender: nil)
-        default: Void()
+            let composeController = ComposeController()
+            composeController.topic = try? Topic(json: [:])
+            window?.rootViewController?.showDetailViewController(UINavigationController(rootViewController: composeController), sender: nil)
+        default:
+            break
         }
     }
 }

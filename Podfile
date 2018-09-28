@@ -1,18 +1,17 @@
-platform :ios, '8.2'
+platform :ios, '11.0'
 
-use_frameworks!
+target 'RubyChina' do
+  use_frameworks!
 
-target :RubyChina do
-    pod 'AFNetworking'
-    pod 'CCBottomRefreshControl'
-    pod 'DateTools'
-    pod 'GoogleAnalytics'
-    pod 'JTSImageViewController'
-    pod 'MBProgressHUD'
-    pod 'MGSwipeTableCell'
-    pod 'RegExCategories'
-    pod 'SwiftyJSON'
-    pod 'SZTextView'
-    pod 'TPKeyboardAvoiding'
-    pod 'UINavigationBar+Addition'
+  pod 'Alamofire'
+  pod 'AlamofireImage'
+  pod 'CrossroadRegex'
+  pod 'GoogleAnalytics'
+  pod 'JGProgressHUD'
+  pod 'JXWebViewController'
+  pod 'Ladybug'
+  pod 'SnapKit'
+  pod 'SwiftDate'
+  pod 'SwiftLint'
+  pod 'UITextView+Placeholder'
 end

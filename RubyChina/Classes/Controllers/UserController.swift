@@ -2,185 +2,228 @@
 //  UserController.swift
 //  RubyChina
 //
-//  Created by Jianqiu Xiao on 5/29/15.
-//  Copyright (c) 2015 Jianqiu Xiao. All rights reserved.
+//  Created by Jianqiu Xiao on 2018/3/23.
+//  Copyright © 2018 Jianqiu Xiao. All rights reserved.
 //
 
-import AFNetworking
-import MBProgressHUD
-import SwiftyJSON
-import UIKit
+import Alamofire
 
-class UserController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class UserController: ViewController {
 
-    var failureView = FailureView()
-    var loadingView = LoadingView()
-    var tableView = UITableView(frame: CGRect(), style: .grouped)
-    var user: JSON = [:]
+    private var activityIndicatorView: ActivityIndicatorView!
+    private var isRefreshing = false { didSet { didSetRefreshing() } }
+    private var networkErrorView: NetworkErrorView!
+    private var tableView: UITableView!
+    private var user: User?
 
+    override init() {
+        super.init()
 
-    override func viewDidLoad() {
-        title = "账号"
-        view.backgroundColor = Helper.backgroundColor
+        title = "帐号"
+    }
 
-        tableView.allowsMultipleSelection = false
-        tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        tableView.backgroundColor = .clear
+    override func loadView() {
+        tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.frame = view.bounds
-        tableView.tableFooterView = UIView()
-        view.addSubview(tableView)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.description())
+        tableView.register(UserNameCell.self, forCellReuseIdentifier: UserNameCell.description())
+        view = tableView
 
-        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loadData)))
-        view.addSubview(failureView)
+        activityIndicatorView = ActivityIndicatorView()
+        view.addSubview(activityIndicatorView)
 
-        view.addSubview(loadingView)
+        networkErrorView = NetworkErrorView()
+        networkErrorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(fetchData)))
+        view.addSubview(networkErrorView)
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        if let indexPath = tableView.indexPathForSelectedRow { tableView.deselectRow(at: indexPath, animated: true) }
-        loadData()
-        Helper.trackView(self)
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.prefersLargeTitles = true
+
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: tableView)
+        }
+
+        user = User.current
+
+        tableView.indexPathsForSelectedRows?.forEach { tableView.deselectRow(at: $0, animated: animated) }
+
+        fetchData()
     }
 
-    func loadData() {
-        if Defaults.userId == nil { return }
-        if loadingView.refreshing { return }
-        failureView.hide()
-        loadingView.show()
-        let path = "/users/current.json"
-        AFHTTPSessionManager(baseURL: Helper.baseURL).get(path, parameters: nil, progress: nil, success: { task, responseObject in
-            self.loadingView.hide()
-            self.user = JSON(responseObject)["user"]
-            if self.user.dictionary == nil { self.signedOut() }
-            self.tableView.reloadData()
-        }) { task, error in
-            self.loadingView.hide()
-            self.failureView.show()
+    @objc
+    private func fetchData() {
+        if isRefreshing { return }
+        isRefreshing = true
+        Alamofire.request(
+            baseURL
+                .appendingPathComponent("users")
+                .appendingPathComponent("current")
+                .appendingPathExtension("json")
+        )
+        .responseJSON { response in
+            if 200..<300 ~= response.response?.statusCode ?? 0 {
+                if let user = try? User(json: response.value ?? [:]), user.id != nil {
+                    User.current = user
+                    self.user = user
+                    self.tableView.reloadData()
+                } else {
+                    self.signedOut()
+                    let topicsController = (self.splitViewController?.viewControllers.first as? UINavigationController)?.viewControllers.first as? TopicsController
+                    topicsController?.signIn()
+                }
+            } else {
+                self.networkErrorView.isHidden = false
+            }
+            self.isRefreshing = false
         }
     }
 
+    private func didSetRefreshing() {
+        if isRefreshing {
+            networkErrorView.isHidden = true
+            activityIndicatorView.startAnimating()
+        } else {
+            activityIndicatorView.stopAnimating()
+        }
+    }
+
+    private func signOut() {
+        showHUD()
+        Alamofire.request(
+            baseURL
+                .appendingPathComponent("sessions")
+                .appendingPathComponent("0")
+                .appendingPathExtension("json"),
+            method: .delete
+        )
+        .responseJSON { response in
+            if 200..<300 ~= response.response?.statusCode ?? 0 {
+                self.signedOut()
+            } else {
+                self.networkError()
+            }
+            self.hideHUD()
+        }
+    }
+
+    private func signedOut() {
+        User.current = nil
+        let topicsController = (splitViewController?.viewControllers.first as? UINavigationController)?.viewControllers.first as? TopicsController
+        topicsController?.updateRightBarButtonItem()
+        topicsController?.refetchData()
+        if navigationController?.navigationController?.viewControllers.count ?? 0 > 1 {
+            navigationController?.navigationController?.popViewController(animated: true)
+        } else {
+            (splitViewController as? SplitViewController)?.showDefault()
+        }
+    }
+
+    private func viewControllerForRow(at indexPath: IndexPath) -> UIViewController? {
+        switch (indexPath.section, indexPath.row) {
+        case (0, 0):
+            let webViewController = WebViewController()
+            webViewController.title = user?.login
+            webViewController.url = baseURL.appendingPathComponent(user?.login ?? "")
+            return webViewController
+        case (1, 0):
+            let webViewController = WebViewController()
+            webViewController.title = "反馈"
+            webViewController.url = baseURL.appendingPathComponent("feedback")
+            return webViewController
+        default:
+            return nil
+        }
+    }
+}
+
+extension UserController: UITableViewDataSource {
+
     func numberOfSections(in tableView: UITableView) -> Int {
-        return Defaults.userId != nil ? 3 : 2
+        return 3
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0: return 1
-        case 1: return 4
-        case 2: return 1
-        default: return 0
-        }
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 && Defaults.userId != nil { return 11.5 + 44 + 11.5 }
-        return tableView.rowHeight
+        return [1, 3, 1][section]
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            if Defaults.userId == nil {
-                let cell = UITableViewCell()
-                cell.accessoryType = .disclosureIndicator
-                cell.textLabel?.text = "登录"
-                return cell
-            }
-            let cell = UserNameCell()
-            cell.separatorInset.left = tableView.separatorInset.left
+        switch (indexPath.section, indexPath.row) {
+        case (0, 0):
+            let cell = tableView.dequeueReusableCell(withIdentifier: UserNameCell.description(), for: indexPath) as? UserNameCell ?? .init()
             cell.user = user
             return cell
-        case 1:
-            switch indexPath.row {
-            case 0:
-                let cell = UITableViewCell()
-                cell.accessoryType = .disclosureIndicator
-                cell.textLabel?.text = "节点"
-                return cell
-            case 1:
-                let cell = UITableViewCell()
-                cell.accessoryType = .disclosureIndicator
-                cell.textLabel?.text = "发帖"
-                return cell
-            case 2:
-                let cell = UITableViewCell()
-                cell.accessoryType = .disclosureIndicator
-                cell.textLabel?.text = "反馈"
-                return cell
-            case 3:
-                let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
-                cell.detailTextLabel?.text = "\(URLCache.shared.currentDiskUsage / 1024 / 1024) MB"
-                cell.textLabel?.text = "缓存"
-                return cell
-            default: Void()
-            }
-        case 2:
-            let cell = UITableViewCell()
-            cell.textLabel?.text = "注销"
+        case (1, 0):
+            let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+            cell.accessoryType = .disclosureIndicator
+            cell.detailTextLabel?.text = "GitHub"
+            cell.textLabel?.text = "反馈"
+            return cell
+        case (1, 1):
+            let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+            cell.accessoryType = .disclosureIndicator
+            let diskUsage = URLCache.shared.currentDiskUsage / 1_024 / 1_024
+            cell.detailTextLabel?.text = diskUsage > 0 ? "\(diskUsage) MB" : "0"
+            cell.textLabel?.text = "缓存"
+            return cell
+        case (1, 2):
+            let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+            let shortVersionString = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+            let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+            cell.detailTextLabel?.text = "\(shortVersionString) (\(version))"
+            cell.selectionStyle = .none
+            cell.textLabel?.text = "版本"
+            return cell
+        case (2, 0):
+            let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.description(), for: indexPath)
+            cell.textLabel?.text = "退出登录"
             cell.textLabel?.textAlignment = .center
             cell.textLabel?.textColor = .red
             return cell
-        default: Void()
+        default:
+            return .init()
         }
-        return UITableViewCell()
     }
+}
+
+extension UserController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.section {
-        case 0:
-            if Defaults.userId == nil { signIn(); tableView.deselectRow(at: indexPath, animated: true); return }
-            let webViewController = WebViewController()
-            webViewController.path = "\(Helper.baseURL.absoluteString)/\(user["login"])"
-            webViewController.title = user["login"].string
-            splitViewController?.showDetailViewController(UINavigationController(rootViewController: webViewController), sender: self)
-        case 1:
-            switch indexPath.row {
-            case 0:
-                navigationController?.pushViewController(NodesController(), animated: true)
-            case 1:
-                splitViewController?.showDetailViewController(UINavigationController(rootViewController: ComposeController()), sender: self)
-            case 2:
-                let webViewController = WebViewController()
-                webViewController.path = "\(Helper.baseURL.absoluteString)/feedback"
-                webViewController.title = "反馈"
-                splitViewController?.showDetailViewController(UINavigationController(rootViewController: webViewController), sender: self)
-            case 3:
-                let progressHUD = MBProgressHUD.showAdded(to: view, animated: false)
-                DispatchQueue.global().async {
-                    URLCache.shared.removeAllCachedResponses()
-                    DispatchQueue.main.async {
-                        tableView.reloadRows(at: [indexPath], with: .automatic)
-                        progressHUD.hide(animated: false)
-                        self.alert("已清理")
-                    }
-                }
-            default: Void()
-            }
-        case 2:
+        switch (indexPath.section, indexPath.row) {
+        case (1, 1):
+            URLCache.shared.removeAllCachedResponses()
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        case (2, 0):
             tableView.deselectRow(at: indexPath, animated: true)
-            let alertController = UIAlertController(title: "确定注销吗？", message: "注销后可以重新登录。", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
-            alertController.addAction(UIAlertAction(title: "注销", style: .destructive) { _ in
-                let progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
-                let path = "/sessions/0.json"
-                AFHTTPSessionManager(baseURL: Helper.baseURL).delete(path, parameters: nil, success: { task, responseObject in
-                    progressHUD.hide(animated: false)
-                    self.signedOut()
-                }) { task, error in
-                    progressHUD.hide(animated: false)
-                    self.alert("网络错误")
-                }
-            })
-            present(alertController, animated: true, completion: nil)
-        default: Void()
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: "退出登录", style: .destructive) { _ in self.signOut() })
+            alertController.addAction(UIAlertAction(title: "取消", style: .cancel))
+            let cell = tableView.cellForRow(at: indexPath)
+            alertController.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+            alertController.popoverPresentationController?.sourceRect = cell?.bounds ?? .zero
+            alertController.popoverPresentationController?.sourceView = cell
+            present(alertController, animated: true)
+        default:
+            guard let viewController = viewControllerForRow(at: indexPath) else { return }
+            show(viewController, sender: nil)
         }
     }
+}
 
-    func signedOut() {
-        Defaults.userId = nil
-        user = [:]
-        tableView.reloadData()
+extension UserController: UIViewControllerPreviewingDelegate {
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRow(at: location) else { return nil }
+        guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
+        previewingContext.sourceRect = cell.frame
+        return viewControllerForRow(at: indexPath)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        show(viewControllerToCommit, sender: nil)
     }
 }

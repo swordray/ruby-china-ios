@@ -1,253 +1,303 @@
 //
-//  NodesController.swift
+//  TopicsController.swift
 //  RubyChina
 //
-//  Created by Jianqiu Xiao on 5/22/15.
-//  Copyright (c) 2015 Jianqiu Xiao. All rights reserved.
+//  Created by Jianqiu Xiao on 2018/3/23.
+//  Copyright © 2018 Jianqiu Xiao. All rights reserved.
 //
 
-import AFNetworking
-import CCBottomRefreshControl
-import SwiftyJSON
-import TPKeyboardAvoiding
-import UINavigationBar_Addition
-import UIKit
+import Alamofire
 
-class TopicsController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UIToolbarDelegate {
+class TopicsController: ViewController {
 
-    var emptyView = EmptyView()
-    var failureView = FailureView()
-    var loadingView = LoadingView()
-    var parameters: JSON = [:]
-    var refreshing = false
-    var segmentedControl = UISegmentedControl(items: ["默认", "最新", "热门", "精华"])
-    var tableView = TPKeyboardAvoidingTableView()
-    var toolbar = UIToolbar()
-    var topRefreshControl = UIRefreshControl()
-    var topics: JSON = []
+    private var activityIndicatorView: ActivityIndicatorView!
+    private var isRefreshing = false { didSet { didSetRefreshing() } }
+    private var networkErrorView: NetworkErrorView!
+    public  var node: Node? { didSet { didSetNode(oldValue) } }
+    private var notFoundView: NotFoundView!
+    private var segmentedControl: UISegmentedControl!
+    private var tableView: UITableView!
+    private var toolbar: UIToolbar!
+    private var topics: [Topic] = []
+    private var topicsIsLoaded = false
 
+    override init() {
+        super.init()
 
-    override func viewDidLoad() {
-        automaticallyAdjustsScrollViewInsets = false
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "UIBarButtonItemUser"), style: .plain, target: self, action: #selector(user))
-        navigationItem.title = "社区"
-        view.backgroundColor = Helper.backgroundColor
+        navigationItem.leftBarButtonItems = [
+            UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(showNodes)),
+            UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newTopic)),
+        ]
 
-        tableView.allowsMultipleSelection = false
-        tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        tableView.backgroundColor = .clear
+        title = "社区"
+    }
+
+    override func loadView() {
+        tableView = UITableView()
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.frame = view.bounds
-        tableView.register(TopicCell.self, forCellReuseIdentifier: "Cell")
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(fetchData), for: .valueChanged)
+        tableView.register(TopicsCell.self, forCellReuseIdentifier: TopicsCell.description())
         tableView.tableFooterView = UIView()
-        view.addSubview(tableView)
+        view = tableView
 
-        let searchBar = UISearchBar()
-        searchBar.autocapitalizationType = .none
-        searchBar.autocorrectionType = .no
-        searchBar.delegate = self
-        searchBar.placeholder = "搜索"
-        searchBar.sizeToFit()
-        tableView.tableHeaderView = searchBar
+        activityIndicatorView = ActivityIndicatorView()
+        view.addSubview(activityIndicatorView)
 
-        topRefreshControl.addTarget(self, action: #selector(topRefresh), for: .valueChanged)
-        tableView.addSubview(topRefreshControl)
+        networkErrorView = NetworkErrorView()
+        networkErrorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(fetchData)))
+        view.addSubview(networkErrorView)
 
-        let bottomRefreshControl = UIRefreshControl()
-        bottomRefreshControl.addTarget(self, action: #selector(bottomRefresh), for: .valueChanged)
-        tableView.bottomRefreshControl = bottomRefreshControl
+        notFoundView = NotFoundView()
+        notFoundView.textLabel?.text = "没有帖子"
+        view.addSubview(notFoundView)
 
-        toolbar.autoresizingMask = .flexibleWidth
+        segmentedControl = UISegmentedControl(items: ["默认", "最新", "热门", "精华"])
+        segmentedControl.addTarget(self, action: #selector(refetchData), for: .valueChanged)
+        segmentedControl.selectedSegmentIndex = 0
+
+        toolbar = UIToolbar()
         toolbar.delegate = self
-        toolbar.frame.size.width = view.bounds.width
+        toolbar.items = [UIBarButtonItem(customView: segmentedControl)]
         view.addSubview(toolbar)
-
-        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
-        segmentedControl.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
-        segmentedControl.frame.size.height = 28
-        segmentedControl.selectedSegmentIndex = max(0, segmentedControl.selectedSegmentIndex)
-        toolbar.addSubview(segmentedControl)
-
-        failureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(autoRefresh)))
-        view.addSubview(failureView)
-
-        view.addSubview(loadingView)
-
-        emptyView.text = "没有帖子"
-        view.addSubview(emptyView)
-
-        if #available(iOS 9.0, *) {
-            if traitCollection.forceTouchCapability == .available {
-                registerForPreviewing(with: self, sourceView: view)
-            }
+        toolbar.snp.makeConstraints { make in
+            make.leading.width.equalToSuperview()
+            make.bottom.equalTo(view.snp.top)
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.hideBottomHairline()
-        if let indexPath = tableView.indexPathForSelectedRow { tableView.deselectRow(at: indexPath, animated: true) }
-        traitCollectionDidChange(nil)
-        if topics.count == 0 { autoRefresh() }
-        Helper.trackView(self)
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.prefersLargeTitles = true
+
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: tableView)
+        }
+
+        tableView.indexPathsForSelectedRows?.forEach { tableView.deselectRow(at: $0, animated: animated) }
+
+        updateRightBarButtonItem()
+
+        if topics.count == 0 && !topicsIsLoaded || !networkErrorView.isHidden { fetchData() }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        navigationController?.navigationBar.showBottomHairline()
-    }
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
 
-    func autoRefresh() {
-        if refreshing { return }
-        loadingView.show()
-        loadData()
-    }
-
-    func topRefresh() {
-        if refreshing { topRefreshControl.endRefreshing(); return }
-        topics = []
-        loadData()
-    }
-
-    func bottomRefresh() {
-        if refreshing { tableView.bottomRefreshControl.endRefreshing(); tableView.bottomRefreshControl.isHidden = true; return }
-        loadData()
-    }
-
-    func stopRefresh() {
-        refreshing = false
-        loadingView.hide()
-        topRefreshControl.endRefreshing()
-        tableView.bottomRefreshControl.endRefreshing()
-        tableView.bottomRefreshControl.isHidden = true
-    }
-
-    func loadData() {
-        if refreshing { return }
-        refreshing = true
-        failureView.hide()
-        emptyView.hide()
-        let selectedSegmentIndex = segmentedControl.selectedSegmentIndex
-        let path = "/topics.json"
-        parameters["limit"] = 30
-        parameters["offset"].object = topics.count
-        parameters["type"] = ["last_actived", "recent", "popular", "excellent"][selectedSegmentIndex]
-        AFHTTPSessionManager(baseURL: Helper.baseURL).get(path, parameters: parameters.object, progress: nil, success: { task, responseObject in
-            self.stopRefresh()
-            if JSON(responseObject)["topics"].count == 0 { if self.topics.count == 0 { self.emptyView.show() } else { return } }
-            if self.topics.count == 0 { self.tableView.scrollRectToVisible(CGRect(x: 0, y: self.tableView.tableHeaderView?.frame.height ?? 0, width: 1, height: 1), animated: false) }
-            self.topics = JSON(self.topics.arrayValue + JSON(responseObject)["topics"].arrayValue)
-            self.tableView.reloadData()
-            self.segmentedControl.selectedSegmentIndex = selectedSegmentIndex
-        }) { task, error in
-            self.stopRefresh()
-            self.failureView.show()
+        if traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass {
+            toolbar.invalidateIntrinsicContentSize()
+            tableView.contentInset.top = toolbar.intrinsicContentSize.height
         }
     }
+
+    @objc
+    private func fetchData() {
+        if activityIndicatorView.isAnimating { tableView.refreshControl?.endRefreshing() }
+        if isRefreshing { return }
+        isRefreshing = true
+        let limit = 50
+        Alamofire.request(
+            baseURL.appendingPathComponent("topics").appendingPathExtension("json"),
+            parameters: [
+                "type": ["last_actived", "recent", "popular", "excellent"][segmentedControl.selectedSegmentIndex],
+                "node_id": node?.id ?? [],
+                "limit": limit,
+                "offset": tableView.refreshControl?.isRefreshing ?? false ? 0 : topics.count,
+            ]
+        )
+        .responseJSON { response in
+            if self.tableView.refreshControl?.isRefreshing ?? false {
+                self.topics = []
+                self.topicsIsLoaded = false
+            }
+            if 200..<300 ~= response.response?.statusCode ?? 0 {
+                let topics = (try? [Topic](json: response.value ?? [])) ?? []
+                self.topics += topics
+                self.topicsIsLoaded = topics.count < limit
+                self.notFoundView.isHidden = self.topics.count > 0
+            } else {
+                self.networkErrorView.isHidden = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.fetchData()
+                }
+            }
+            self.tableView.reloadData()
+            self.isRefreshing = false
+        }
+    }
+
+    private func didSetRefreshing() {
+        if isRefreshing {
+            networkErrorView.isHidden = true
+            notFoundView.isHidden = true
+            segmentedControl.isEnabled = false
+            if tableView.refreshControl?.isRefreshing ?? false { return }
+            activityIndicatorView.startAnimating()
+        } else {
+            segmentedControl.isEnabled = true
+            tableView.refreshControl?.endRefreshing()
+            activityIndicatorView.stopAnimating()
+        }
+    }
+
+    @objc
+    internal func refetchData() {
+        topics = []
+        topicsIsLoaded = false
+        tableView.reloadData()
+        fetchData()
+    }
+
+    private func didSetNode(_ oldValue: Node?) {
+        if node?.id == oldValue?.id { return }
+        title = node?.name ?? "社区"
+        refetchData()
+    }
+
+    @objc
+    private func showNodes(_ barButtonItem: UIBarButtonItem) {
+        if isRefreshing { return }
+        let navigationController = UINavigationController(rootViewController: NodesController())
+        navigationController.modalPresentationStyle = .popover
+        navigationController.popoverPresentationController?.backgroundColor = UIColor(displayP3Red: 248 / 255.0, green: 248 / 255.0, blue: 248 / 255.0, alpha: 1)
+        navigationController.popoverPresentationController?.barButtonItem = barButtonItem
+        present(navigationController, animated: true)
+    }
+
+    @objc
+    private func newTopic() {
+        let composeController = ComposeController()
+        composeController.topic = try? Topic(json: [:])
+        composeController.topic?.nodeId = node?.id
+        composeController.topic?.nodeName = node?.name
+        showDetailViewController(UINavigationController(rootViewController: composeController), sender: nil)
+    }
+
+    @objc
+    private func showUser() {
+        showDetailViewController(UINavigationController(rootViewController: UserController()), sender: nil)
+    }
+
+    @objc
+    internal func signIn() {
+        showHUD()
+        SecRequestSharedWebCredential(nil, nil) { credentials, error in
+            DispatchQueue.main.async {
+                self.hideHUD()
+                guard let credentials = credentials, error == nil, CFArrayGetCount(credentials) > 0 else { self.showSignIn(); return }
+                let credential = unsafeBitCast(CFArrayGetValueAtIndex(credentials, 0), to: CFDictionary.self)
+                let account = unsafeBitCast(CFDictionaryGetValue(credential, Unmanaged.passUnretained(kSecAttrAccount).toOpaque()), to: CFString.self) as String
+                let password = unsafeBitCast(CFDictionaryGetValue(credential, Unmanaged.passUnretained(kSecSharedPassword).toOpaque()), to: CFString.self) as String
+                self.signInAs(username: account, password: password)
+            }
+        }
+    }
+
+    private func signInAs(username: String, password: String) {
+        showHUD()
+        Alamofire.request(
+            baseURL.appendingPathComponent("sessions").appendingPathExtension("json"),
+            method: .post,
+            parameters: [
+                "username": username,
+                "password": password,
+            ]
+        )
+        .responseJSON { response in
+            switch response.response?.statusCode ?? 0 {
+            case 200..<300:
+                User.current = try? User(json: response.value ?? [:])
+                self.updateRightBarButtonItem()
+                self.refetchData()
+            default:
+                self.showSignIn()
+            }
+            self.hideHUD()
+        }
+    }
+
+    override func showSignIn() {
+        let navigationController = UINavigationController(rootViewController: SignInController())
+        navigationController.modalPresentationStyle = .popover
+        navigationController.popoverPresentationController?.backgroundColor = UIColor(displayP3Red: 248 / 255.0, green: 248 / 255.0, blue: 248 / 255.0, alpha: 1)
+        navigationController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(navigationController, animated: true)
+    }
+
+    internal func updateRightBarButtonItem() {
+        if let url = User.current?.avatarURL {
+            let imageView = UIImageView()
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showUser)))
+            imageView.af_setImage(withURL: url)
+            imageView.backgroundColor = .white
+            imageView.clipsToBounds = true
+            imageView.isUserInteractionEnabled = true
+            imageView.layer.cornerRadius = 14
+            imageView.snp.makeConstraints { $0.size.equalTo(28) }
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: imageView)
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "UIBarButtonItemUser"), style: .plain, target: self, action: #selector(signIn))
+        }
+    }
+
+    internal func removeTopic(_ topic: Topic?) {
+        guard let row = topics.index(where: { $0.id == topic?.id }) else { return }
+        topics.remove(at: row)
+        let indexPath = IndexPath(row: row, section: 0)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+
+    private func viewControllerForRow(at indexPath: IndexPath) -> UIViewController {
+        let topicController = TopicController()
+        topicController.topic = topics[indexPath.row]
+        return topicController
+    }
+}
+
+extension TopicsController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return topics.count
     }
 
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 61
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cell = TopicCell()
-        cell.detailTextLabel?.text = " "
-        cell.frame.size.width = tableView.frame.width - 8
-        cell.textLabel?.text = topics[indexPath.row]["title"].string
-        cell.topic = topics[indexPath.row]
-        cell.layoutSubviews()
-        return 11.5 + cell.textLabel!.frame.height + 5 + cell.detailTextLabel!.frame.height + 11.5
-    }
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TopicCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: TopicsCell.description(), for: indexPath) as? TopicsCell ?? .init()
         cell.topic = topics[indexPath.row]
         return cell
     }
+}
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let topicController = TopicController()
-        topicController.topic = topics[indexPath.row]
-        splitViewController?.showDetailViewController(UINavigationController(rootViewController: topicController), sender: self)
-    }
+extension TopicsController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (indexPath.row + 1) % 30 == 0 && indexPath.row + 1 == topics.count { autoRefresh() }
+        if !topicsIsLoaded && indexPath.row == topics.count - 1 { fetchData() }
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showDetailViewController(UINavigationController(rootViewController: viewControllerForRow(at: indexPath)), sender: nil)
+    }
+}
+
+extension TopicsController: UIToolbarDelegate {
 
     func position(for bar: UIBarPositioning) -> UIBarPosition {
         return .top
     }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        toolbar.frame.origin.y = min(UIApplication.shared.statusBarFrame.width, UIApplication.shared.statusBarFrame.height) + navigationController!.navigationBar.frame.height
-        toolbar.frame.size.height = navigationController!.navigationBar.frame.height
-        tableView.contentInset.top = toolbar.frame.origin.y + toolbar.frame.height
-        tableView.scrollIndicatorInsets.top = toolbar.frame.origin.y + toolbar.frame.height
-        segmentedControl.frame.size.width = min(320, view.bounds.width, view.bounds.height) - 16
-        segmentedControl.frame.origin.x = (view.bounds.width - segmentedControl.frame.width) / 2
-    }
-
-    func segmentedControlValueChanged(_ segmentedControl: UISegmentedControl) {
-        topics = []
-        autoRefresh()
-    }
-
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(true, animated: true)
-    }
-
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(false, animated: true)
-    }
-
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        parameters["query"].string = searchBar.text != "" ? searchBar.text : nil
-        topics = []
-        tableView.reloadData()
-        autoRefresh()
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        searchBar.setShowsCancelButton(false, animated: true)
-        searchBar.text = ""
-        searchBarSearchButtonClicked(searchBar)
-    }
-
-    func user() {
-        navigationController?.pushViewController(UserController(), animated: true)
-    }
-
-    func selectNode(_ node: JSON) {
-        parameters["node_id"] = node["id"]
-        title = node["name"].string
-        topics = []
-        tableView.reloadData()
-        _ = navigationController?.popToViewController(self, animated: true)
-    }
 }
-
 
 extension TopicsController: UIViewControllerPreviewingDelegate {
 
-    @available(iOS 9.0, *)
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = tableView.indexPathForRow(at: view.convert(location, to: tableView)) else { return nil }
+        guard let indexPath = tableView.indexPathForRow(at: location) else { return nil }
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
-        previewingContext.sourceRect = tableView.convert(cell.frame, to: view)
-        let topicController = TopicController()
-        topicController.topic = topics[indexPath.row]
-        return topicController
+        previewingContext.sourceRect = cell.frame
+        return viewControllerForRow(at: indexPath)
     }
 
-    @available(iOS 9.0, *)
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        splitViewController?.showDetailViewController(UINavigationController(rootViewController: viewControllerToCommit), sender: self)
+        showDetailViewController(UINavigationController(rootViewController: viewControllerToCommit), sender: nil)
     }
 }

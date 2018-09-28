@@ -1,78 +1,57 @@
 PODS:
-  - AFNetworking (3.1.0):
-    - AFNetworking/NSURLSession (= 3.1.0)
-    - AFNetworking/Reachability (= 3.1.0)
-    - AFNetworking/Security (= 3.1.0)
-    - AFNetworking/Serialization (= 3.1.0)
-    - AFNetworking/UIKit (= 3.1.0)
-  - AFNetworking/NSURLSession (3.1.0):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.1.0)
-  - AFNetworking/Security (3.1.0)
-  - AFNetworking/Serialization (3.1.0)
-  - AFNetworking/UIKit (3.1.0):
-    - AFNetworking/NSURLSession
-  - CCBottomRefreshControl (0.5.1):
-    - Masonry (~> 0.6.2)
-  - DateTools (1.7.0)
+  - Alamofire (4.7.3)
+  - AlamofireImage (3.4.1):
+    - Alamofire (~> 4.7)
+  - CrossroadRegex (1.1.0)
   - GoogleAnalytics (3.17.0)
-  - JTSImageViewController (1.5.1)
-  - Masonry (0.6.4)
-  - MBProgressHUD (1.0.0)
-  - MGSwipeTableCell (1.5.6)
-  - RegExCategories (1.0)
-  - SwiftyJSON (3.1.3)
-  - SZTextView (1.2.2)
-  - TPKeyboardAvoiding (1.3)
-  - "UINavigationBar+Addition (1.3.0)"
+  - JGProgressHUD (2.0.3)
+  - JXWebViewController (1.1.0)
+  - Ladybug (2.0.0)
+  - SnapKit (4.0.1)
+  - SwiftDate (5.0.9)
+  - SwiftLint (0.27.0)
+  - "UITextView+Placeholder (1.2.1)"
 
 DEPENDENCIES:
-  - AFNetworking
-  - CCBottomRefreshControl
-  - DateTools
+  - Alamofire
+  - AlamofireImage
+  - CrossroadRegex
   - GoogleAnalytics
-  - JTSImageViewController
-  - MBProgressHUD
-  - MGSwipeTableCell
-  - RegExCategories
-  - SwiftyJSON
-  - SZTextView
-  - TPKeyboardAvoiding
-  - "UINavigationBar+Addition"
+  - JGProgressHUD
+  - JXWebViewController
+  - Ladybug
+  - SnapKit
+  - SwiftDate
+  - SwiftLint
+  - "UITextView+Placeholder"
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - AFNetworking
-    - CCBottomRefreshControl
-    - DateTools
+    - Alamofire
+    - AlamofireImage
+    - CrossroadRegex
     - GoogleAnalytics
-    - JTSImageViewController
-    - Masonry
-    - MBProgressHUD
-    - MGSwipeTableCell
-    - RegExCategories
-    - SwiftyJSON
-    - SZTextView
-    - TPKeyboardAvoiding
-    - "UINavigationBar+Addition"
+    - JGProgressHUD
+    - JXWebViewController
+    - Ladybug
+    - SnapKit
+    - SwiftDate
+    - SwiftLint
+    - "UITextView+Placeholder"
 
 SPEC CHECKSUMS:
-  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  CCBottomRefreshControl: 57a596348855260f627ffc2b311328ed15b94877
-  DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  AlamofireImage: 78d67ccbb763d87ba44b21583d2153500a195630
+  CrossroadRegex: 5eaadb3f7b4014728f1cbd1014756b126c1dbd9a
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
-  JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
-  Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
-  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
-  RegExCategories: e68befacacd5bda853c88f70ec745cb2d0cfb89c
-  SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
-  SZTextView: 3a81174dce0710a9ab069bc73a813e6df53b9c82
-  TPKeyboardAvoiding: a5138f318c06fb3e151f886e18ce4a72695d9cbe
-  "UINavigationBar+Addition": 433c16a992cfb73c3141b1f7fcaa93169c15cfa0
+  JGProgressHUD: 12b20a8f4ffe05258f8635c1ab92816e451f904d
+  JXWebViewController: a903c6ac258d7880a3e2ec068f4233ebcda25614
+  Ladybug: f445480856a4971ef401abcb14ff8ea2d1178785
+  SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+  SwiftDate: 52b718d32ec006861a2be2756cbfa482d438e781
+  SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
+  "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
 
-PODFILE CHECKSUM: 1b3636095120bc5a5872c507cbc0251d1cc63fc5
+PODFILE CHECKSUM: 90a63d110992204ad84b19c5976f6b58c4b69cc2
 
 COCOAPODS: 1.5.3

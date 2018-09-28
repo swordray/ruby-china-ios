@@ -2,36 +2,48 @@
 //  SplitViewController.swift
 //  RubyChina
 //
-//  Created by Jianqiu Xiao on 6/4/15.
-//  Copyright (c) 2015 Jianqiu Xiao. All rights reserved.
+//  Created by Jianqiu Xiao on 2018/3/23.
+//  Copyright © 2018 Jianqiu Xiao. All rights reserved.
 //
 
 import UIKit
 
-class SplitViewController: UISplitViewController, UISplitViewControllerDelegate {
+class SplitViewController: UISplitViewController {
 
-    override func loadView() {
-        addChildViewController(UINavigationController(rootViewController: TopicsController()))
-        addChildViewController(UIViewController())
-        super.loadView()
-    }
+    private var defaultSecondaryViewController: UIViewController
 
-    override func viewDidLoad() {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        defaultSecondaryViewController = UINavigationController()
+        defaultSecondaryViewController.view.backgroundColor = .white
+
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+
+        viewControllers = [
+            UINavigationController(rootViewController: TopicsController()),
+            defaultSecondaryViewController,
+        ]
+
         delegate = self
         preferredDisplayMode = .allVisible
-        view.backgroundColor = Helper.backgroundColor
     }
 
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    internal func showDefault() {
+        showDetailViewController(defaultSecondaryViewController, sender: nil)
+    }
+}
+
+extension SplitViewController: UISplitViewControllerDelegate {
+
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-        return (secondaryViewController as? UINavigationController) == nil
+        return secondaryViewController == defaultSecondaryViewController
     }
 
     func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
-        if (primaryViewController as? UINavigationController)?.viewControllers.last as? UINavigationController == nil { return UIViewController() }
-        return nil
-    }
-
-    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
-        (svc.viewControllers.last as? UINavigationController)?.viewControllers.last?.traitCollectionDidChange(nil)
+        return (primaryViewController as? UINavigationController)?.viewControllers.last is UINavigationController ? nil : defaultSecondaryViewController
     }
 }

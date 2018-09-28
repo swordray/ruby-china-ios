@@ -2,160 +2,164 @@
 //  SignInController.swift
 //  RubyChina
 //
-//  Created by Jianqiu Xiao on 5/29/15.
-//  Copyright (c) 2015 Jianqiu Xiao. All rights reserved.
+//  Created by Jianqiu Xiao on 2018/3/23.
+//  Copyright © 2018 Jianqiu Xiao. All rights reserved.
 //
 
-import AFNetworking
-import MBProgressHUD
-import SwiftyJSON
-import TPKeyboardAvoiding
-import UIKit
+import Alamofire
 
-class SignInController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
+class SignInController: ViewController {
 
-    var passwordField = UITextField()
-    var tableView = TPKeyboardAvoidingTableView(frame: CGRect(), style: .grouped)
-    var usernameField = UITextField()
-    var viewController: UIViewController?
+    private var passwordField: UITextField!
+    private var usernameField: UITextField!
 
+    override init() {
+        super.init()
 
-    override func viewDidLoad() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissNow))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss))
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(title: "注册", style: .plain, target: self, action: #selector(signUp)),
-            UIBarButtonItem(title: "忘记密码", style: .plain, target: self, action: #selector(forgot)),
+            UIBarButtonItem(title: "忘记密码", style: .plain, target: self, action: #selector(forgotPassword)),
         ].reversed()
-        title = "登录"
-        view.backgroundColor = Helper.backgroundColor
 
-        tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        tableView.backgroundColor = .clear
+        title = "登录"
+    }
+
+    override func loadView() {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.frame = view.bounds
-        tableView.tableFooterView = UIView()
-        view.addSubview(tableView)
+        view = tableView
 
+        usernameField = UITextField()
         usernameField.autocapitalizationType = .none
         usernameField.autocorrectionType = .no
         usernameField.clearButtonMode = .whileEditing
         usernameField.delegate = self
         usernameField.font = .preferredFont(forTextStyle: .body)
-        usernameField.frame.size.height = 44
         usernameField.placeholder = "账号"
         usernameField.returnKeyType = .next
+        usernameField.textContentType = .username
 
+        passwordField = UITextField()
         passwordField.clearButtonMode = .whileEditing
         passwordField.delegate = self
         passwordField.font = .preferredFont(forTextStyle: .body)
-        passwordField.frame.size.height = 44
+        passwordField.isSecureTextEntry = true
         passwordField.placeholder = "密码"
         passwordField.returnKeyType = .join
-        passwordField.isSecureTextEntry = true
+        passwordField.textContentType = .password
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        Helper.trackView(self)
-    }
+        super.viewWillAppear(animated)
 
-    override func viewDidAppear(_ animated: Bool) {
         usernameField.becomeFirstResponder()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    private func signIn() {
         view.endEditing(true)
+        showHUD()
+        let username = usernameField.text ?? ""
+        let password = passwordField.text ?? ""
+        Alamofire.request(
+            baseURL.appendingPathComponent("sessions").appendingPathExtension("json"),
+            method: .post,
+            parameters: [
+                "username": username,
+                "password": password,
+            ]
+        )
+        .responseJSON { response in
+            switch response.response?.statusCode ?? 0 {
+            case 200..<300:
+                User.current = try? User(json: response.value ?? [:])
+                SecAddSharedWebCredential((self.baseURL.host ?? "") as CFString, username as CFString, password as CFString) { _ in }
+                self.dismiss(animated: true)
+                let topicsController = ((self.presentingViewController as? UISplitViewController)?.viewControllers.first as? UINavigationController)?.viewControllers.first as? TopicsController
+                topicsController?.updateRightBarButtonItem()
+                topicsController?.refetchData()
+            case 401:
+                let alertController = UIAlertController(title: "账号或密码错误", message: nil, preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "好", style: .default))
+                self.present(alertController, animated: true)
+            default:
+                self.networkError()
+            }
+            self.hideHUD()
+        }
     }
+
+    @objc
+    private func signUp() {
+        let webViewController = WebViewController()
+        webViewController.title = "注册"
+        webViewController.url = baseURL.appendingPathComponent("account/sign_up")
+        show(webViewController, sender: nil)
+    }
+
+    @objc
+    private func forgotPassword() {
+        let webViewController = WebViewController()
+        webViewController.title = "忘记密码"
+        webViewController.url = baseURL.appendingPathComponent("account/password/new")
+        show(webViewController, sender: nil)
+    }
+}
+
+extension SignInController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0: return 2
-        case 1: return 1
-        default: return 0
-        }
+        return [2, 1][section]
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            switch indexPath.row {
-            case 0:
-                let cell = UITableViewCell()
-                cell.accessoryView = usernameField
-                cell.frame.size.width = tableView.frame.width
-                cell.selectionStyle = .none
-                usernameField.frame.size.width = tableView.frame.width - tableView.separatorInset.left * 2
-                return cell
-            case 1:
-                let cell = UITableViewCell()
-                cell.accessoryView = passwordField
-                cell.frame.size.width = tableView.frame.width
-                cell.selectionStyle = .none
-                passwordField.frame.size.width = tableView.frame.width - tableView.separatorInset.left * 2
-                return cell
-            default: Void()
-            }
+            let cell = UITableViewCell()
+            cell.selectionStyle = .none
+            cell.textLabel?.text = " "
+            let textField = [usernameField, passwordField][indexPath.row] ?? .init()
+            cell.contentView.addSubview(textField)
+            textField.snp.makeConstraints { $0.edges.equalTo(cell.textLabel ?? .init()) }
+            return cell
         case 1:
             let cell = UITableViewCell()
             cell.textLabel?.text = "登录"
-            cell.textLabel?.textColor = Helper.tintColor
+            cell.textLabel?.textColor = tableView.tintColor
             return cell
-        default: Void()
+        default:
+            return .init()
         }
-        return UITableViewCell()
     }
+}
+
+extension SignInController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        signIn()
+        if indexPath.section == 1 {
+            tableView.deselectRow(at: indexPath, animated: true)
+            signIn()
+        }
     }
+}
+
+extension SignInController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
-        case usernameField: passwordField.becomeFirstResponder()
-        case passwordField: signIn()
-        default: Void()
+        case usernameField:
+            passwordField.becomeFirstResponder()
+        case passwordField:
+            signIn()
+        default:
+            break
         }
-        return true
-    }
-
-    override func signIn() {
-        let progressHUD = MBProgressHUD.showAdded(to: view, animated: false)
-        let path = "/sessions.json"
-        let parameters = [
-            "username": usernameField.text!,
-            "password": passwordField.text!,
-        ]
-        AFHTTPSessionManager(baseURL: Helper.baseURL).post(path, parameters: parameters, progress: nil, success: { task, responseObject in
-            progressHUD.hide(animated: false)
-            Defaults.userId = JSON(responseObject)["user"]["id"].int
-            self.dismissNow()
-        }) { task, error in
-            progressHUD.hide(animated: false)
-            self.alert((task?.response as? HTTPURLResponse)?.statusCode == 401 ? "账号或密码错误" : "网络错误")
-        }
-    }
-
-    func signUp() {
-        let webViewController = WebViewController()
-        webViewController.path = "\(Helper.baseURL.absoluteString)/account/sign_up"
-        webViewController.title = "注册"
-        navigationController?.pushViewController(webViewController, animated: true)
-    }
-
-    func forgot() {
-        let webViewController = WebViewController()
-        webViewController.path = "\(Helper.baseURL.absoluteString)/account/password/new"
-        webViewController.title = "忘记密码"
-        navigationController?.pushViewController(webViewController, animated: true)
-    }
-
-    func dismissNow() {
-        dismiss(animated: true, completion: nil)
-        viewController?.viewWillAppear(false)
+        return false
     }
 }

@@ -1,5 +1,5 @@
 //
-//  NotFoundView.swift
+//  ActivityIndicatorView.swift
 //  RubyChina
 //
 //  Created by Jianqiu Xiao on 2018/3/23.
@@ -8,21 +8,10 @@
 
 import UIKit
 
-class NotFoundView: UIStackView {
+class ActivityIndicatorView: UIActivityIndicatorView {
 
-    public  var textLabel: UILabel!
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        alignment = .center
-
-        isHidden = true
-
-        textLabel = UILabel()
-        textLabel.font = .preferredFont(forTextStyle: .title1)
-        textLabel.textColor = .lightGray
-        addArrangedSubview(textLabel)
+    init() {
+        super.init(style: .gray)
     }
 
     @available(*, unavailable)

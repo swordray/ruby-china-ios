@@ -40,8 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             if let url = userActivity.webpageURL, let id = "^/topics/(\\d+)$".r?.findFirst(in: url.path)?.group(at: 1) {
                 let topicController = TopicController()
-                topicController.topic = try? Topic(json: [:])
-                topicController.topic?.id = Int(id)
+                topicController.topic = try? Topic(json: ["id": Int(id)])
                 window?.rootViewController?.showDetailViewController(UINavigationController(rootViewController: topicController), sender: nil)
                 return true
             }

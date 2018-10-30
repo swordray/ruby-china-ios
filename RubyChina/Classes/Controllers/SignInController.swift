@@ -12,11 +12,11 @@ class SignInController: ViewController {
 
     private var passwordField: UITextField!
     private var usernameField: UITextField!
+    private var tableView: UITableView!
 
     override init() {
         super.init()
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss))
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(title: "注册", style: .plain, target: self, action: #selector(signUp)),
             UIBarButtonItem(title: "忘记密码", style: .plain, target: self, action: #selector(forgotPassword)),
@@ -26,7 +26,7 @@ class SignInController: ViewController {
     }
 
     override func loadView() {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView = UITableView(frame: .zero, style: .grouped)
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.dataSource = self
         tableView.delegate = self
@@ -55,7 +55,15 @@ class SignInController: ViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        navigationItem.leftBarButtonItem = navigationController?.modalPresentationStyle == .formSheet || presentingViewController?.traitCollection.horizontalSizeClass == .compact || presentingViewController?.traitCollection.verticalSizeClass == .compact ? UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss)) : nil
+
         usernameField.becomeFirstResponder()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        navigationController?.preferredContentSize = tableView.contentSize
     }
 
     private func signIn() {

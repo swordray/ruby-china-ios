@@ -59,13 +59,15 @@ class ViewController: GAITrackedViewController {
         var ancestor: UIViewController = self
         while let parent = ancestor.parent { ancestor = parent }
         progressHUD = progressHUD ?? JGProgressHUD(style: .extraLight)
-        progressHUD?.show(in: ancestor.view)
+        progressHUD?.show(in: ancestor.view, animated: false)
     }
 
     @objc
-    internal func showSignIn() {
+    internal func showSignIn(_ sender: Any? = nil) {
         let navigationController = UINavigationController(rootViewController: SignInController())
-        navigationController.modalPresentationStyle = .formSheet
+        navigationController.modalPresentationStyle = sender is UIBarButtonItem ? .popover : .formSheet
+        navigationController.popoverPresentationController?.backgroundColor = UIColor(displayP3Red: 248 / 255, green: 248 / 255, blue: 248 / 255, alpha: 1)
+        navigationController.popoverPresentationController?.barButtonItem = sender as? UIBarButtonItem
         present(navigationController, animated: true)
     }
 }

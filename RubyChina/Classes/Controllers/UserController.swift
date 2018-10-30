@@ -172,9 +172,9 @@ extension UserController: UITableViewDataSource {
             return cell
         case (1, 2):
             let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
-            let shortVersionString = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+            let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
             let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
-            cell.detailTextLabel?.text = "\(shortVersionString) (\(version))"
+            cell.detailTextLabel?.text = "\(shortVersion) (\(version))"
             cell.selectionStyle = .none
             cell.textLabel?.text = "版本"
             return cell

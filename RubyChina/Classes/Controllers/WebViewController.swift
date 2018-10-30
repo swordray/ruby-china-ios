@@ -12,6 +12,7 @@ import WebKit
 class WebViewController: JXWebViewController {
 
     private var activityIndicatorView: ActivityIndicatorView!
+    private var isRefreshing = false { didSet { didSetRefreshing() } }
     private var networkErrorView: NetworkErrorView!
     public  var url: URL!
 
@@ -56,7 +57,18 @@ class WebViewController: JXWebViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        navigationController?.preferredContentSize.height = UIScreen.main.bounds.height
+
         GAI.sharedInstance().defaultTracker.send([kGAIHitType: "appview", kGAIScreenName: String(describing: type(of: self))])
+    }
+
+    private func didSetRefreshing() {
+        if isRefreshing {
+            networkErrorView.isHidden = true
+            activityIndicatorView.startAnimating()
+        } else {
+            activityIndicatorView.stopAnimating()
+        }
     }
 
     @objc
@@ -71,35 +83,33 @@ class WebViewController: JXWebViewController {
 extension WebViewController {
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        activityIndicatorView.startAnimating()
-        networkErrorView.isHidden = true
+        isRefreshing = true
     }
 
     override func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         super.webView(webView, didFailProvisionalNavigation: navigation, withError: error)
 
-        activityIndicatorView.stopAnimating()
+        isRefreshing = false
         networkErrorView.isHidden = false
     }
 
     override func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         super.webView(webView, didFail: navigation, withError: error)
 
-        activityIndicatorView.stopAnimating()
+        isRefreshing = false
         networkErrorView.isHidden = false
     }
 
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         super.webView(webView, didFinish: navigation)
 
-        activityIndicatorView.stopAnimating()
+        isRefreshing = false
     }
 
     override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let url = navigationAction.request.url, url.host == "ruby-china.org", let id = "^/topics/(\\d+)$".r?.findFirst(in: url.path)?.group(at: 1) {
             let topicController = TopicController()
-            topicController.topic = try? Topic(json: [:])
-            topicController.topic?.id = Int(id)
+            topicController.topic = try? Topic(json: ["id": Int(id)])
             show(topicController, sender: nil)
             decisionHandler(.cancel)
             return

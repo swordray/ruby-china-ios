@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BaseURLString</key>
-	<string>https://ruby-china.net/</string>
+	<string>https://ruby-china.net</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_CN</string>
 	<key>CFBundleDisplayName</key>

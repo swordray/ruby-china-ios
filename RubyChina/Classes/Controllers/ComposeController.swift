@@ -65,7 +65,7 @@ class ComposeController: ViewController {
         bodyView.delegate = self
         bodyView.font = .preferredFont(forTextStyle: .body)
         bodyView.placeholder = "内容"
-        bodyView.placeholderColor = UIColor(displayP3Red: 199 / 255.0, green: 199 / 255.0, blue: 204 / 255.0, alpha: 1)
+        bodyView.placeholderColor = UIColor(displayP3Red: 199 / 255, green: 199 / 255, blue: 204 / 255, alpha: 1)
         bodyView.text = topic?.body ?? reply?.body
         view.addSubview(bodyView)
         bodyView.snp.makeConstraints { make in
@@ -151,7 +151,7 @@ class ComposeController: ViewController {
     }
 
     @objc
-    private func done() {
+    private func done(_ barButtonItem: UIBarButtonItem) {
         if topic != nil && topic?.nodeId == nil {
             show(NodesController(), sender: nil)
         } else if topic != nil && topic?.title ?? "" == "" {
@@ -159,7 +159,7 @@ class ComposeController: ViewController {
         } else if topic?.body ?? reply?.body ?? "" == "" {
             bodyView.becomeFirstResponder()
         } else if User.current == nil {
-            showSignIn()
+            showSignIn(barButtonItem)
         } else {
             let alertController = UIAlertController(title: "\(title ?? "")吗？", message: nil, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "取消", style: .cancel))

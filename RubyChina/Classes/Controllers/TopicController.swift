@@ -331,13 +331,13 @@ extension TopicController: UITableViewDataSource {
 extension TopicController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        (cell as? TopicTitleCell)?.registerPreviewing()
-        (cell as? TopicReplyCell)?.registerPreviewing()
+        (cell as? TopicTitleCell)?.willDisplay()
+        (cell as? TopicReplyCell)?.willDisplay()
     }
 
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        (cell as? TopicTitleCell)?.unregisterPreviewing()
-        (cell as? TopicReplyCell)?.unregisterPreviewing()
+        (cell as? TopicTitleCell)?.didEndDisplaying()
+        (cell as? TopicReplyCell)?.didEndDisplaying()
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

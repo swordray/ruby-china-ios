@@ -44,6 +44,6 @@ extension SplitViewController: UISplitViewControllerDelegate {
     }
 
     func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
-        return (primaryViewController as? UINavigationController)?.viewControllers.last is UINavigationController ? nil : defaultSecondaryViewController
+        return (primaryViewController as? UINavigationController)?.topViewController is UINavigationController ? nil : defaultSecondaryViewController
     }
 }

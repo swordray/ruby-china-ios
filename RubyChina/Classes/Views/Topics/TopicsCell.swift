@@ -33,8 +33,8 @@ class TopicsCell: UITableViewCell {
         userAvatarView.backgroundColor = UITableView(frame: .zero, style: .grouped).backgroundColor
         userAvatarView.clipsToBounds = true
         userAvatarView.layer.cornerRadius = width / 2
-        contentView.addSubview(userAvatarView)
-        userAvatarView.snp.makeConstraints { $0.edges.equalTo(imageView ?? .init()) }
+        imageView?.addSubview(userAvatarView)
+        userAvatarView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
 
     @available(*, unavailable)

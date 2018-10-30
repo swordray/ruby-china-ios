@@ -101,12 +101,12 @@ class TopicReplyCell: TopicWebCell {
         viewController?.show(userController(), sender: nil)
     }
 
-    internal func registerPreviewing() {
+    internal func willDisplay() {
         if traitCollection.forceTouchCapability == .unavailable { return }
         previewings = previewings ?? [userAvatarView, userNameButton].compactMap { viewController?.registerForPreviewing(with: self, sourceView: $0) }
     }
 
-    internal func unregisterPreviewing() {
+    internal func didEndDisplaying() {
         previewings?.forEach { viewController?.unregisterForPreviewing(withContext: $0) }
         previewings = nil
     }

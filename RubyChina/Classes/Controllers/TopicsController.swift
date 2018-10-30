@@ -68,6 +68,13 @@ class TopicsController: ViewController {
         }
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        toolbar.invalidateIntrinsicContentSize()
+        tableView.contentInset.top = toolbar.intrinsicContentSize.height
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -82,15 +89,6 @@ class TopicsController: ViewController {
         updateRightBarButtonItem()
 
         if topics.count == 0 && !topicsIsLoaded || !networkErrorView.isHidden { fetchData() }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass {
-            toolbar.invalidateIntrinsicContentSize()
-            tableView.contentInset.top = toolbar.intrinsicContentSize.height
-        }
     }
 
     @objc
@@ -162,7 +160,7 @@ class TopicsController: ViewController {
         if isRefreshing { return }
         let navigationController = UINavigationController(rootViewController: NodesController())
         navigationController.modalPresentationStyle = .popover
-        navigationController.popoverPresentationController?.backgroundColor = UIColor(displayP3Red: 248 / 255.0, green: 248 / 255.0, blue: 248 / 255.0, alpha: 1)
+        navigationController.popoverPresentationController?.backgroundColor = UIColor(displayP3Red: 248 / 255, green: 248 / 255, blue: 248 / 255, alpha: 1)
         navigationController.popoverPresentationController?.barButtonItem = barButtonItem
         present(navigationController, animated: true)
     }
@@ -182,12 +180,12 @@ class TopicsController: ViewController {
     }
 
     @objc
-    internal func signIn() {
+    internal func signIn(_ barButtonItem: UIBarButtonItem? = nil) {
         showHUD()
         SecRequestSharedWebCredential(nil, nil) { credentials, error in
             DispatchQueue.main.async {
                 self.hideHUD()
-                guard let credentials = credentials, error == nil, CFArrayGetCount(credentials) > 0 else { self.showSignIn(); return }
+                guard let credentials = credentials, error == nil, CFArrayGetCount(credentials) > 0 else { self.showSignIn(barButtonItem); return }
                 let credential = unsafeBitCast(CFArrayGetValueAtIndex(credentials, 0), to: CFDictionary.self)
                 let account = unsafeBitCast(CFDictionaryGetValue(credential, Unmanaged.passUnretained(kSecAttrAccount).toOpaque()), to: CFString.self) as String
                 let password = unsafeBitCast(CFDictionaryGetValue(credential, Unmanaged.passUnretained(kSecSharedPassword).toOpaque()), to: CFString.self) as String
@@ -217,14 +215,6 @@ class TopicsController: ViewController {
             }
             self.hideHUD()
         }
-    }
-
-    override func showSignIn() {
-        let navigationController = UINavigationController(rootViewController: SignInController())
-        navigationController.modalPresentationStyle = .popover
-        navigationController.popoverPresentationController?.backgroundColor = UIColor(displayP3Red: 248 / 255.0, green: 248 / 255.0, blue: 248 / 255.0, alpha: 1)
-        navigationController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(navigationController, animated: true)
     }
 
     internal func updateRightBarButtonItem() {

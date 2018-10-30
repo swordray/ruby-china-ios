@@ -21,7 +21,7 @@ class NodesController: ViewController {
 
         navigationItem.largeTitleDisplayMode = .never
 
-        preferredContentSize.width = 240
+        preferredContentSize.width = UIFontMetrics.default.scaledValue(for: 220)
 
         title = "节点"
     }
@@ -46,7 +46,7 @@ class NodesController: ViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationItem.leftBarButtonItem = topicsController != nil ? UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss)) : nil
+        navigationItem.leftBarButtonItem = presentingViewController?.traitCollection.horizontalSizeClass == .compact || presentingViewController?.traitCollection.verticalSizeClass == .compact ? UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss)) : nil
 
         fetchData()
     }

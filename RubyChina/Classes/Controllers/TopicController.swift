@@ -7,6 +7,7 @@
 //
 
 import Alamofire
+import TUSafariActivity
 
 class TopicController: ViewController {
 
@@ -23,7 +24,6 @@ class TopicController: ViewController {
         super.init()
 
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.leftItemsSupplementBackButton = true
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(newReply)),
             UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(action)),
@@ -55,8 +55,6 @@ class TopicController: ViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationItem.leftBarButtonItem = self == navigationController?.viewControllers.first ? splitViewController?.displayModeButtonItem : nil
-
         if topic?.bodyHTML == nil || !networkErrorView.isHidden { fetchData() }
     }
 
@@ -74,7 +72,7 @@ class TopicController: ViewController {
     private func fetchData() {
         if isRefreshing { return }
         isRefreshing = true
-        Alamofire.request(
+        AF.request(
             baseURL
                 .appendingPathComponent("topics")
                 .appendingPathComponent(String(topic?.id ?? 0))
@@ -101,7 +99,7 @@ class TopicController: ViewController {
         if replies != nil { return }
         if isRefreshing { return }
         isRefreshing = true
-        Alamofire.request(
+        AF.request(
             baseURL
                 .appendingPathComponent("topics")
                 .appendingPathComponent(String(topic?.id ?? 0))
@@ -136,7 +134,9 @@ class TopicController: ViewController {
     private func didSetTopic() {
         bodyCell = TopicBodyCell()
 
-        userActivity?.webpageURL = baseURL.appendingPathComponent("topics").appendingPathComponent(String(topic?.id ?? 0))
+        userActivity?.webpageURL = baseURL
+            .appendingPathComponent("topics")
+            .appendingPathComponent(String(topic?.id ?? 0))
     }
 
     private func didSetReplies() {
@@ -146,15 +146,15 @@ class TopicController: ViewController {
     @objc
     private func action(_ barButtonItem: UIBarButtonItem) {
         guard let url = topic?.user?.avatarURL else { return }
-        Alamofire.request(url).responseImage { response in
+        AF.request(url).responseImage { response in
             guard let image = response.value else { return }
             let activityItems: [Any] = [
                 self.baseURL.appendingPathComponent("topics").appendingPathComponent(String(self.topic?.id ?? 0)),
                 self.topic?.title ?? "",
                 image,
             ]
-            let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: [])
-            activityViewController.excludedActivityTypes = [.addToReadingList, .assignToContact, .copyToPasteboard, .print, .saveToCameraRoll]
+            let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: [TUSafariActivity()])
+            activityViewController.excludedActivityTypes = [.assignToContact, .copyToPasteboard, .print, .saveToCameraRoll]
             activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
             self.present(activityViewController, animated: true)
         }
@@ -163,7 +163,7 @@ class TopicController: ViewController {
     private func editTopic() {
         let composeController = ComposeController()
         composeController.topic = topic
-        show(composeController, sender: nil)
+        present(UINavigationController(rootViewController: composeController), animated: true)
     }
 
     internal func updateTopic(_ topic: Topic?) {
@@ -184,7 +184,7 @@ class TopicController: ViewController {
 
     private func destroyTopic() {
         showHUD()
-        Alamofire.request(
+        AF.request(
             baseURL
                 .appendingPathComponent("topics")
                 .appendingPathComponent(String(topic?.id ?? 0))
@@ -194,17 +194,13 @@ class TopicController: ViewController {
         .responseJSON { response in
             switch response.response?.statusCode ?? 0 {
             case 200..<300:
-                let topicsController = (self.splitViewController?.viewControllers.first as? UINavigationController)?.viewControllers.first as? TopicsController
+                let topicsController = self.navigationController?.viewControllers.first as? TopicsController
                 topicsController?.removeTopic(self.topic)
-                if self.navigationController?.viewControllers.count ?? 0 > 1 {
-                    self.navigationController?.popViewController(animated: true)
-                } else if self.navigationController?.navigationController?.viewControllers.count ?? 0 > 1 {
-                    self.navigationController?.navigationController?.popViewController(animated: true)
-                } else {
-                    (self.splitViewController as? SplitViewController)?.showDefault()
-                }
+                self.navigationController?.popViewController(animated: true)
+
             case 401:
                 self.showSignIn()
+
             default:
                 self.networkError()
             }
@@ -213,13 +209,16 @@ class TopicController: ViewController {
     }
 
     @objc
-    private func newReply(_ body: Any?) {
+    private func newReply(_ sender: Any?) {
         if replies == nil { return }
         let composeController = ComposeController()
         composeController.reply = try? Reply(json: [:])
-        composeController.reply?.body = body as? String
+        composeController.reply?.body = sender as? String
         composeController.reply?.topicId = topic?.id
-        show(composeController, sender: nil)
+        let navigationController = UINavigationController(rootViewController: composeController)
+        navigationController.modalPresentationStyle = sender is UIBarButtonItem ? .popover : .automatic
+        navigationController.popoverPresentationController?.barButtonItem = sender as? UIBarButtonItem
+        present(navigationController, animated: true)
     }
 
     internal func addReply(_ reply: Reply) {
@@ -233,11 +232,11 @@ class TopicController: ViewController {
     private func editReply(_ reply: Reply) {
         let composeController = ComposeController()
         composeController.reply = reply
-        show(composeController, sender: nil)
+        present(UINavigationController(rootViewController: composeController), animated: true)
     }
 
     internal func updateReply(_ reply: Reply) {
-        let row = replies?.index { $0.id == reply.id } ?? 0
+        let row = replies?.firstIndex { $0.id == reply.id } ?? 0
         replies?[row] = reply
         replyCells[row] = TopicReplyCell()
         let indexPath = IndexPath(row: row, section: 2)
@@ -259,7 +258,7 @@ class TopicController: ViewController {
     private func destroyReply(_ indexPath: IndexPath) {
         let reply = replies?[indexPath.row]
         showHUD()
-        Alamofire.request(
+        AF.request(
             baseURL
                 .appendingPathComponent("replies")
                 .appendingPathComponent(String(reply?.id ?? 0))
@@ -271,8 +270,10 @@ class TopicController: ViewController {
             case 200..<300:
                 reply?.deleted = true
                 self.tableView.reloadRows(at: [indexPath], with: .none)
+
             case 401:
                 self.showSignIn()
+
             default:
                 self.networkError()
             }
@@ -298,7 +299,11 @@ extension TopicController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return [1, topic?.bodyHTML != nil ? 1 : 0, replies?.count ?? 0][section]
+        return [
+            1,
+            topic?.bodyHTML != nil ? 1 : 0,
+            replies?.count ?? 0,
+        ][section]
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -307,11 +312,13 @@ extension TopicController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: TopicTitleCell.description(), for: indexPath) as? TopicTitleCell ?? .init()
             cell.topic = topic
             return cell
+
         case 1:
             let cell = bodyCell ?? .init()
             cell.bodyHTML = topic?.bodyHTML
             cell.layoutIfNeeded()
             return cell
+
         case 2:
             let reply = replies?[indexPath.row]
             reply?.index = indexPath.row
@@ -322,6 +329,7 @@ extension TopicController: UITableViewDataSource {
             cell.reply = reply
             cell.layoutIfNeeded()
             return cell
+
         default:
             return .init()
         }
@@ -329,16 +337,6 @@ extension TopicController: UITableViewDataSource {
 }
 
 extension TopicController: UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        (cell as? TopicTitleCell)?.willDisplay()
-        (cell as? TopicReplyCell)?.willDisplay()
-    }
-
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        (cell as? TopicTitleCell)?.didEndDisplaying()
-        (cell as? TopicReplyCell)?.didEndDisplaying()
-    }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         var actions: [UIContextualAction] = []
@@ -356,6 +354,7 @@ extension TopicController: UITableViewDelegate {
                     self.deleteTopic()
                 })
             }
+
         case 2:
             guard let reply = replies?[indexPath.row] else { break }
             if reply.deleted ?? false { return UISwipeActionsConfiguration(actions: []) }
@@ -377,6 +376,7 @@ extension TopicController: UITableViewDelegate {
                     self.deleteReply(indexPath)
                 })
             }
+
         default:
             break
         }

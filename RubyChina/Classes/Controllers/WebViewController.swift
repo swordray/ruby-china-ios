@@ -7,6 +7,7 @@
 //
 
 import JXWebViewController
+import TUSafariActivity
 import WebKit
 
 class WebViewController: JXWebViewController {
@@ -14,13 +15,12 @@ class WebViewController: JXWebViewController {
     private var activityIndicatorView: ActivityIndicatorView!
     private var isRefreshing = false { didSet { didSetRefreshing() } }
     private var networkErrorView: NetworkErrorView!
-    public  var url: URL!
+    public  var url: URL?
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.leftItemsSupplementBackButton = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(action))
 
         let userScript = WKUserScript(source: "if (typeof(Turbolinks) !== 'undefined') { Turbolinks.supported = false }", injectionTime: .atDocumentEnd, forMainFrameOnly: true)
@@ -29,8 +29,6 @@ class WebViewController: JXWebViewController {
 
     override func loadView() {
         super.loadView()
-
-        view.backgroundColor = .white
 
         if title != nil {
             webViewKeyValueObservations[\WKWebView.title] = nil
@@ -47,9 +45,7 @@ class WebViewController: JXWebViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationItem.leftBarButtonItem = self == navigationController?.viewControllers.first ? splitViewController?.displayModeButtonItem : nil
-
-        if webView.url == nil {
+        if webView.url == nil, let url = url {
             webView.load(URLRequest(url: url))
         }
     }
@@ -58,8 +54,6 @@ class WebViewController: JXWebViewController {
         super.viewDidAppear(animated)
 
         navigationController?.preferredContentSize.height = UIScreen.main.bounds.height
-
-        GAI.sharedInstance().defaultTracker.send([kGAIHitType: "appview", kGAIScreenName: String(describing: type(of: self))])
     }
 
     private func didSetRefreshing() {
@@ -74,7 +68,7 @@ class WebViewController: JXWebViewController {
     @objc
     private func action(_ barButtonItem: UIBarButtonItem) {
         guard let url = webView.url else { return }
-        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: [TUSafariActivity()])
         activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
         present(activityViewController, animated: true)
     }
@@ -110,7 +104,7 @@ extension WebViewController {
         if let url = navigationAction.request.url, url.host == "ruby-china.org", let id = "^/topics/(\\d+)$".r?.findFirst(in: url.path)?.group(at: 1) {
             let topicController = TopicController()
             topicController.topic = try? Topic(json: ["id": Int(id)])
-            show(topicController, sender: nil)
+            navigationController?.pushViewController(topicController, animated: true)
             decisionHandler(.cancel)
             return
         }

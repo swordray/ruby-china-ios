@@ -10,31 +10,81 @@ import UIKit
 
 class TopicsCell: UITableViewCell {
 
+    private var nodeButton: UIButton!
+    private var repliedAtLabel: UILabel!
+    private var repliesCountLabel: UILabel!
+    private var titleLabel: UILabel!
     public  var topic: Topic? { didSet { didSetTopic() } }
     private var userAvatarView: UIImageView!
+    private var userLoginLabel: UILabel!
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         accessoryType = .disclosureIndicator
 
-        detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
-        detailTextLabel?.textColor = .lightGray
-
-        let width = UIFontMetrics.default.scaledValue(for: 44)
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: width), false, UIScreen.main.scale)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        imageView?.image = image
-
-        textLabel?.numberOfLines = 3
+        let stackView = UIStackView()
+        stackView.alignment = .center
+        stackView.spacing = 15
+        contentView.addSubview(stackView)
+        stackView.snp.makeConstraints { $0.edges.equalTo(contentView.layoutMarginsGuide).priority(999) }
 
         userAvatarView = UIImageView()
-        userAvatarView.backgroundColor = UITableView(frame: .zero, style: .grouped).backgroundColor
+        userAvatarView.backgroundColor = .secondarySystemBackground
         userAvatarView.clipsToBounds = true
-        userAvatarView.layer.cornerRadius = width / 2
-        imageView?.addSubview(userAvatarView)
-        userAvatarView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        userAvatarView.layer.cornerRadius = 22
+        userAvatarView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        userAvatarView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        stackView.addArrangedSubview(userAvatarView)
+        userAvatarView.snp.makeConstraints { $0.size.equalTo(44) }
+
+        let contentStackView = UIStackView()
+        contentStackView.axis = .vertical
+        contentStackView.spacing = 8
+        contentStackView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        contentStackView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        stackView.addArrangedSubview(contentStackView)
+
+        titleLabel = UILabel()
+        titleLabel.font = .preferredFont(forTextStyle: .body)
+        titleLabel.numberOfLines = 3
+        contentStackView.addArrangedSubview(titleLabel)
+
+        let detailStackView = UIStackView()
+        detailStackView.spacing = 8
+        contentStackView.addArrangedSubview(detailStackView)
+
+        nodeButton = UIButton()
+        nodeButton.backgroundColor = .quaternarySystemFill
+        nodeButton.clipsToBounds = true
+        nodeButton.contentEdgeInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
+        nodeButton.isUserInteractionEnabled = false
+        nodeButton.layer.cornerRadius = 3
+        nodeButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        nodeButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        nodeButton.setTitleColor(.secondaryLabel, for: .normal)
+        nodeButton.titleLabel?.font = .preferredFont(forTextStyle: .subheadline)
+        detailStackView.addArrangedSubview(nodeButton)
+
+        userLoginLabel = UILabel()
+        userLoginLabel.font = .preferredFont(forTextStyle: .subheadline)
+        userLoginLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        userLoginLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        userLoginLabel.textColor = .secondaryLabel
+        detailStackView.addArrangedSubview(userLoginLabel)
+
+        repliedAtLabel = UILabel()
+        repliedAtLabel.font = .preferredFont(forTextStyle: .subheadline)
+        repliedAtLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        repliedAtLabel.textColor = .tertiaryLabel
+        detailStackView.addArrangedSubview(repliedAtLabel)
+
+        repliesCountLabel = UILabel()
+        repliesCountLabel.font = .preferredFont(forTextStyle: .body)
+        repliesCountLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        repliesCountLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        repliesCountLabel.textColor = .secondaryLabel
+        stackView.addArrangedSubview(repliesCountLabel)
     }
 
     @available(*, unavailable)
@@ -43,13 +93,22 @@ class TopicsCell: UITableViewCell {
     }
 
     private func didSetTopic() {
-        detailTextLabel?.text = [
-            topic?.nodeName != nil && (viewController as? TopicsController)?.node == nil ? "[\(topic?.nodeName ?? "")]" : nil,
-            topic?.user?.login,
-            topic?.repliedAt?.toRelative(),
-            topic?.repliesCount ?? 0 > 0 ? "\(topic?.repliesCount ?? 0) ↵" : nil,
-        ].compactMap { $0 }.joined(separator: " · ")
-        textLabel?.text = topic?.title
-        userAvatarView?.af_setImage(withURL: topic?.user?.avatarURL ?? .init(fileURLWithPath: ""))
+        userAvatarView.isHidden = topic?.user == nil
+        userAvatarView.setImage(withURL: topic?.user?.avatarURL)
+        titleLabel.text = topic?.title
+        nodeButton.isHidden = (viewController as? TopicsController)?.node != nil
+        nodeButton.setTitle(topic?.nodeName, for: .normal)
+        userLoginLabel.isHidden = topic?.user == nil
+        userLoginLabel.text = topic?.user?.login
+        repliedAtLabel.text = topic?.repliedAt?.toRelative()
+        repliesCountLabel.text = String(topic?.repliesCount ?? 0)
+
+        if topic?.user != nil {
+            let size = CGSize(width: 44, height: 1)
+            UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            imageView?.image = image
+        }
     }
 }

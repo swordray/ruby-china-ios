@@ -23,7 +23,9 @@ class ComposeController: ViewController {
     override init() {
         super.init()
 
-        navigationItem.leftItemsSupplementBackButton = true
+        isModalInPresentation = true
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "放弃", style: .plain, target: self, action: #selector(discard))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
     }
 
@@ -42,7 +44,7 @@ class ComposeController: ViewController {
         }
 
         view = tableView ?? UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
 
         activityIndicatorView = ActivityIndicatorView()
         view.addSubview(activityIndicatorView)
@@ -65,7 +67,6 @@ class ComposeController: ViewController {
         bodyView.delegate = self
         bodyView.font = .preferredFont(forTextStyle: .body)
         bodyView.placeholder = "内容"
-        bodyView.placeholderColor = UIColor(displayP3Red: 199 / 255, green: 199 / 255, blue: 204 / 255, alpha: 1)
         bodyView.text = topic?.body ?? reply?.body
         view.addSubview(bodyView)
         bodyView.snp.makeConstraints { make in
@@ -80,10 +81,6 @@ class ComposeController: ViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.navigationBar.prefersLargeTitles = true
-
-        navigationItem.leftBarButtonItem = self == navigationController?.viewControllers.first ? splitViewController?.displayModeButtonItem : nil
-
         title = topic != nil ? (topic?.id == nil ? "发帖" : "编辑") : (reply?.id == nil ? "回复" : "编辑")
 
         tableView?.indexPathsForSelectedRows?.forEach { tableView?.deselectRow(at: $0, animated: animated) }
@@ -96,7 +93,7 @@ class ComposeController: ViewController {
         if reply?.id == nil || reply?.body != nil { return automaticallyBecomeFirstResponder() }
         if isRefreshing { return }
         isRefreshing = true
-        Alamofire.request(
+        AF.request(
             baseURL
                 .appendingPathComponent("replies")
                 .appendingPathComponent(String(reply?.id ?? 0))
@@ -151,9 +148,21 @@ class ComposeController: ViewController {
     }
 
     @objc
+    private func discard() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "放弃", style: .destructive) { _ in
+            self.view.endEditing(true)
+            self.dismiss(animated: true)
+        })
+        alertController.addAction(UIAlertAction(title: "继续", style: .cancel))
+        alertController.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItem
+        present(alertController, animated: true)
+    }
+
+    @objc
     private func done(_ barButtonItem: UIBarButtonItem) {
         if topic != nil && topic?.nodeId == nil {
-            show(NodesController(), sender: nil)
+            navigationController?.pushViewController(NodesController(), animated: true)
         } else if topic != nil && topic?.title ?? "" == "" {
             titleField?.becomeFirstResponder()
         } else if topic?.body ?? reply?.body ?? "" == "" {
@@ -191,7 +200,7 @@ class ComposeController: ViewController {
                 method = .patch
             }
         }
-        Alamofire.request(
+        AF.request(
             baseURL.appendingPathComponent(pathComponent).appendingPathExtension("json"),
             method: method,
             parameters: [
@@ -210,7 +219,9 @@ class ComposeController: ViewController {
                         let topicController = TopicController()
                         topicController.replies = []
                         topicController.topic = topic
-                        self.navigationController?.viewControllers = [topicController]
+                        let navigationController = self.navigationController
+                        navigationController?.popViewController(animated: false)
+                        navigationController?.pushViewController(topicController, animated: false)
                     } else {
                         topicController?.updateTopic(topic)
                         self.navigationController?.popViewController(animated: true)
@@ -224,12 +235,15 @@ class ComposeController: ViewController {
                     }
                     self.navigationController?.popViewController(animated: true)
                 }
+
             case 401:
                 self.showSignIn()
+
             case 403:
                 let alertController = UIAlertController(title: "当前用户没有发帖权限，具体请参考官网的相关说明", message: nil, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "好", style: .default))
                 self.present(alertController, animated: true)
+
             default:
                 self.networkError()
             }
@@ -249,9 +263,10 @@ extension ComposeController: UITableViewDataSource {
         case 0:
             let cell = UITableViewCell()
             cell.accessoryType = .disclosureIndicator
-            cell.textLabel?.text = topic?.nodeId != nil ? "[\(topic?.nodeName ?? "")]" : "节点"
-            cell.textLabel?.textColor = topic?.nodeId != nil ? .black : bodyView.placeholderColor
+            cell.textLabel?.text = topic?.nodeName ?? "节点"
+            cell.textLabel?.textColor = topic?.nodeName != nil ? .label : .placeholderText
             return cell
+
         case 1:
             let cell = UITableViewCell()
             cell.selectionStyle = .none
@@ -259,6 +274,7 @@ extension ComposeController: UITableViewDataSource {
             cell.contentView.addSubview(titleField ?? .init())
             titleField?.snp.makeConstraints { $0.edges.equalTo(cell.textLabel ?? .init()) }
             return cell
+
         default:
             return .init()
         }
@@ -269,7 +285,7 @@ extension ComposeController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            show(NodesController(), sender: nil)
+            navigationController?.pushViewController(NodesController(), animated: true)
         }
     }
 }

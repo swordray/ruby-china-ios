@@ -1,5 +1,5 @@
 //
-//  NotFoundView.swift
+//  NoContentView.swift
 //  RubyChina
 //
 //  Created by Jianqiu Xiao on 2018/3/23.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NotFoundView: UIStackView {
+class NoContentView: UIStackView {
 
     public  var textLabel: UILabel!
 
@@ -21,7 +21,7 @@ class NotFoundView: UIStackView {
 
         textLabel = UILabel()
         textLabel.font = .preferredFont(forTextStyle: .title1)
-        textLabel.textColor = .lightGray
+        textLabel.textColor = .secondaryLabel
         addArrangedSubview(textLabel)
     }
 
@@ -33,7 +33,7 @@ class NotFoundView: UIStackView {
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
 
-        if let superview = self.superview {
+        if let superview = superview {
             snp.makeConstraints { $0.center.equalTo(superview.safeAreaLayoutGuide) }
         }
     }

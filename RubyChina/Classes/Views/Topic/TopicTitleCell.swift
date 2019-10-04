@@ -11,7 +11,7 @@ import UIKit
 class TopicTitleCell: UITableViewCell {
 
     private var createdAtLabel: UILabel!
-    private var previewings: [UIViewControllerPreviewing]?
+    private var hitsLabel: UILabel!
     private var titleLabel: UILabel!
     public  var topic: Topic? { didSet { didSetTopic() } }
     private var userAvatarView: UIImageView!
@@ -24,9 +24,9 @@ class TopicTitleCell: UITableViewCell {
 
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = UIFont.preferredFont(forTextStyle: .body).lineHeight * 0.5
-        addSubview(stackView)
-        stackView.snp.makeConstraints { $0.margins.equalToSuperview() }
+        stackView.spacing = 8
+        contentView.addSubview(stackView)
+        stackView.snp.makeConstraints { $0.edges.equalTo(contentView.layoutMarginsGuide) }
 
         titleLabel = UILabel()
         titleLabel.font = .preferredFont(forTextStyle: .title2)
@@ -34,19 +34,18 @@ class TopicTitleCell: UITableViewCell {
         stackView.addArrangedSubview(titleLabel)
 
         let detailStackView = UIStackView()
-        detailStackView.spacing = 15
+        detailStackView.spacing = 8
         stackView.addArrangedSubview(detailStackView)
-
-        let width = UIFontMetrics.default.scaledValue(for: 44)
 
         userAvatarView = UIImageView()
         userAvatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showUser)))
-        userAvatarView.backgroundColor = UITableView(frame: .zero, style: .grouped).backgroundColor
+        userAvatarView.backgroundColor = .secondarySystemBackground
         userAvatarView.clipsToBounds = true
         userAvatarView.isUserInteractionEnabled = true
-        userAvatarView.layer.cornerRadius = width / 2
-        userAvatarView.snp.makeConstraints { $0.size.equalTo(width) }
+        userAvatarView.layer.cornerRadius = 22
         detailStackView.addArrangedSubview(userAvatarView)
+        detailStackView.setCustomSpacing(15, after: userAvatarView)
+        userAvatarView.snp.makeConstraints { $0.size.equalTo(44) }
 
         userNameButton = UIButton()
         userNameButton.addTarget(self, action: #selector(showUser), for: .touchUpInside)
@@ -57,11 +56,15 @@ class TopicTitleCell: UITableViewCell {
 
         createdAtLabel = UILabel()
         createdAtLabel.font = .preferredFont(forTextStyle: .subheadline)
-        createdAtLabel.numberOfLines = 0
-        createdAtLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        createdAtLabel.textAlignment = .right
-        createdAtLabel.textColor = .lightGray
+        createdAtLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        createdAtLabel.textColor = .secondaryLabel
         detailStackView.addArrangedSubview(createdAtLabel)
+
+        hitsLabel = UILabel()
+        hitsLabel.font = .preferredFont(forTextStyle: .subheadline)
+        hitsLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        hitsLabel.textColor = .tertiaryLabel
+        detailStackView.addArrangedSubview(hitsLabel)
     }
 
     @available(*, unavailable)
@@ -78,45 +81,16 @@ class TopicTitleCell: UITableViewCell {
 
     private func didSetTopic() {
         titleLabel.text = topic?.title
-        userAvatarView?.af_setImage(withURL: topic?.user?.avatarURL ?? .init(fileURLWithPath: ""))
+        userAvatarView?.setImage(withURL: topic?.user?.avatarURL)
         userNameButton.setTitle(topic?.user?.login, for: .normal)
-        createdAtLabel.text = [
-            topic?.createdAt?.toRelative(),
-            topic?.hits ?? 0 > 0 ? "\(topic?.hits ?? 0)次阅读" : nil,
-        ].compactMap { $0 }.joined(separator: " · ")
-    }
-
-    private func userController() -> WebViewController {
-        let login = topic?.user?.login ?? ""
-        let webViewController = WebViewController()
-        webViewController.title = login
-        webViewController.url = viewController?.baseURL.appendingPathComponent(login)
-        return webViewController
+        createdAtLabel.text = topic?.createdAt?.toRelative()
+        hitsLabel.text = topic?.hits ?? 0 > 0 ? "\(topic?.hits ?? 0)次阅读" : nil
     }
 
     @objc
     private func showUser() {
-        viewController?.show(userController(), sender: nil)
-    }
-
-    internal func willDisplay() {
-        if traitCollection.forceTouchCapability == .unavailable { return }
-        previewings = previewings ?? [userAvatarView, userNameButton].compactMap { viewController?.registerForPreviewing(with: self, sourceView: $0) }
-    }
-
-    internal func didEndDisplaying() {
-        previewings?.forEach { viewController?.unregisterForPreviewing(withContext: $0) }
-        previewings = nil
-    }
-}
-
-extension TopicTitleCell: UIViewControllerPreviewingDelegate {
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        return userController()
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        viewController?.show(viewControllerToCommit, sender: nil)
+        let userController = UserController()
+        userController.user = topic?.user
+        viewController?.navigationController?.pushViewController(userController, animated: true)
     }
 }

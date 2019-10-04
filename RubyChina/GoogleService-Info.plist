@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>946659060785-9kgtqh88fkv8j7igg42ntmg8li15pp4r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.946659060785-9kgtqh88fkv8j7igg42ntmg8li15pp4r</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBKJ6J95f5ai8EFi0E7-w7xyoOegLAdQX0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>946659060785</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.secipin.ruby-china</string>
+	<key>PROJECT_ID</key>
+	<string>ruby-china-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ruby-china-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:946659060785:ios:fccbba3df9b8b7bfce3910</string>
+	<key>DATABASE_URL</key>
+	<string>https://ruby-china-app.firebaseio.com</string>
+</dict>
+</plist>

@@ -11,16 +11,14 @@ import Alamofire
 class SignInController: ViewController {
 
     private var passwordField: UITextField!
-    private var usernameField: UITextField!
     private var tableView: UITableView!
+    private var usernameField: UITextField!
 
     override init() {
         super.init()
 
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(title: "注册", style: .plain, target: self, action: #selector(signUp)),
-            UIBarButtonItem(title: "忘记密码", style: .plain, target: self, action: #selector(forgotPassword)),
-        ].reversed()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(action))
 
         title = "登录"
     }
@@ -38,7 +36,7 @@ class SignInController: ViewController {
         usernameField.clearButtonMode = .whileEditing
         usernameField.delegate = self
         usernameField.font = .preferredFont(forTextStyle: .body)
-        usernameField.placeholder = "账号"
+        usernameField.placeholder = "帐号"
         usernameField.returnKeyType = .next
         usernameField.textContentType = .username
 
@@ -55,8 +53,6 @@ class SignInController: ViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationItem.leftBarButtonItem = navigationController?.modalPresentationStyle == .formSheet || presentingViewController?.traitCollection.horizontalSizeClass == .compact || presentingViewController?.traitCollection.verticalSizeClass == .compact ? UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss)) : nil
-
         usernameField.becomeFirstResponder()
     }
 
@@ -71,7 +67,7 @@ class SignInController: ViewController {
         showHUD()
         let username = usernameField.text ?? ""
         let password = passwordField.text ?? ""
-        Alamofire.request(
+        AF.request(
             baseURL.appendingPathComponent("sessions").appendingPathExtension("json"),
             method: .post,
             parameters: [
@@ -85,13 +81,15 @@ class SignInController: ViewController {
                 User.current = try? User(json: response.value ?? [:])
                 SecAddSharedWebCredential((self.baseURL.host ?? "") as CFString, username as CFString, password as CFString) { _ in }
                 self.dismiss(animated: true)
-                let topicsController = ((self.presentingViewController as? UISplitViewController)?.viewControllers.first as? UINavigationController)?.viewControllers.first as? TopicsController
+                let topicsController = (self.presentingViewController as? UINavigationController)?.viewControllers.first as? TopicsController
                 topicsController?.updateRightBarButtonItem()
                 topicsController?.refetchData()
+
             case 401:
-                let alertController = UIAlertController(title: "账号或密码错误", message: nil, preferredStyle: .alert)
+                let alertController = UIAlertController(title: "帐号或密码错误", message: nil, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "好", style: .default))
                 self.present(alertController, animated: true)
+
             default:
                 self.networkError()
             }
@@ -100,19 +98,18 @@ class SignInController: ViewController {
     }
 
     @objc
-    private func signUp() {
-        let webViewController = WebViewController()
-        webViewController.title = "注册"
-        webViewController.url = baseURL.appendingPathComponent("account/sign_up")
-        show(webViewController, sender: nil)
-    }
-
-    @objc
-    private func forgotPassword() {
-        let webViewController = WebViewController()
-        webViewController.title = "忘记密码"
-        webViewController.url = baseURL.appendingPathComponent("account/password/new")
-        show(webViewController, sender: nil)
+    private func action() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        [("注册", "account/sign_up"), ("忘记密码", "account/password/new")].forEach { title, pathComponent in
+            alertController.addAction(UIAlertAction(title: title, style: .default) { _ in
+                let webViewController = WebViewController()
+                webViewController.title = title
+                webViewController.url = self.baseURL.appendingPathComponent(pathComponent)
+                self.navigationController?.pushViewController(webViewController, animated: true)
+            })
+        }
+        alertController.addAction(UIAlertAction(title: "取消", style: .cancel))
+        present(alertController, animated: true)
     }
 }
 
@@ -136,11 +133,13 @@ extension SignInController: UITableViewDataSource {
             cell.contentView.addSubview(textField)
             textField.snp.makeConstraints { $0.edges.equalTo(cell.textLabel ?? .init()) }
             return cell
+
         case 1:
             let cell = UITableViewCell()
             cell.textLabel?.text = "登录"
             cell.textLabel?.textColor = tableView.tintColor
             return cell
+
         default:
             return .init()
         }
@@ -163,8 +162,10 @@ extension SignInController: UITextFieldDelegate {
         switch textField {
         case usernameField:
             passwordField.becomeFirstResponder()
+
         case passwordField:
             signIn()
+
         default:
             break
         }

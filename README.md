@@ -4,8 +4,8 @@ Ruby China is the most popular Ruby community in China.
 
 ## Requirements
 
-* Xcode 10
-* iOS 11
+* Xcode 11
+* iOS 13
 * CocoaPods
 
 ## Links
@@ -16,4 +16,4 @@ Ruby China is the most popular Ruby community in China.
 
 ## License
 
-Copyright © 2018 Jianqiu Xiao <swordray@gmail.com> under The [MIT License](http://opensource.org/licenses/MIT).
+Copyright © 2019 Jianqiu Xiao <swordray@gmail.com> under The [MIT License](http://opensource.org/licenses/MIT).

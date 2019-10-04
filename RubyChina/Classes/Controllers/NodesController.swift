@@ -21,8 +21,6 @@ class NodesController: ViewController {
 
         navigationItem.largeTitleDisplayMode = .never
 
-        preferredContentSize.width = UIFontMetrics.default.scaledValue(for: 220)
-
         title = "节点"
     }
 
@@ -46,7 +44,7 @@ class NodesController: ViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationItem.leftBarButtonItem = presentingViewController?.traitCollection.horizontalSizeClass == .compact || presentingViewController?.traitCollection.verticalSizeClass == .compact ? UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss)) : nil
+        navigationItem.leftBarButtonItem = self == navigationController?.viewControllers.first ? UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss)) : nil
 
         fetchData()
     }
@@ -56,18 +54,18 @@ class NodesController: ViewController {
         if sections.count > 0 { return }
         if isRefreshing { return }
         isRefreshing = true
-        Alamofire.request(
+        AF.request(
             baseURL.appendingPathComponent("sections").appendingPathExtension("json")
         ).responseJSON { response in
             if 200..<300 ~= response.response?.statusCode ?? 0 {
                 self.sections = (try? [Section](json: response.value ?? [])) ?? []
-                if self.topicsController != nil, let section = try? Section(json: ["name": "全部", "nodes": [["name": "社区"]]]) {
+                if self.composeController == nil, let section = try? Section(json: ["nodes": [["name": "全部"]]]) {
                     self.sections.insert(section, at: 0)
                 }
                 self.tableView.reloadData()
-                if let nodeId = self.topicsController?.node?.id ?? self.composeController?.topic?.nodeId {
-                    let section = self.sections.index { $0.nodes.contains { $0.id == nodeId } } ?? 0
-                    let row = self.sections[section].nodes.index { $0.id == nodeId } ?? 0
+                if let nodeId = self.composeController?.topic?.nodeId ?? self.topicsController?.node?.id {
+                    let section = self.sections.firstIndex { $0.nodes.contains { $0.id == nodeId } } ?? 0
+                    let row = self.sections[section].nodes.firstIndex { $0.id == nodeId } ?? 0
                     let indexPath = IndexPath(row: row, section: section)
                     self.tableView.scrollToRow(at: indexPath, at: .middle, animated: false)
                 }
@@ -88,7 +86,7 @@ class NodesController: ViewController {
     }
 
     private var topicsController: TopicsController? {
-        return ((presentingViewController as? UISplitViewController)?.viewControllers.first as? UINavigationController)?.viewControllers.first as? TopicsController
+        return (presentingViewController as? UINavigationController)?.viewControllers.first as? TopicsController
     }
 
     private var composeController: ComposeController? {
@@ -113,7 +111,7 @@ extension NodesController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.description(), for: indexPath)
         let node = sections[indexPath.section].nodes[indexPath.row]
-        cell.accessoryType = node.id == topicsController?.node?.id ?? composeController?.topic?.nodeId ? .checkmark : .none
+        cell.accessoryType = node.id == composeController?.topic?.nodeId ?? topicsController?.node?.id ? .checkmark : .none
         cell.textLabel?.text = node.name
         return cell
     }
@@ -123,7 +121,7 @@ extension NodesController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let node = sections[indexPath.section].nodes[indexPath.row]
-        if topicsController != nil {
+        if composeController == nil {
             topicsController?.node = node.id != nil ? node : nil
             dismiss(animated: true)
         } else {

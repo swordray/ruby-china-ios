@@ -14,10 +14,6 @@ class TopicBodyCell: TopicWebCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         contentView.addSubview(webView)
-        webView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(contentView.layoutMarginsGuide)
-            make.top.equalToSuperview().offset(UIFontMetrics.default.scaledValue(for: 13.5))
-            make.bottom.equalToSuperview().offset(UIFontMetrics.default.scaledValue(for: -13.5))
-        }
+        webView.snp.makeConstraints { $0.edges.equalTo(contentView.layoutMarginsGuide).priority(999) }
     }
 }

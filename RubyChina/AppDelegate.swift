@@ -6,7 +6,7 @@
 //  Copyright © 2018 Jianqiu Xiao. All rights reserved.
 //
 
-import AlamofireImage
+import Firebase
 import Regex
 import SnapKit
 import SwiftDate
@@ -18,18 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        application.shortcutItems = [
-            UIApplicationShortcutItem(type: "compose", localizedTitle: "发帖", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .compose), userInfo: nil),
-        ]
-
-        GAI.sharedInstance().logger.logLevel = .error
-        GAI.sharedInstance().trackUncaughtExceptions = true
-        GAI.sharedInstance().tracker(withTrackingId: Bundle.main.infoDictionary?["GoogleAnalyticsTrackingId"] as? String ?? "")
+        FirebaseApp.configure()
 
         SwiftDate.defaultRegion = Region(calendar: Calendars.gregorian, zone: Zones.asiaShanghai, locale: Locales.chinese)
 
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = SplitViewController()
+        window?.rootViewController = UINavigationController(rootViewController: TopicsController())
         window?.tintColor = UIColor(named: "TintColor")
         window?.makeKeyAndVisible()
 
@@ -41,21 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let url = userActivity.webpageURL, let id = "^/topics/(\\d+)$".r?.findFirst(in: url.path)?.group(at: 1) {
                 let topicController = TopicController()
                 topicController.topic = try? Topic(json: ["id": Int(id)])
-                window?.rootViewController?.showDetailViewController(UINavigationController(rootViewController: topicController), sender: nil)
+                (window?.rootViewController as? UINavigationController)?.pushViewController(topicController, animated: false)
                 return true
             }
         }
         return false
-    }
-
-    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        switch shortcutItem.type {
-        case "compose":
-            let composeController = ComposeController()
-            composeController.topic = try? Topic(json: [:])
-            window?.rootViewController?.showDetailViewController(UINavigationController(rootViewController: composeController), sender: nil)
-        default:
-            break
-        }
     }
 }

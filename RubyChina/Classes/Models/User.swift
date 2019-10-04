@@ -26,7 +26,7 @@ struct User: JSONCodable {
         }
 
         set {
-            let json = (try? newValue?.toJSON()) ?? nil
+            let json = try? newValue?.toJSON()
             UserDefaults.standard.set(json, forKey: "CurrentUser")
         }
     }

@@ -10,6 +10,6 @@ import Ladybug
 
 class Section: JSONCodable {
 
-    var name: String
+    var name: String?
     var nodes: [Node]
 }

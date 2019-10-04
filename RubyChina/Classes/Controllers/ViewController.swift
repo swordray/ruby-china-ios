@@ -8,14 +8,12 @@
 
 import JGProgressHUD
 
-class ViewController: GAITrackedViewController {
+class ViewController: UIViewController {
 
     private var progressHUD: JGProgressHUD?
 
     init() {
         super.init(nibName: nil, bundle: nil)
-
-        screenName = String(describing: type(of: self))
     }
 
     @available(*, unavailable)
@@ -58,15 +56,17 @@ class ViewController: GAITrackedViewController {
     internal func showHUD() {
         var ancestor: UIViewController = self
         while let parent = ancestor.parent { ancestor = parent }
-        progressHUD = progressHUD ?? JGProgressHUD(style: .extraLight)
+        let style: JGProgressHUDStyle = traitCollection.userInterfaceStyle != .dark ? .extraLight : .dark
+        if progressHUD?.style != style {
+            progressHUD = JGProgressHUD(style: style)
+        }
         progressHUD?.show(in: ancestor.view, animated: false)
     }
 
     @objc
     internal func showSignIn(_ sender: Any? = nil) {
         let navigationController = UINavigationController(rootViewController: SignInController())
-        navigationController.modalPresentationStyle = sender is UIBarButtonItem ? .popover : .formSheet
-        navigationController.popoverPresentationController?.backgroundColor = UIColor(displayP3Red: 248 / 255, green: 248 / 255, blue: 248 / 255, alpha: 1)
+        navigationController.modalPresentationStyle = sender is UIBarButtonItem ? .popover : .automatic
         navigationController.popoverPresentationController?.barButtonItem = sender as? UIBarButtonItem
         present(navigationController, animated: true)
     }

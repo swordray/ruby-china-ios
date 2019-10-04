@@ -13,8 +13,8 @@ class TopicReplyDeletedCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        let width = UIFontMetrics.default.scaledValue(for: 44)
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: 1), false, UIScreen.main.scale)
+        let size = CGSize(width: 44, height: 1)
+        UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         imageView?.image = image
@@ -24,7 +24,7 @@ class TopicReplyDeletedCell: UITableViewCell {
         textLabel?.attributedText = NSAttributedString(string: "已删除", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue])
         textLabel?.font = .preferredFont(forTextStyle: .subheadline)
         textLabel?.textAlignment = .center
-        textLabel?.textColor = .lightGray
+        textLabel?.textColor = .tertiaryLabel
     }
 
     @available(*, unavailable)

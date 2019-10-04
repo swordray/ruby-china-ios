@@ -11,7 +11,7 @@ import UIKit
 class ActivityIndicatorView: UIActivityIndicatorView {
 
     init() {
-        super.init(style: .gray)
+        super.init(style: .medium)
     }
 
     @available(*, unavailable)
@@ -22,7 +22,7 @@ class ActivityIndicatorView: UIActivityIndicatorView {
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
 
-        if let superview = self.superview {
+        if let superview = superview {
             snp.makeConstraints { $0.center.equalTo(superview.safeAreaLayoutGuide) }
         }
     }

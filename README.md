@@ -14,6 +14,10 @@ Ruby China is the most popular Ruby community in China.
 * Source code and issue tracking are available on [GitHub](https://github.com/swordray/ruby-china-ios).
 * Ruby China community [official website](https://ruby-china.org/).
 
+## Sponsors
+
+* [BaiLu ShuYuan](https://bailushuyuan.org)
+
 ## License
 
 Copyright © 2019 Jianqiu Xiao <swordray@gmail.com> under The [MIT License](http://opensource.org/licenses/MIT).
